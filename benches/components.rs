@@ -295,14 +295,14 @@ impl<'a> Components<'a> {
             Some(FirstComponent::AbsolutePath) => {
                 self.first_comp = None;
                 if dir_front {
-                    self.advance_through_trailing_sep_front();
+                    self.normalize_front();
                 }
                 Some(Component::RootDir)
             }
             Some(FirstComponent::Prefix) => {
                 self.first_comp = None;
                 if dir_front {
-                    self.advance_through_trailing_sep_front();
+                    self.normalize_front();
                 }
 
                 // SAFETY: Our front has the length of our Prefix component encoded at the start,
@@ -330,107 +330,74 @@ impl<'a> Components<'a> {
     /// Normalizes away trailing separators and current directory ('.') components
     /// in the forward direction.
     #[inline]
-    fn advance_through_trailing_sep_front(&mut self) {
-        // `Some(false)` is used to denote that
-        // we haven't seen a '.' component *yet*,
-        // `Some(true)` means we have seen a '.' component,
-        // and `None` means that the component is not '.'
-        let mut curr_dir = Some(false);
-        // We rebound to the original index for path components
-        // like '..' or 'abc.'
-        let mut rebound_ind: Option<usize> = None;
-        loop {
-            if self.front == self.back {
-                if let Some(front_ind) = rebound_ind {
-                    self.front = front_ind;
-                }
-                break;
-            }
-
-            if is_sep_byte(self.path[self.front]) {
-                if let Some(curr_dir_present) = curr_dir
-                    && curr_dir_present
-                {
-                    curr_dir = Some(false);
-                    rebound_ind = None;
+    fn normalize_front(&mut self) {
+        let path = &self.path[self.front..self.back];
+        // ".a", ".." needs to rebound back to index
+        // before the "." character
+        let mut cur_dir_present = false;
+        match path.iter().position(|b| {
+            if !is_sep_byte(*b) {
+                if *b == b'.' && !cur_dir_present {
+                    cur_dir_present = true;
+                    false
+                } else {
+                    true
                 }
             } else {
-                if self.path[self.front] == b'.' {
-                    if let Some(curr_dir_present) = curr_dir {
-                        if !curr_dir_present {
-                            curr_dir = Some(true);
-                            rebound_ind = Some(self.front);
-                        } else {
-                            curr_dir = None;
-                        }
-                    } else {
-                        if let Some(front_ind) = rebound_ind {
-                            self.front = front_ind;
-                        }
-                        break;
-                    }
+                cur_dir_present = false;
+                false
+            }
+        }) {
+            None => self.front = self.back,
+            Some(i) => {
+                if cur_dir_present {
+                    self.front += i - 1;
                 } else {
-                    if let Some(front_ind) = rebound_ind {
-                        self.front = front_ind;
-                    }
-                    break;
+                    self.front += i;
                 }
             }
-
-            self.front += 1;
         }
     }
 
     /// Normalizes away trailing separators and current directory ('.') components
     /// in the backward direction.
     #[inline]
-    fn advance_through_trailing_sep_back(&mut self) {
-        // `Some(false)` is used to denote that
-        // we haven't seen a '.' component *yet*,
-        // `Some(true)` means we have seen a '.' component,
-        // and `None` means that the component is not '.'
-        let mut curr_dir = Some(false);
-        // We rebound to the original index for path components
-        // like '..' or 'abc.'
-        let mut rebound_ind: Option<usize> = None;
-        loop {
-            if self.back == self.front {
-                if let Some(back_ind) = rebound_ind {
-                    self.back = back_ind;
-                }
-                break;
-            }
-
-            if is_sep_byte(self.path[self.back - 1]) {
-                if let Some(curr_dir_present) = curr_dir
-                    && curr_dir_present
-                {
-                    curr_dir = Some(false);
-                    rebound_ind = None;
+    fn normalize_back(&mut self) {
+        let path = &self.path[self.front..self.back];
+        // "a.", ".." needs to rebound back to index
+        // before the "." character
+        let mut cur_dir_present = false;
+        match path.iter().rposition(|b| {
+            if !is_sep_byte(*b) {
+                if *b == b'.' && !cur_dir_present {
+                    cur_dir_present = true;
+                    false
+                } else {
+                    true
                 }
             } else {
-                if self.path[self.back - 1] == b'.' {
-                    if let Some(curr_dir_present) = curr_dir {
-                        if !curr_dir_present {
-                            curr_dir = Some(true);
-                            rebound_ind = Some(self.back);
-                        } else {
-                            curr_dir = None;
-                        }
-                    } else {
-                        if let Some(back_ind) = rebound_ind {
-                            self.back = back_ind;
-                        }
-                        break;
-                    }
+                cur_dir_present = false;
+                false
+            }
+        }) {
+            None => {
+                // For cases like "./a", where our path
+                // will observe "." at the end, and we need to return
+                // that we observed "." component instead of
+                // returning an empty path.
+                if cur_dir_present {
+                    self.back = self.front + 1;
                 } else {
-                    if let Some(back_ind) = rebound_ind {
-                        self.back = back_ind;
-                    }
-                    break;
+                    self.back = self.front;
                 }
             }
-            self.back -= 1;
+            Some(i) => {
+                if cur_dir_present {
+                    self.back -= path.len() - i - 2;
+                } else {
+                    self.back -= path.len() - i - 1;
+                }
+            }
         }
     }
 
@@ -439,11 +406,10 @@ impl<'a> Components<'a> {
     /// that back index is pointing at.
     #[inline]
     fn find_next_separator_front(&mut self) {
-        let path = &self.path[self.front..self.back]; 
-
+        let path = &self.path[self.front..self.back];
         match path.iter().position(|b| is_sep_byte(*b)) {
             None => self.front = self.back,
-            Some(i) => self.front += (i + 1)
+            Some(i) => self.front += i + 1,
         }
     }
 
@@ -452,8 +418,7 @@ impl<'a> Components<'a> {
     /// that front index is pointing to.
     #[inline]
     fn find_next_separator_back(&mut self) {
-        let path = &self.path[self.front..self.back]; 
-
+        let path = &self.path[self.front..self.back];
         match path.iter().rposition(|b| is_sep_byte(*b)) {
             None => self.back = self.front,
             Some(i) => self.back -= path.len() - i,
@@ -539,7 +504,7 @@ impl<'a> Components<'a> {
         let curr_front = self.front;
         // Normalizes trailing seps and curr dirs in preparation for
         // next front component
-        self.advance_through_trailing_sep_front();
+        self.normalize_front();
 
         // SAFETY: Our curr_front index always stops a byte after the ascii
         // separator byte or at self.back (should there be no ascii separator
@@ -565,7 +530,7 @@ impl<'a> Components<'a> {
         let curr_back = self.back;
         // Normalizes trailing seps and curr dirs in preparation for
         // next back component
-        self.advance_through_trailing_sep_back();
+        self.normalize_back();
 
         // Our curr_back is at the byte before an ascii separator byte or self.front,
         // (should there be no ascii separator in traversal), so we can always
@@ -718,63 +683,8 @@ fn compare_components(left: Components<'_>, right: Components<'_>) -> cmp::Order
 }
 
 fn components(path: &Path) -> Components<'_> {
-    /// Normalizes the trailing portion of given path
-    /// and returns the number of bytes that it occupied
-    #[inline]
-    fn trailing_path_length(path_bytes: &[u8]) -> usize {
-        let path_len = path_bytes.len();
-        // this won't panic because "" does not have
-        // a trailing separator
-        let mut idx = path_len;
-
-        // `Some(false)` is used to denote that
-        // we haven't seen a '.' component *yet*,
-        // `Some(true)` means we have seen a '.' component,
-        // and `None` means that the component is not '.'
-        let mut curr_dir = false;
-        // We rebound to the original index for path components
-        // like '..' or 'abc.'
-        let mut rebound_idx: Option<usize> = None;
-        while idx > 0 {
-            if is_sep_byte(path_bytes[idx - 1]) {
-                if curr_dir {
-                    rebound_idx = None;
-                    curr_dir = false;
-                }
-            } else {
-                if path_bytes[idx - 1] == b'.' {
-                    if !curr_dir {
-                        rebound_idx = Some(idx);
-                        curr_dir = true;
-                    } else {
-                        if let Some(r_idx) = rebound_idx {
-                            curr_dir = false;
-                            idx = r_idx;
-                        }
-                        break;
-                    }
-                } else {
-                    if let Some(r_idx) = rebound_idx {
-                        curr_dir = false;
-                        idx = r_idx;
-                    }
-                    break;
-                }
-            }
-            idx -= 1;
-        }
-
-        // If our path is `./a/b/c`, this `.` is not normalized
-        // away because it's treated as its own component
-        if curr_dir {
-            idx += 1;
-        }
-        path_len - idx
-    }
-
     let os_str_path = path.as_os_str();
     let path_bytes = os_str_path.as_encoded_bytes();
-    let trailing_seps = trailing_path_length(path_bytes);
 
     // Windows specific component
     let prefix = parse_prefix(os_str_path);
@@ -792,11 +702,15 @@ fn components(path: &Path) -> Components<'_> {
 
     // If we have a prefix, we encode that index into front
     let front = prefix.map(|prefix| prefix.len()).unwrap_or(0);
-    // Set our back pointer to the last separator byte (without trailing)
-    // or last byte
-    let back = path_bytes.len() - trailing_seps;
+    let back = path_bytes.len();
 
-    Components { path: path_bytes, has_physical_root: has_root, front, back, first_comp }
+    let mut components =
+        Components { path: path_bytes, has_physical_root: has_root, front, back, first_comp };
+
+    // Normalize any trailing separators or cur dir (".") components away
+    components.normalize_back();
+
+    components
 }
 
 #[derive(Clone)]
@@ -922,7 +836,10 @@ fn bench_components_fast(c: &mut Criterion) {
         path.push_str(&str);
     }
 
-    let path_b = format!("{path}/b");
+    // "/a/a/a/.../b/"
+    let path_b = format!("{path}/b/");
+    
+    // "/b/a/a/.../a/"
     let path_c = format!("/b/{path}");
 
     // let mut comps = components(Path::new("./src"));
@@ -988,6 +905,14 @@ fn bench_components_fast(c: &mut Criterion) {
     //     })
     // });
 
+    // c.bench_function("Uneq 2 Comps Rewrite", |b| {
+    //     b.iter(|| {
+    //         // Use black_box to prevent compiler optimizations from 
+    //         // skipping the code you want to measure
+    //         black_box(eq_comps(black_box(path.as_ref()), black_box(path_c.as_ref())))
+    //     })
+    // });
+
     // c.bench_function("Compare Comps Rewrite", |b| {
     //     b.iter(|| {
     //         // Use black_box to prevent compiler optimizations from 
@@ -1014,47 +939,47 @@ fn bench_components_fast(c: &mut Criterion) {
 
     // ----------- WITHOUT BLACK BOX ---------------------
 
-    // c.bench_function("Components Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         components_iter(path.as_ref())
-    //     })
-    // });
+    c.bench_function("Components Rewrite (No BB)", |b| {
+        b.iter(|| {
+            // Use black_box to prevent compiler optimizations from 
+            // skipping the code you want to measure
+            components_iter(path.as_ref())
+        })
+    });
 
-    // c.bench_function("Components Next Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         components_next_iter(path.as_ref())
-    //     })
-    // });
+    c.bench_function("Components Next Rewrite (No BB)", |b| {
+        b.iter(|| {
+            // Use black_box to prevent compiler optimizations from 
+            // skipping the code you want to measure
+            components_next_iter(path.as_ref())
+        })
+    });
 
-    // c.bench_function("Components Next Back Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         components_next_back_iter(path.as_ref())
-    //     })
-    // });
+    c.bench_function("Components Next Back Rewrite (No BB)", |b| {
+        b.iter(|| {
+            // Use black_box to prevent compiler optimizations from 
+            // skipping the code you want to measure
+            components_next_back_iter(path.as_ref())
+        })
+    });
 
-    // c.bench_function("Path Iter Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         path_iter(path.as_ref())
-    //     })
-    // });
+    c.bench_function("Path Iter Rewrite (No BB)", |b| {
+        b.iter(|| {
+            // Use black_box to prevent compiler optimizations from 
+            // skipping the code you want to measure
+            path_iter(path.as_ref())
+        })
+    });
 
-    // c.bench_function("As Path Iter Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         as_path_iter(path.as_ref())
-    //     })
-    // });
+    c.bench_function("As Path Iter Rewrite (No BB)", |b| {
+        b.iter(|| {
+            // Use black_box to prevent compiler optimizations from 
+            // skipping the code you want to measure
+            as_path_iter(path.as_ref())
+        })
+    });
 
-    c.bench_function("Eq Comps Rewrite", |b| {
+    c.bench_function("Eq Comps Rewrite (No BB)", |b| {
         b.iter(|| {
             // Use black_box to prevent compiler optimizations from 
             // skipping the code you want to measure
@@ -1062,7 +987,7 @@ fn bench_components_fast(c: &mut Criterion) {
         })
     });
 
-    c.bench_function("Uneq Comps Rewrite", |b| {
+    c.bench_function("Uneq Comps Rewrite (No BB)", |b| {
         b.iter(|| {
             // Use black_box to prevent compiler optimizations from 
             // skipping the code you want to measure
@@ -1070,7 +995,7 @@ fn bench_components_fast(c: &mut Criterion) {
         })
     });
 
-    c.bench_function("Uneq Comps 2 Rewrite", |b| {
+    c.bench_function("Uneq Comps 2 Rewrite (No BB)", |b| {
         b.iter(|| {
             // Use black_box to prevent compiler optimizations from 
             // skipping the code you want to measure
@@ -1078,29 +1003,29 @@ fn bench_components_fast(c: &mut Criterion) {
         })
     });
 
-    // c.bench_function("Compare Comps Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         compare_comps(path.as_ref(), path.as_ref())
-    //     })
-    // });
+    c.bench_function("Compare Comps Rewrite (No BB)", |b| {
+        b.iter(|| {
+            // Use black_box to prevent compiler optimizations from 
+            // skipping the code you want to measure
+            compare_comps(path.as_ref(), path.as_ref())
+        })
+    });
 
-    // c.bench_function("Compare Uneq Comps Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         compare_comps(path.as_ref(), path_b.as_ref())
-    //     })
-    // });
+    c.bench_function("Compare Uneq Comps Rewrite (No BB)", |b| {
+        b.iter(|| {
+            // Use black_box to prevent compiler optimizations from 
+            // skipping the code you want to measure
+            compare_comps(path.as_ref(), path_b.as_ref())
+        })
+    });
 
-    // c.bench_function("Compare Uneq Comps 2 Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         compare_comps(path.as_ref(), path_c.as_ref())
-    //     })
-    // });
+    c.bench_function("Compare Uneq Comps 2 Rewrite (No BB)", |b| {
+        b.iter(|| {
+            // Use black_box to prevent compiler optimizations from 
+            // skipping the code you want to measure
+            compare_comps(path.as_ref(), path_c.as_ref())
+        })
+    });
 }
 
 criterion_group!(benches, bench_components_fast);
