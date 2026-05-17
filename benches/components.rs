@@ -1,7 +1,15 @@
 #![feature(path_trailing_sep)]
 #![allow(dead_code)]
 #![allow(unused)]
-use std::{cmp, ffi::OsStr, fmt, hash::{Hash, Hasher}, hint::black_box, iter::FusedIterator, path::{MAIN_SEPARATOR, Path}};
+use std::{
+    cmp,
+    ffi::OsStr,
+    fmt,
+    hash::{Hash, Hasher},
+    hint::black_box,
+    iter::FusedIterator,
+    path::{MAIN_SEPARATOR, Path},
+};
 
 use criterion::{Criterion, criterion_group, criterion_main};
 
@@ -52,10 +60,7 @@ pub enum Prefix<'a> {
     ///
     /// Verbatim UNC prefixes consist of `\\?\UNC\` immediately followed by the
     /// server's hostname and a share name.
-    VerbatimUNC(
-        &'a OsStr,
-        &'a OsStr,
-    ),
+    VerbatimUNC(&'a OsStr, &'a OsStr),
 
     /// Verbatim disk prefix, e.g., `\\?\C:`.
     ///
@@ -73,10 +78,7 @@ pub enum Prefix<'a> {
     /// `\\server\share`.
     ///
     /// UNC prefixes consist of the server's hostname and a share name.
-    UNC(
-        &'a OsStr,
-        &'a OsStr,
-    ),
+    UNC(&'a OsStr, &'a OsStr),
 
     /// Prefix `C:` for the given disk drive.
     Disk(u8),
@@ -92,10 +94,22 @@ impl<'a> Prefix<'a> {
         match *self {
             Verbatim(x) => 4 + os_str_len(x),
             VerbatimUNC(x, y) => {
-                8 + os_str_len(x) + if os_str_len(y) > 0 { 1 + os_str_len(y) } else { 0 }
+                8 + os_str_len(x)
+                    + if os_str_len(y) > 0 {
+                        1 + os_str_len(y)
+                    } else {
+                        0
+                    }
             }
             VerbatimDisk(_) => 6,
-            UNC(x, y) => 2 + os_str_len(x) + if os_str_len(y) > 0 { 1 + os_str_len(y) } else { 0 },
+            UNC(x, y) => {
+                2 + os_str_len(x)
+                    + if os_str_len(y) > 0 {
+                        1 + os_str_len(y)
+                    } else {
+                        0
+                    }
+            }
             DeviceNS(x) => 4 + os_str_len(x),
             Disk(_) => 2,
         }
@@ -117,7 +131,6 @@ impl<'a> Prefix<'a> {
         !self.is_drive()
     }
 }
-
 
 #[derive(Copy, Clone, Eq, Debug)]
 pub struct PrefixComponent<'a> {
@@ -315,14 +328,17 @@ impl<'a> Components<'a> {
                 let prefix = parse_prefix(subslice).unwrap();
 
                 self.first_comp = Some(FirstComponent::RelativePath);
-                Some(Component::Prefix(PrefixComponent { raw: subslice, parsed: prefix }))
+                Some(Component::Prefix(PrefixComponent {
+                    raw: subslice,
+                    parsed: prefix,
+                }))
             }
             Some(FirstComponent::RelativePath) => {
                 if dir_front {
-                    return self.parse_next_component()
+                    return self.parse_next_component();
                 }
                 None
-            },
+            }
             None => None,
         }
     }
@@ -425,7 +441,6 @@ impl<'a> Components<'a> {
         }
     }
 
-
     /// Parse a u8 slice into an OsStr, which is encoded into a `Component`
     #[inline]
     fn parse_single_component(&self, slice: &'a [u8]) -> Option<Component<'a>> {
@@ -461,32 +476,31 @@ impl<'a> Components<'a> {
     /// ```
     #[must_use]
     pub fn as_path(&self) -> &'a Path {
-        if let Some(first_comp) = self.first_comp {
-            match first_comp {
-                FirstComponent::AbsolutePath => {
-                    if self.back == 0 {
-                        return Path::new("/");
-                    }
+        match self.first_comp {
+            Some(FirstComponent::AbsolutePath) => {
+                // If back index is at 0 (e.g parsing backward
+                // through "/foo") and we have an unconsumed
+                // Root component, Components::as_path needs to
+                // return "/" path
+                if self.back == 0 {
+                    return Path::new("/");
                 }
-                FirstComponent::Prefix => {
-                    // We don't want to trim away separators from a Prefix
-                    // component
-                    if self.front == self.back {
-                        // SAFETY: If the first component is not consumed, then
-                        // front index encodes the whole length of the Prefix
-                        // component
-                        return unsafe { from_u8_slice(&self.path[..self.front]) };
-                    }
-                    // SAFETY: Our back index is guaranteed to delimit at an ascii
-                    // separator byte, so this should present a valid path
-                    return unsafe {
-                        from_u8_slice(&self.path[..self.back]).trim_trailing_sep()
-                    };
-                }
-                _ => {}
             }
+            Some(FirstComponent::Prefix) => {
+                // We don't want to trim away separators from a Prefix
+                // component
+                if self.front == self.back {
+                    // SAFETY: If the first component is not consumed, then
+                    // front index encodes the whole length of the Prefix
+                    // component
+                    return unsafe { from_u8_slice(&self.path[..self.front]) };
+                }
+                // SAFETY: Our back index is guaranteed to delimit at an ascii
+                // separator byte, so this should present a valid path
+                return unsafe { from_u8_slice(&self.path[..self.back]).trim_trailing_sep() };
+            }
+            _ => {}
         }
-
         // SAFETY: front and back index are delimited by ascii separator bytes,
         // where front is a byte after an ascii separator and back is at an ascii
         // separator, so this will always produce a valid path.
@@ -551,7 +565,7 @@ impl<'a> Iterator for Components<'a> {
         // We reach this case when we no longer have anymore paths
         // to consume (return `None`), or if our front idx was initially
         // equal to back idx (e.g. if we had `C:`, `.`, `/`)
-        if  self.front >= self.back || self.first_comp.is_some() {
+        if self.front >= self.back || self.first_comp.is_some() {
             return self.consume_first_component(true);
         }
 
@@ -642,7 +656,11 @@ impl AsRef<OsStr> for Components<'_> {
 }
 
 fn has_physical_root(s: &[u8], prefix: Option<Prefix<'_>>) -> bool {
-    let path = if let Some(p) = prefix { &s[p.len()..] } else { s };
+    let path = if let Some(p) = prefix {
+        &s[p.len()..]
+    } else {
+        s
+    };
     !path.is_empty() && is_sep_byte(path[0])
 }
 
@@ -704,8 +722,13 @@ fn components(path: &Path) -> Components<'_> {
     let front = prefix.map(|prefix| prefix.len()).unwrap_or(0);
     let back = path_bytes.len();
 
-    let mut components =
-        Components { path: path_bytes, has_physical_root: has_root, front, back, first_comp };
+    let mut components = Components {
+        path: path_bytes,
+        has_physical_root: has_root,
+        front,
+        back,
+        first_comp,
+    };
 
     // Normalize any trailing separators or cur dir (".") components away
     components.normalize_back();
@@ -729,7 +752,9 @@ impl fmt::Debug for Iter<'_> {
             }
         }
 
-        f.debug_tuple("Iter").field(&DebugHelper(self.as_path())).finish()
+        f.debug_tuple("Iter")
+            .field(&DebugHelper(self.as_path()))
+            .finish()
     }
 }
 
@@ -786,29 +811,36 @@ impl<'a> DoubleEndedIterator for Iter<'a> {
 
 impl FusedIterator for Iter<'_> {}
 
-
 fn components_iter(path: &Path) {
     let comps = components(path);
     for comp in comps {}
 }
 
 fn components_next_iter(path: &Path) {
-    let mut comps = Iter { inner: components(path) };
+    let mut comps = Iter {
+        inner: components(path),
+    };
     while let Some(comp) = comps.next() {}
 }
 
 fn components_next_back_iter(path: &Path) {
-    let mut comps = Iter { inner: components(path) };
+    let mut comps = Iter {
+        inner: components(path),
+    };
     while let Some(comp) = comps.next_back() {}
 }
 
 fn path_iter(path: &Path) {
-    let comps = Iter { inner: components(path) };
+    let comps = Iter {
+        inner: components(path),
+    };
     for comp in comps {}
 }
 
 fn as_path_iter(path: &Path) {
-    let mut comps = Iter { inner: components(path) };
+    let mut comps = Iter {
+        inner: components(path),
+    };
     while let Some(comp) = comps.next() {
         let path = comps.as_path();
     }
@@ -838,194 +870,146 @@ fn bench_components_fast(c: &mut Criterion) {
 
     // "/a/a/a/.../b/"
     let path_b = format!("{path}/b/");
-    
+
     // "/b/a/a/.../a/"
     let path_c = format!("/b/{path}");
 
-    // let mut comps = components(Path::new("./src"));
-    // while let Some(comp) = comps.next_back() {
-    //     println!("{:?}", comp);
-    // }
+    c.bench_function("Components Rewrite", |b| {
+        b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
+    });
 
-    // println!("{:?}", components(path.as_ref()) == components(path_b.as_ref()));
+    c.bench_function("Components Next Rewrite", |b| {
+        b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Components Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(components_iter(black_box(path.as_ref())))
-    //     })
-    // });
+    c.bench_function("Components Next Back Rewrite", |b| {
+        b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Components Next Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(components_next_iter(black_box(path.as_ref())))
-    //     })
-    // });
+    c.bench_function("Path Iter Rewrite", |b| {
+        b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Components Next Back Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(components_next_back_iter(black_box(path.as_ref())))
-    //     })
-    // });
+    c.bench_function("As Path Iter Rewrite", |b| {
+        b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Path Iter Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(path_iter(black_box(path.as_ref())))
-    //     })
-    // });
+    c.bench_function("Eq Comps Rewrite", |b| {
+        b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("As Path Iter Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(as_path_iter(black_box(path.as_ref())))
-    //     })
-    // });
+    c.bench_function("Uneq Comps Rewrite", |b| {
+        b.iter(|| {
+            black_box(eq_comps(
+                black_box(path.as_ref()),
+                black_box(path_b.as_ref()),
+            ))
+        })
+    });
 
-    // c.bench_function("Eq Comps Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref())))
-    //     })
-    // });
+    c.bench_function("Uneq 2 Comps Rewrite", |b| {
+        b.iter(|| {
+            black_box(eq_comps(
+                black_box(path.as_ref()),
+                black_box(path_c.as_ref()),
+            ))
+        })
+    });
 
-    // c.bench_function("Uneq Comps Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(eq_comps(black_box(path.as_ref()), black_box(path_b.as_ref())))
-    //     })
-    // });
+    c.bench_function("Compare Comps Rewrite", |b| {
+        b.iter(|| {
+            black_box(compare_comps(
+                black_box(path.as_ref()),
+                black_box(path.as_ref()),
+            ))
+        })
+    });
 
-    // c.bench_function("Uneq 2 Comps Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(eq_comps(black_box(path.as_ref()), black_box(path_c.as_ref())))
-    //     })
-    // });
+    c.bench_function("Compare Uneq Comps Rewrite", |b| {
+        b.iter(|| {
+            black_box(compare_comps(
+                black_box(path.as_ref()),
+                black_box(path_b.as_ref()),
+            ))
+        })
+    });
 
-    // c.bench_function("Compare Comps Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(compare_comps(black_box(path.as_ref()), black_box(path.as_ref())))
-    //     })
-    // });
-
-    // c.bench_function("Compare Uneq Comps Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(compare_comps(black_box(path.as_ref()), black_box(path_b.as_ref())))
-    //     })
-    // });
-
-    // c.bench_function("Compare Uneq 2 Comps Rewrite", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(compare_comps(black_box(path.as_ref()), black_box(path_c.as_ref())))
-    //     })
-    // });
+    c.bench_function("Compare Uneq 2 Comps Rewrite", |b| {
+        b.iter(|| {
+            black_box(compare_comps(
+                black_box(path.as_ref()),
+                black_box(path_c.as_ref()),
+            ))
+        })
+    });
 
     // ----------- WITHOUT BLACK BOX ---------------------
 
-    c.bench_function("Components Rewrite (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            components_iter(path.as_ref())
-        })
-    });
+    // c.bench_function("Components Rewrite (No BB)", |b| {
+    //     b.iter(|| {
+    //         components_iter(path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Components Next Rewrite (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            components_next_iter(path.as_ref())
-        })
-    });
+    // c.bench_function("Components Next Rewrite (No BB)", |b| {
+    //     b.iter(|| {
+    //         components_next_iter(path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Components Next Back Rewrite (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            components_next_back_iter(path.as_ref())
-        })
-    });
+    // c.bench_function("Components Next Back Rewrite (No BB)", |b| {
+    //     b.iter(|| {
+    //         components_next_back_iter(path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Path Iter Rewrite (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            path_iter(path.as_ref())
-        })
-    });
+    // c.bench_function("Path Iter Rewrite (No BB)", |b| {
+    //     b.iter(|| {
+    //         path_iter(path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("As Path Iter Rewrite (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            as_path_iter(path.as_ref())
-        })
-    });
+    // c.bench_function("As Path Iter Rewrite (No BB)", |b| {
+    //     b.iter(|| {
+    //         as_path_iter(path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Eq Comps Rewrite (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            eq_comps(path.as_ref(), path.as_ref())
-        })
-    });
+    // c.bench_function("Eq Comps Rewrite (No BB)", |b| {
+    //     b.iter(|| {
+    //         eq_comps(path.as_ref(), path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Uneq Comps Rewrite (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            eq_comps(path.as_ref(), path_b.as_ref())
-        })
-    });
+    // c.bench_function("Uneq Comps Rewrite (No BB)", |b| {
+    //     b.iter(|| {
+    //         eq_comps(path.as_ref(), path_b.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Uneq Comps 2 Rewrite (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            eq_comps(path.as_ref(), path_c.as_ref())
-        })
-    });
+    // c.bench_function("Uneq Comps 2 Rewrite (No BB)", |b| {
+    //     b.iter(|| {
+    //         eq_comps(path.as_ref(), path_c.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Compare Comps Rewrite (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            compare_comps(path.as_ref(), path.as_ref())
-        })
-    });
+    // c.bench_function("Compare Comps Rewrite (No BB)", |b| {
+    //     b.iter(|| {
+    //         compare_comps(path.as_ref(), path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Compare Uneq Comps Rewrite (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            compare_comps(path.as_ref(), path_b.as_ref())
-        })
-    });
+    // c.bench_function("Compare Uneq Comps Rewrite (No BB)", |b| {
+    //     b.iter(|| {
+    //         compare_comps(path.as_ref(), path_b.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Compare Uneq Comps 2 Rewrite (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            compare_comps(path.as_ref(), path_c.as_ref())
-        })
-    });
+    // c.bench_function("Compare Uneq Comps 2 Rewrite (No BB)", |b| {
+    //     b.iter(|| {
+    //         compare_comps(path.as_ref(), path_c.as_ref())
+    //     })
+    // });
 }
 
 criterion_group!(benches, bench_components_fast);

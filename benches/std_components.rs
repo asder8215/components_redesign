@@ -1,7 +1,5 @@
-#![feature(try_blocks)]
-#![allow(dead_code)]
 #![allow(unused)]
-use std::{fs::ReadDir, hint::black_box, path::Path};
+use std::{hint::black_box, path::Path};
 
 use criterion::{Criterion, criterion_group, criterion_main};
 
@@ -54,187 +52,146 @@ fn bench_components(c: &mut Criterion) {
 
     // "/a/a/a/.../b/"
     let path_b = format!("{path}/b/");
-    
+
     // "/b/a/a/.../a/"
     let path_c = format!("/b/{path}");
 
-    // c.bench_function("Std Components", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(components_iter(black_box(path.as_ref())))
-    //     })
-    // });
+    c.bench_function("Std Components", |b| {
+        b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Components Next", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(components_next_iter(black_box(path.as_ref())))
-    //     })
-    // });
+    c.bench_function("Std Components Next", |b| {
+        b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Components Next Back", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(components_next_back_iter(black_box(path.as_ref())))
-    //     })
-    // });
+    c.bench_function("Std Components Next Back", |b| {
+        b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Path Iter", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(path_iter(black_box(path.as_ref())))
-    //     })
-    // });
+    c.bench_function("Std Path Iter", |b| {
+        b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std As Path Iter", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(as_path_iter(black_box(path.as_ref())))
-    //     })
-    // });
+    c.bench_function("Std As Path Iter", |b| {
+        b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Eq Comps", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref())))
-    //     })
-    // });
+    c.bench_function("Std Eq Comps", |b| {
+        b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Uneq Comps", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(eq_comps(black_box(path.as_ref()), black_box(path_b.as_ref())))
-    //     })
-    // });
+    c.bench_function("Std Uneq Comps", |b| {
+        b.iter(|| {
+            black_box(eq_comps(
+                black_box(path.as_ref()),
+                black_box(path_b.as_ref()),
+            ))
+        })
+    });
 
-    // c.bench_function("Std Uneq 2 Comps", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(eq_comps(black_box(path.as_ref()), black_box(path_c.as_ref())))
-    //     })
-    // });
+    c.bench_function("Std Uneq 2 Comps", |b| {
+        b.iter(|| {
+            black_box(eq_comps(
+                black_box(path.as_ref()),
+                black_box(path_c.as_ref()),
+            ))
+        })
+    });
 
-    // c.bench_function("Std Compare Comps", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(compare_comps(black_box(path.as_ref()), black_box(path.as_ref())))
-    //     })
-    // });
+    c.bench_function("Std Compare Comps", |b| {
+        b.iter(|| {
+            black_box(compare_comps(
+                black_box(path.as_ref()),
+                black_box(path.as_ref()),
+            ))
+        })
+    });
 
-    // c.bench_function("Std Compare Uneq Comps", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(compare_comps(black_box(path.as_ref()), black_box(path_b.as_ref())))
-    //     })
-    // });
+    c.bench_function("Std Compare Uneq Comps", |b| {
+        b.iter(|| {
+            black_box(compare_comps(
+                black_box(path.as_ref()),
+                black_box(path_b.as_ref()),
+            ))
+        })
+    });
 
-    // c.bench_function("Std Compare Uneq 2 Comps", |b| {
-    //     b.iter(|| {
-    //         // Use black_box to prevent compiler optimizations from 
-    //         // skipping the code you want to measure
-    //         black_box(compare_comps(black_box(path.as_ref()), black_box(path_c.as_ref())))
-    //     })
-    // });
+    c.bench_function("Std Compare Uneq 2 Comps", |b| {
+        b.iter(|| {
+            black_box(compare_comps(
+                black_box(path.as_ref()),
+                black_box(path_c.as_ref()),
+            ))
+        })
+    });
 
     // ----------- WITHOUT BLACK BOX ---------------------
 
-    c.bench_function("Std Components (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            components_iter(path.as_ref())
-        })
-    });
+    // c.bench_function("Std Components (No BB)", |b| {
+    //     b.iter(|| {
+    //         components_iter(path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Std Components Next (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            components_next_iter(path.as_ref())
-        })
-    });
+    // c.bench_function("Std Components Next (No BB)", |b| {
+    //     b.iter(|| {
+    //         components_next_iter(path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Std Components Next Back (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            components_next_back_iter(path.as_ref())
-        })
-    });
+    // c.bench_function("Std Components Next Back (No BB)", |b| {
+    //     b.iter(|| {
+    //         components_next_back_iter(path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Std Path Iter (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            path_iter(path.as_ref())
-        })
-    });
+    // c.bench_function("Std Path Iter (No BB)", |b| {
+    //     b.iter(|| {
+    //         path_iter(path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Std As Path Iter (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            as_path_iter(path.as_ref())
-        })
-    });
+    // c.bench_function("Std As Path Iter (No BB)", |b| {
+    //     b.iter(|| {
+    //         as_path_iter(path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Std Eq Comps (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            eq_comps(path.as_ref(), path.as_ref())
-        })
-    });
+    // c.bench_function("Std Eq Comps (No BB)", |b| {
+    //     b.iter(|| {
+    //         eq_comps(path.as_ref(), path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Std Uneq Comps (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            eq_comps(path.as_ref(), path_b.as_ref())
-        })
-    });
+    // c.bench_function("Std Uneq Comps (No BB)", |b| {
+    //     b.iter(|| {
+    //         eq_comps(path.as_ref(), path_b.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Std Uneq 2 Comps (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            eq_comps(path.as_ref(), path_c.as_ref())
-        })
-    });
+    // c.bench_function("Std Uneq 2 Comps (No BB)", |b| {
+    //     b.iter(|| {
+    //         eq_comps(path.as_ref(), path_c.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Std Compare Comps (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            compare_comps(path.as_ref(), path.as_ref())
-        })
-    });
+    // c.bench_function("Std Compare Comps (No BB)", |b| {
+    //     b.iter(|| {
+    //         compare_comps(path.as_ref(), path.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Std Compare Uneq Comps (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            compare_comps(path.as_ref(), path_b.as_ref())
-        })
-    });
+    // c.bench_function("Std Compare Uneq Comps (No BB)", |b| {
+    //     b.iter(|| {
+    //         compare_comps(path.as_ref(), path_b.as_ref())
+    //     })
+    // });
 
-    c.bench_function("Std Compare Uneq 2 Comps (No BB)", |b| {
-        b.iter(|| {
-            // Use black_box to prevent compiler optimizations from 
-            // skipping the code you want to measure
-            compare_comps(path.as_ref(), path_c.as_ref())
-        })
-    });
+    // c.bench_function("Std Compare Uneq 2 Comps (No BB)", |b| {
+    //     b.iter(|| {
+    //         compare_comps(path.as_ref(), path_c.as_ref())
+    //     })
+    // });
 }
 
 criterion_group!(benches, bench_components);
