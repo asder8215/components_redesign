@@ -868,10 +868,10 @@ fn bench_components_fast(c: &mut Criterion) {
         path.push_str(&str);
     }
 
-    // "/a/a/a/.../b/"
+    // "/a0..a64/a0..a64/a0..a64/.../b/"
     let path_b = format!("{path}/b/");
 
-    // "/b/a/a/.../a/"
+    // "/b/a0..a64/a0..a64/.../a0..a64/"
     let path_c = format!("/b/{path}");
 
     c.bench_function("Components Rewrite", |b| {
