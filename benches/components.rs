@@ -251,7 +251,7 @@ enum FirstComponent {
     Prefix,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct Components<'a> {
     // The path left to parse components from
     path: &'a [u8],
