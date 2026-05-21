@@ -664,7 +664,7 @@ fn has_physical_root(s: &[u8], prefix: Option<Prefix<'_>>) -> bool {
     !path.is_empty() && is_sep_byte(path[0])
 }
 
-fn compare_components(left: Components<'_>, right: Components<'_>) -> cmp::Ordering {
+fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cmp::Ordering {
     // Fast path for long shared prefixes
     //
     // - compare raw bytes to find first mismatch
@@ -673,28 +673,33 @@ fn compare_components(left: Components<'_>, right: Components<'_>) -> cmp::Order
     //   otherwise do it on the full path
     //
     // The fast path isn't taken for paths with a PrefixComponent to avoid backtracking into
-    // the middle of one
+    // the middle of one. If both left and right are at 0, that means no prefix was encoded
+    // into this
     // possible future improvement: a [u8]::first_mismatch simd implementation
-
-    let left_path = if matches!(left.first_comp, Some(FirstComponent::Prefix)) {
-        &left.path[..left.back]
-    } else {
-        &left.path[left.front..left.back]
-    };
-    let right_path = if matches!(right.first_comp, Some(FirstComponent::Prefix)) {
-        &right.path[..right.back]
-    } else {
-        &right.path[right.front..right.back]
-    };
-    match left_path.iter().zip(right_path).position(|(&a, &b)| a != b) {
-        // Left path and right path are exactly the same
-        None if left_path.len() == right_path.len() => return cmp::Ordering::Equal,
-        // FIXME: This should check the character that they conflict on so you
-        // can return Ordering::Greater or Ordering::Less if the conflicting
-        // characters is not a slash ("/") or current directory character (".")
-        // Some(pos) => {
-        // }
-        _ => {}
+    // Optimization: can check if the differing character is not a '/' or '.'
+    // and then return either `Ordering::Greater` or `Ordering::Less`
+    if left.front == 0 && right.front == 0 && left.front == right.front {
+        let first_difference = match left.path.iter().zip(right.path).position(|(&a, &b)| a != b) {
+            None if left.path.len() == right.path.len() => return cmp::Ordering::Equal,
+            None => left.path.len().min(right.path.len()),
+            Some(diff) => diff,
+        };
+        if let Some(previous_sep) = left.path[..first_difference]
+            .iter()
+            .rposition(|&b| is_sep_byte(b))
+        {
+            // We should always set first_comp to `None` since we got past
+            // the first character (could be root dir or a part of a relative path)
+            // we normalize both `Components<'_>` because we want both to start
+            // at a non-separator character and start comparing from there
+            // (e.g. comparing "/a" with "///a")
+            left.first_comp = None;
+            left.front = previous_sep;
+            left.normalize_front();
+            right.first_comp = None;
+            right.front = previous_sep;
+            right.normalize_front();
+        }
     }
 
     Iterator::cmp(left, right)
@@ -855,7 +860,7 @@ fn eq_comps(path: &Path, other_path: &Path) {
 fn compare_comps(path: &Path, other_path: &Path) {
     let comp = components(path);
     let other_comp = components(other_path);
-    comp.cmp(other_comp);
+    comp > other_comp;
 }
 
 fn bench_components_fast(c: &mut Criterion) {
@@ -874,47 +879,47 @@ fn bench_components_fast(c: &mut Criterion) {
     // "/b/a0..a64/a0..a64/.../a0..a64/"
     let path_c = format!("/b/{path}");
 
-    c.bench_function("Components Rewrite", |b| {
-        b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
-    });
+    // c.bench_function("Components Rewrite", |b| {
+    //     b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
+    // });
 
-    c.bench_function("Components Next Rewrite", |b| {
-        b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
-    });
+    // c.bench_function("Components Next Rewrite", |b| {
+    //     b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
+    // });
 
-    c.bench_function("Components Next Back Rewrite", |b| {
-        b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
-    });
+    // c.bench_function("Components Next Back Rewrite", |b| {
+    //     b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
+    // });
 
-    c.bench_function("Path Iter Rewrite", |b| {
-        b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
-    });
+    // c.bench_function("Path Iter Rewrite", |b| {
+    //     b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
+    // });
 
-    c.bench_function("As Path Iter Rewrite", |b| {
-        b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
-    });
+    // c.bench_function("As Path Iter Rewrite", |b| {
+    //     b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
+    // });
 
-    c.bench_function("Eq Comps Rewrite", |b| {
-        b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
-    });
+    // c.bench_function("Eq Comps Rewrite", |b| {
+    //     b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
+    // });
 
-    c.bench_function("Uneq Comps Rewrite", |b| {
-        b.iter(|| {
-            black_box(eq_comps(
-                black_box(path.as_ref()),
-                black_box(path_b.as_ref()),
-            ))
-        })
-    });
+    // c.bench_function("Uneq Comps Rewrite", |b| {
+    //     b.iter(|| {
+    //         black_box(eq_comps(
+    //             black_box(path.as_ref()),
+    //             black_box(path_b.as_ref()),
+    //         ))
+    //     })
+    // });
 
-    c.bench_function("Uneq 2 Comps Rewrite", |b| {
-        b.iter(|| {
-            black_box(eq_comps(
-                black_box(path.as_ref()),
-                black_box(path_c.as_ref()),
-            ))
-        })
-    });
+    // c.bench_function("Uneq 2 Comps Rewrite", |b| {
+    //     b.iter(|| {
+    //         black_box(eq_comps(
+    //             black_box(path.as_ref()),
+    //             black_box(path_c.as_ref()),
+    //         ))
+    //     })
+    // });
 
     c.bench_function("Compare Comps Rewrite", |b| {
         b.iter(|| {
@@ -993,23 +998,17 @@ fn bench_components_fast(c: &mut Criterion) {
     //     })
     // });
 
-    // c.bench_function("Compare Comps Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         compare_comps(path.as_ref(), path.as_ref())
-    //     })
-    // });
+    c.bench_function("Compare Comps Rewrite (No BB)", |b| {
+        b.iter(|| compare_comps(path.as_ref(), path.as_ref()))
+    });
 
-    // c.bench_function("Compare Uneq Comps Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         compare_comps(path.as_ref(), path_b.as_ref())
-    //     })
-    // });
+    c.bench_function("Compare Uneq Comps Rewrite (No BB)", |b| {
+        b.iter(|| compare_comps(path.as_ref(), path_b.as_ref()))
+    });
 
-    // c.bench_function("Compare Uneq Comps 2 Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         compare_comps(path.as_ref(), path_c.as_ref())
-    //     })
-    // });
+    c.bench_function("Compare Uneq Comps 2 Rewrite (No BB)", |b| {
+        b.iter(|| compare_comps(path.as_ref(), path_c.as_ref()))
+    });
 }
 
 criterion_group!(benches, bench_components_fast);
