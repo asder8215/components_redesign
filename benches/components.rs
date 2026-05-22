@@ -620,8 +620,9 @@ impl<'a> PartialEq for Components<'a> {
             }
         }
 
-        // compare back to front since absolute paths often share long prefixes
+        // // compare back to front since absolute paths often share long prefixes
         Iterator::eq(self.clone().rev(), other.clone().rev())
+        // compare_components(self.clone(), other.clone()) == cmp::Ordering::Equal
     }
 }
 
@@ -678,8 +679,98 @@ fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cm
     // possible future improvement: a [u8]::first_mismatch simd implementation
     // Optimization: can check if the differing character is not a '/' or '.'
     // and then return either `Ordering::Greater` or `Ordering::Less`
-    if left.front == 0 && right.front == 0 && left.front == right.front {
-        let first_difference = match left.path.iter().zip(right.path).position(|(&a, &b)| a != b) {
+
+    // let mut left_path = if matches!(left.first_comp, Some(FirstComponent::Prefix)) {
+    //     &left.path[..left.back]
+    // } else {
+    //     &left.path[left.front..left.back]
+    // };
+
+    // let mut right_path = if matches!(right.first_comp, Some(FirstComponent::Prefix)) {
+    //     &right.path[..right.back]
+    // } else {
+    //     &right.path[right.front..right.back]
+    // };
+
+    // loop {
+    //     match left_path.iter().zip(right_path).position(
+    //         |(&a, &b)| {
+    //             a != b || (a == MAIN_SEPARATOR as u8 && b == MAIN_SEPARATOR as u8)
+    //         }
+    //     ) {
+    //         None if left_path.len() == right_path.len() => return cmp::Ordering::Equal,
+    //         None => return left_path.len().cmp(&right_path.len()),
+    //         Some(pos) => {
+    //             let left_byte = left_path[pos];
+    //             let right_byte = right_path[pos];
+    //             if left_byte == MAIN_SEPARATOR as u8 && right_byte == MAIN_SEPARATOR as u8 {
+    //                 let normalize_left_path = &left_path[pos..];
+    //                 let normalize_right_path = &right_path[pos..];
+    //                 // ".a", ".." needs to rebound back to index
+    //                 // before the "." character
+    //                 let mut cur_dir_present = false;
+    //                 match normalize_left_path.iter().position(|b| {
+    //                     if !is_sep_byte(*b) {
+    //                         if *b == b'.' && !cur_dir_present {
+    //                             cur_dir_present = true;
+    //                             false
+    //                         } else {
+    //                             true
+    //                         }
+    //                     } else {
+    //                         cur_dir_present = false;
+    //                         false
+    //                     }
+    //                 }) {
+    //                     None => left_path = &[],
+    //                     Some(i) => {
+    //                         if cur_dir_present {
+    //                             left_path =  &normalize_left_path[i - 1..];
+    //                         } else {
+    //                             left_path = &normalize_left_path[i..];
+    //                         }
+    //                     }
+    //                 }
+    //                 cur_dir_present = false;
+    //                 match normalize_right_path.iter().position(|b| {
+    //                     if !is_sep_byte(*b) {
+    //                         if *b == b'.' && !cur_dir_present {
+    //                             cur_dir_present = true;
+    //                             false
+    //                         } else {
+    //                             true
+    //                         }
+    //                     } else {
+    //                         cur_dir_present = false;
+    //                         false
+    //                     }
+    //                 }) {
+    //                     None => left_path = &[],
+    //                     Some(i) => {
+    //                         if cur_dir_present {
+    //                             right_path =  &normalize_right_path[i - 1..];
+    //                         } else {
+    //                             right_path = &normalize_right_path[i..];
+    //                         }
+    //                     }
+    //                 }
+    //             } else if left_byte == MAIN_SEPARATOR as u8 {
+    //                 return cmp::Ordering::Less;
+    //             } else if right_byte == MAIN_SEPARATOR as u8 {
+    //                 return cmp::Ordering::Greater;
+    //             } else {
+    //                 return left_byte.cmp(&right_byte);
+    //             }
+    //         }
+    //     }
+    // }
+
+    if left.front == 0 && right.front == 0 {
+        let first_difference = match left.path[..left.back]
+            .iter()
+            .zip(&right.path[..right.back])
+            .position(|(&a, &b)| a != b)
+        {
             None if left.path.len() == right.path.len() => return cmp::Ordering::Equal,
             None => left.path.len().min(right.path.len()),
             Some(diff) => diff,
@@ -998,17 +1089,17 @@ fn bench_components_fast(c: &mut Criterion) {
     //     })
     // });
 
-    c.bench_function("Compare Comps Rewrite (No BB)", |b| {
-        b.iter(|| compare_comps(path.as_ref(), path.as_ref()))
-    });
+    // c.bench_function("Compare Comps Rewrite (No BB)", |b| {
+    //     b.iter(|| compare_comps(path.as_ref(), path.as_ref()))
+    // });
 
-    c.bench_function("Compare Uneq Comps Rewrite (No BB)", |b| {
-        b.iter(|| compare_comps(path.as_ref(), path_b.as_ref()))
-    });
+    // c.bench_function("Compare Uneq Comps Rewrite (No BB)", |b| {
+    //     b.iter(|| compare_comps(path.as_ref(), path_b.as_ref()))
+    // });
 
-    c.bench_function("Compare Uneq Comps 2 Rewrite (No BB)", |b| {
-        b.iter(|| compare_comps(path.as_ref(), path_c.as_ref()))
-    });
+    // c.bench_function("Compare Uneq Comps 2 Rewrite (No BB)", |b| {
+    //     b.iter(|| compare_comps(path.as_ref(), path_c.as_ref()))
+    // });
 }
 
 criterion_group!(benches, bench_components_fast);
