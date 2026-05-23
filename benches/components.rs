@@ -766,13 +766,21 @@ fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cm
     // }
 
     if left.front == 0 && right.front == 0 {
+        // Note: This is one of the strangest things I've noticed
+        // through benchmarking the `None` matches, in the default
+        // `None` case, if I compare `left.back.min(right.back)`
+        // it actually makes benchmarking slower than using
+        // these two variables left_back.min(right_back)
+        // I need someone to explain why this occurs
+        let left_back = left.back;
+        let right_back = right.back;
         let first_difference = match left.path[..left.back]
             .iter()
             .zip(&right.path[..right.back])
             .position(|(&a, &b)| a != b)
         {
-            None if left.path.len() == right.path.len() => return cmp::Ordering::Equal,
-            None => left.path.len().min(right.path.len()),
+            None if left.back == right.back => return cmp::Ordering::Equal,
+            None => left_back.min(right_back),
             Some(diff) => diff,
         };
         if let Some(previous_sep) = left.path[..first_difference]
@@ -1089,17 +1097,17 @@ fn bench_components_fast(c: &mut Criterion) {
     //     })
     // });
 
-    // c.bench_function("Compare Comps Rewrite (No BB)", |b| {
-    //     b.iter(|| compare_comps(path.as_ref(), path.as_ref()))
-    // });
+    c.bench_function("Compare Comps Rewrite (No BB)", |b| {
+        b.iter(|| compare_comps(path.as_ref(), path.as_ref()))
+    });
 
-    // c.bench_function("Compare Uneq Comps Rewrite (No BB)", |b| {
-    //     b.iter(|| compare_comps(path.as_ref(), path_b.as_ref()))
-    // });
+    c.bench_function("Compare Uneq Comps Rewrite (No BB)", |b| {
+        b.iter(|| compare_comps(path.as_ref(), path_b.as_ref()))
+    });
 
-    // c.bench_function("Compare Uneq Comps 2 Rewrite (No BB)", |b| {
-    //     b.iter(|| compare_comps(path.as_ref(), path_c.as_ref()))
-    // });
+    c.bench_function("Compare Uneq Comps 2 Rewrite (No BB)", |b| {
+        b.iter(|| compare_comps(path.as_ref(), path_c.as_ref()))
+    });
 }
 
 criterion_group!(benches, bench_components_fast);
