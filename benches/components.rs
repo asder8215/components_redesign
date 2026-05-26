@@ -327,7 +327,6 @@ impl<'a> Components<'a> {
                 // our first component is a Prefix
                 let prefix = parse_prefix(subslice).unwrap();
 
-                self.first_comp = Some(FirstComponent::RelativePath);
                 Some(Component::Prefix(PrefixComponent {
                     raw: subslice,
                     parsed: prefix,
