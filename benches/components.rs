@@ -241,14 +241,14 @@ impl<'a> Component<'a> {
 
 /// This is what the first component of our path is
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
-enum FirstComponent {
+enum FirstComponent<'a> {
     /// For all paths starting with `/`
     AbsolutePath,
     /// For paths without root path like `.`, `..`, `a/`
     RelativePath,
     /// For Window specific paths like (`C:`, `\\?\UNC\server\share`,
     /// `\\.\COM42`, etc.)
-    Prefix,
+    Prefix(PrefixComponent<'a>),
 }
 
 #[derive(Clone)]
@@ -268,7 +268,7 @@ pub struct Components<'a> {
     has_physical_root: bool,
     // The first component parsed, be it a relative path (""), an absolute path ("/"),
     // or a Prefix, which is Windows Specific
-    first_comp: Option<FirstComponent>,
+    first_comp: Option<FirstComponent<'a>>,
 }
 
 impl<'a> Components<'a> {
@@ -312,7 +312,7 @@ impl<'a> Components<'a> {
                 }
                 Some(Component::RootDir)
             }
-            Some(FirstComponent::Prefix) => {
+            Some(FirstComponent::Prefix(prefix)) => {
                 self.first_comp = None;
                 if dir_front {
                     self.normalize_front();
@@ -321,17 +321,13 @@ impl<'a> Components<'a> {
                 // SAFETY: Our front has the length of our Prefix component encoded at the start,
                 // so this slice is guaranteed to contain the Prefix component if it's
                 // unconsumed.
-                let subslice =
-                    unsafe { OsStr::from_encoded_bytes_unchecked(&self.path[0..self.front]) };
+                // let subslice =
+                //     unsafe { OsStr::from_encoded_bytes_unchecked(&self.path[0..self.front]) };
                 // This prefix is guaranteed to be made since we confirmed
                 // our first component is a Prefix
-                let prefix = parse_prefix(subslice).unwrap();
+                // let prefix = parse_prefix(subslice).unwrap();
 
-                self.first_comp = Some(FirstComponent::RelativePath);
-                Some(Component::Prefix(PrefixComponent {
-                    raw: subslice,
-                    parsed: prefix,
-                }))
+                Some(Component::Prefix(prefix))
             }
             Some(FirstComponent::RelativePath) => {
                 if dir_front {
@@ -486,14 +482,14 @@ impl<'a> Components<'a> {
                     return Path::new("/");
                 }
             }
-            Some(FirstComponent::Prefix) => {
+            Some(FirstComponent::Prefix(prefix)) => {
                 // We don't want to trim away separators from a Prefix
                 // component
                 if self.front == self.back {
                     // SAFETY: If the first component is not consumed, then
                     // front index encodes the whole length of the Prefix
                     // component
-                    return unsafe { from_u8_slice(&self.path[..self.front]) };
+                    return unsafe { from_u8_slice(prefix.as_os_str().as_encoded_bytes()) };
                 }
                 // SAFETY: Our back index is guaranteed to delimit at an ascii
                 // separator byte, so this should present a valid path
@@ -604,13 +600,13 @@ impl<'a> PartialEq for Components<'a> {
             // If either `self` or `other` have a prefix (indicated by `first_comp`)
             // we need to start at index 0 (because prefix length is encoded in
             // `front`)
-            let path = if matches!(self.first_comp, Some(FirstComponent::Prefix)) {
+            let path = if matches!(self.first_comp, Some(FirstComponent::Prefix(_))) {
                 &self.path[..self.back]
             } else {
                 &self.path[self.front..self.back]
             };
 
-            let other_path = if matches!(other.first_comp, Some(FirstComponent::Prefix)) {
+            let other_path = if matches!(other.first_comp, Some(FirstComponent::Prefix(_))) {
                 &other.path[..other.back]
             } else {
                 &other.path[other.front..other.back]
@@ -810,11 +806,11 @@ fn components(path: &Path) -> Components<'_> {
 
     // Windows specific component
     let prefix = parse_prefix(os_str_path);
-    let prefix_exist = prefix.map(|_| true).unwrap_or(false);
+    // let prefix_exist = prefix.map(|_| true).unwrap_or(false);
 
     let mut has_root = false;
-    let first_comp = if prefix_exist {
-        Some(FirstComponent::Prefix)
+    let first_comp = if let Some(prefix) = prefix {
+        Some(FirstComponent::Prefix(PrefixComponent { raw: os_str_path, parsed: prefix }))
     } else if has_physical_root(path_bytes, prefix) {
         has_root = true;
         Some(FirstComponent::AbsolutePath)
@@ -978,47 +974,47 @@ fn bench_components_fast(c: &mut Criterion) {
     // "/b/a0..a64/a0..a64/.../a0..a64/"
     let path_c = format!("/b/{path}");
 
-    // c.bench_function("Components Rewrite", |b| {
-    //     b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Components Rewrite", |b| {
+        b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Components Next Rewrite", |b| {
-    //     b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Components Next Rewrite", |b| {
+        b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Components Next Back Rewrite", |b| {
-    //     b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Components Next Back Rewrite", |b| {
+        b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Path Iter Rewrite", |b| {
-    //     b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Path Iter Rewrite", |b| {
+        b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("As Path Iter Rewrite", |b| {
-    //     b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("As Path Iter Rewrite", |b| {
+        b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Eq Comps Rewrite", |b| {
-    //     b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
-    // });
+    c.bench_function("Eq Comps Rewrite", |b| {
+        b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Uneq Comps Rewrite", |b| {
-    //     b.iter(|| {
-    //         black_box(eq_comps(
-    //             black_box(path.as_ref()),
-    //             black_box(path_b.as_ref()),
-    //         ))
-    //     })
-    // });
+    c.bench_function("Uneq Comps Rewrite", |b| {
+        b.iter(|| {
+            black_box(eq_comps(
+                black_box(path.as_ref()),
+                black_box(path_b.as_ref()),
+            ))
+        })
+    });
 
-    // c.bench_function("Uneq 2 Comps Rewrite", |b| {
-    //     b.iter(|| {
-    //         black_box(eq_comps(
-    //             black_box(path.as_ref()),
-    //             black_box(path_c.as_ref()),
-    //         ))
-    //     })
-    // });
+    c.bench_function("Uneq 2 Comps Rewrite", |b| {
+        b.iter(|| {
+            black_box(eq_comps(
+                black_box(path.as_ref()),
+                black_box(path_c.as_ref()),
+            ))
+        })
+    });
 
     c.bench_function("Compare Comps Rewrite", |b| {
         b.iter(|| {
