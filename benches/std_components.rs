@@ -3,6 +3,10 @@ use std::{hint::black_box, path::Path};
 
 use criterion::{Criterion, criterion_group, criterion_main};
 
+fn create_components(path: &Path) {
+    let comp = path.components();
+}
+
 fn components_iter(path: &Path) {
     let comps = path.components();
     for comp in comps {}
@@ -56,47 +60,55 @@ fn bench_components(c: &mut Criterion) {
     // "/b/a0..a64/a0..a64/.../a0..a64/"
     let path_c = format!("/b/{path}");
 
-    // c.bench_function("Std Components", |b| {
-    //     b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
-    // });
+    let path_d = format!("{path}/b/{path}"); 
 
-    // c.bench_function("Std Components Next", |b| {
-    //     b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
-    // });
+    let path_e = format!("{path}{path}");
 
-    // c.bench_function("Std Components Next Back", |b| {
-    //     b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Create Std Components", |b| {
+        b.iter(|| black_box(create_components(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Path Iter", |b| {
-    //     b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Std Components", |b| {
+        b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std As Path Iter", |b| {
-    //     b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Std Components Next", |b| {
+        b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Eq Comps", |b| {
-    //     b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
-    // });
+    c.bench_function("Std Components Next Back", |b| {
+        b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Uneq Comps", |b| {
-    //     b.iter(|| {
-    //         black_box(eq_comps(
-    //             black_box(path.as_ref()),
-    //             black_box(path_b.as_ref()),
-    //         ))
-    //     })
-    // });
+    c.bench_function("Std Path Iter", |b| {
+        b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Uneq 2 Comps", |b| {
-    //     b.iter(|| {
-    //         black_box(eq_comps(
-    //             black_box(path.as_ref()),
-    //             black_box(path_c.as_ref()),
-    //         ))
-    //     })
-    // });
+    c.bench_function("Std As Path Iter", |b| {
+        b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
+    });
+
+    c.bench_function("Std Eq Comps", |b| {
+        b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
+    });
+
+    c.bench_function("Std Uneq Comps", |b| {
+        b.iter(|| {
+            black_box(eq_comps(
+                black_box(path.as_ref()),
+                black_box(path_b.as_ref()),
+            ))
+        })
+    });
+
+    c.bench_function("Std Uneq 2 Comps", |b| {
+        b.iter(|| {
+            black_box(eq_comps(
+                black_box(path.as_ref()),
+                black_box(path_c.as_ref()),
+            ))
+        })
+    });
 
     c.bench_function("Std Compare Comps", |b| {
         b.iter(|| {
@@ -121,6 +133,15 @@ fn bench_components(c: &mut Criterion) {
             black_box(compare_comps(
                 black_box(path.as_ref()),
                 black_box(path_c.as_ref()),
+            ))
+        })
+    });
+
+    c.bench_function("Std Compare Uneq 3 Comps", |b| {
+        b.iter(|| {
+            black_box(compare_comps(
+                black_box(path_d.as_ref()),
+                black_box(path_e.as_ref()),
             ))
         })
     });
@@ -172,6 +193,12 @@ fn bench_components(c: &mut Criterion) {
     // c.bench_function("Std Uneq 2 Comps (No BB)", |b| {
     //     b.iter(|| {
     //         eq_comps(path.as_ref(), path_c.as_ref())
+    //     })
+    // });
+
+    // c.bench_function("Std Uneq 3 Comps (No BB)", |b| {
+    //     b.iter(|| {
+    //         eq_comps(path_d.as_ref(), path_e.as_ref())
     //     })
     // });
 
