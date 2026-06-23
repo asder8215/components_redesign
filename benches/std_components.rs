@@ -56,47 +56,47 @@ fn bench_components(c: &mut Criterion) {
     // "/b/a0..a64/a0..a64/.../a0..a64/"
     let path_c = format!("/b/{path}");
 
-    // c.bench_function("Std Components", |b| {
-    //     b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Std Components", |b| {
+        b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Components Next", |b| {
-    //     b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Std Components Next", |b| {
+        b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Components Next Back", |b| {
-    //     b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Std Components Next Back", |b| {
+        b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Path Iter", |b| {
-    //     b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Std Path Iter", |b| {
+        b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std As Path Iter", |b| {
-    //     b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Std As Path Iter", |b| {
+        b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Eq Comps", |b| {
-    //     b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
-    // });
+    c.bench_function("Std Eq Comps", |b| {
+        b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Std Uneq Comps", |b| {
-    //     b.iter(|| {
-    //         black_box(eq_comps(
-    //             black_box(path.as_ref()),
-    //             black_box(path_b.as_ref()),
-    //         ))
-    //     })
-    // });
+    c.bench_function("Std Uneq Comps", |b| {
+        b.iter(|| {
+            black_box(eq_comps(
+                black_box(path.as_ref()),
+                black_box(path_b.as_ref()),
+            ))
+        })
+    });
 
-    // c.bench_function("Std Uneq 2 Comps", |b| {
-    //     b.iter(|| {
-    //         black_box(eq_comps(
-    //             black_box(path.as_ref()),
-    //             black_box(path_c.as_ref()),
-    //         ))
-    //     })
-    // });
+    c.bench_function("Std Uneq 2 Comps", |b| {
+        b.iter(|| {
+            black_box(eq_comps(
+                black_box(path.as_ref()),
+                black_box(path_c.as_ref()),
+            ))
+        })
+    });
 
     c.bench_function("Std Compare Comps", |b| {
         b.iter(|| {

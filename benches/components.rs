@@ -1286,47 +1286,47 @@ fn bench_components_fast(c: &mut Criterion) {
     // "/b/a0..a64/a0..a64/.../a0..a64/"
     let path_c = format!("/b/{path}");
 
-    // c.bench_function("Components Rewrite", |b| {
-    //     b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Components Rewrite", |b| {
+        b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Components Next Rewrite", |b| {
-    //     b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Components Next Rewrite", |b| {
+        b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Components Next Back Rewrite", |b| {
-    //     b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Components Next Back Rewrite", |b| {
+        b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Path Iter Rewrite", |b| {
-    //     b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Path Iter Rewrite", |b| {
+        b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("As Path Iter Rewrite", |b| {
-    //     b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("As Path Iter Rewrite", |b| {
+        b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Eq Comps Rewrite", |b| {
-    //     b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
-    // });
+    c.bench_function("Eq Comps Rewrite", |b| {
+        b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
+    });
 
-    // c.bench_function("Uneq Comps Rewrite", |b| {
-    //     b.iter(|| {
-    //         black_box(eq_comps(
-    //             black_box(path.as_ref()),
-    //             black_box(path_b.as_ref()),
-    //         ))
-    //     })
-    // });
+    c.bench_function("Uneq Comps Rewrite", |b| {
+        b.iter(|| {
+            black_box(eq_comps(
+                black_box(path.as_ref()),
+                black_box(path_b.as_ref()),
+            ))
+        })
+    });
 
-    // c.bench_function("Uneq 2 Comps Rewrite", |b| {
-    //     b.iter(|| {
-    //         black_box(eq_comps(
-    //             black_box(path.as_ref()),
-    //             black_box(path_c.as_ref()),
-    //         ))
-    //     })
-    // });
+    c.bench_function("Uneq 2 Comps Rewrite", |b| {
+        b.iter(|| {
+            black_box(eq_comps(
+                black_box(path.as_ref()),
+                black_box(path_c.as_ref()),
+            ))
+        })
+    });
 
     c.bench_function("Compare Comps Rewrite", |b| {
         b.iter(|| {
