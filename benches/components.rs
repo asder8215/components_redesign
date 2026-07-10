@@ -314,7 +314,7 @@ impl<'a> Components<'a> {
     //             self.first_comp = None;
     //             self.normalize_front();
 
-    //             // SAFETY: Our front has the length of our Prefix component encoded at the start,
+    //            marker: PhantomData<&'a [u8]>, // SAFETY: Our front has the length of our Prefix component encoded at the start,
     //             // so this slice is guaranteed to contain the Prefix component if it's
     //             // unconsumed.
     //             let subslice =
@@ -1009,14 +1009,14 @@ fn components(path: &Path) -> Components<'_> {
     // };
 
     // If we have a prefix, we encode that index into front
-    let front = prefix.map(|prefix| prefix.len()).unwrap_or(0);
-    let back = path_bytes.len();
+    // let front = prefix.map(|prefix| prefix.len()).unwrap_or(0);
+    // let back = path_bytes.len();
 
     let mut components = Components {
         path: path_bytes.as_ptr(),
         // has_physical_root: has_root,
-        front,
-        back,
+        front: 0,
+        back: path_bytes.len(),
         // first_comp,
         marker: PhantomData,
     };
