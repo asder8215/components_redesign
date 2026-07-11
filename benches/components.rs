@@ -3,7 +3,7 @@
 #![allow(unused)]
 use core::slice;
 use std::{
-    cmp, ffi::OsStr, fmt, hash::{Hash, Hasher}, hint::black_box, iter::FusedIterator, marker::PhantomData, os::unix::ffi::OsStrExt, path::{MAIN_SEPARATOR, Path, PathBuf}
+    cmp, ffi::OsStr, fmt, hash::{Hash, Hasher}, hint::black_box, iter::FusedIterator, marker::PhantomData, ops::Index, os::unix::ffi::OsStrExt, path::{MAIN_SEPARATOR, Path, PathBuf}
 };
 
 use criterion::{Criterion, criterion_group, criterion_main};
@@ -246,6 +246,68 @@ enum FirstComponent {
     Prefix,
 }
 
+// // This acts similarly to a `Slice`, but it expects the whole
+// // raw u8 pointer to be preserved while using front/back to
+// // window into the path
+// struct WindowedPath<'a> {
+//     // The path left to parse components from
+//     path: *const u8,
+//     // The iterator is double-ended, and these two indices keep track of how to
+//     // subslice the path to present the unconsumed components accordingly
+//     // If `front` starts off as non-zero on creating a `Components<'_>` iterator, a
+//     // prefix is present. `back` may not equal to `path.len()` if trailing separators
+//     // are present.
+//     // front: usize,
+//     // back: usize,
+//     // True if path *physically* has a root separator; for most Windows
+//     // prefixes, it may have a "logical" root separator for the purposes of
+//     // normalization, e.g., \\server\share == \\server\share\.
+//     // has_physical_root: bool,
+//     // The first component parsed, be it a relative path (""), an absolute path ("/"),
+//     // or a Prefix, which is Windows Specific
+//     // first_comp: Option<FirstComponent>,
+//     marker: PhantomData<&'a [u8]>,
+// }
+
+// impl<'a> WindowedPath<'a> {
+//     #[inline]
+//     unsafe fn get_byte(&self, index: usize) -> u8 {
+//         debug_assert!(index >= self.front && index < self.back);
+//         unsafe { *self.path.add(index) }
+//     }
+
+//     #[inline]
+//     unsafe fn get_slice(&self, start: usize, end: usize) -> &'a [u8] {
+//         debug_assert!(end >= start && start >= self.front && end < self.back);
+//         unsafe { slice::from_raw_parts(self.path.add(start), end - start) }
+//     }
+
+//     // #[inline]
+//     // unsafe fn get_slice_end
+
+//     #[inline]
+//     fn front(&self) -> usize {
+//         self.front
+//     }
+
+//     #[inline]
+//     fn increment_front(&mut self) {
+//         debug_assert!(self.front < self.back);
+//         self.front += 1
+//     }
+
+//     #[inline]
+//     fn back(&self) -> usize {
+//         self.back 
+//     }
+
+//     #[inline]
+//     fn decrement_back(&mut self) {
+//         debug_assert!(self.back > self.front);
+//         self.back -= 1;
+//     }
+// }
+
 #[derive(Clone)]
 pub struct Components<'a> {
     // The path left to parse components from
@@ -257,13 +319,8 @@ pub struct Components<'a> {
     // are present.
     front: usize,
     back: usize,
-    // True if path *physically* has a root separator; for most Windows
-    // prefixes, it may have a "logical" root separator for the purposes of
-    // normalization, e.g., \\server\share == \\server\share\.
-    // has_physical_root: bool,
-    // The first component parsed, be it a relative path (""), an absolute path ("/"),
-    // or a Prefix, which is Windows Specific
-    // first_comp: Option<FirstComponent>,
+    // This marker is used to require that the lifetime of Components is
+    // strictly tied to how long the full original path is alive for
     marker: PhantomData<&'a [u8]>,
 }
 
@@ -274,125 +331,16 @@ impl<'a> Components<'a> {
             return is_sep_byte(unsafe { *(self.path.add(self.front)) } );
         }
 
-        // if self.has_physical_root {
-        //     return true;
-        // }
-
-        // SAFETY: This u8 slice is the entire original path unmodified. The caller to
-        // `Path::components` should have given us a valid `Path`.
-        // if HAS_PREFIXES
-        //     && let Some(p) = parse_prefix(unsafe { OsStrExt::from_bytes(slice::from_raw_parts(self.path.add(self.front), self.back - self.front)) })
-        // {
-        //     if p.has_implicit_root() {
-        //         return true;
-        //     }
-        // }
         false
     }
-
-    // /// This is a helper function for consuming the  physical first component in
-    // /// either `Components::next`/`Components::next_back`.
-    // ///
-    // /// There are four cases we can have here:
-    // /// - We have an unconsumed absolute component (`/`). We should just output `/`
-    // ///   in this case.
-    // /// - We have an unconsumed prefix component (Windows specific, e.g. `C:`).
-    // ///   We should just return that prefix component
-    // /// - We have a relative directory, we should just parse the component as
-    // ///   normal for the front direction only (due to 0 indexing front index)
-    // /// - We don't have a start component (frequent case), which means we just
-    // ///   return `None`.
-    // #[inline]
-    // fn consume_first_component_front(&mut self) -> Option<Component<'a>> {
-    //     match self.first_comp {
-    //         Some(FirstComponent::AbsolutePath) => {
-    //             self.first_comp = None;
-    //             self.normalize_front();
-    //             Some(Component::RootDir)
-    //         }
-    //         Some(FirstComponent::Prefix) => {
-    //             self.first_comp = None;
-    //             self.normalize_front();
-
-    //            marker: PhantomData<&'a [u8]>, // SAFETY: Our front has the length of our Prefix component encoded at the start,
-    //             // so this slice is guaranteed to contain the Prefix component if it's
-    //             // unconsumed.
-    //             let subslice =
-    //                 unsafe { OsStrExt::from_bytes(slice::from_raw_parts(self.path, self.front)) };
-    //             // This prefix is guaranteed to be made since we confirmed
-    //             // our first component is a Prefix
-    //             let prefix = parse_prefix(subslice).unwrap();
-
-    //             Some(Component::Prefix(PrefixComponent {
-    //                 raw: subslice,
-    //                 parsed: prefix,
-    //             }))
-    //         }
-    //         Some(FirstComponent::RelativePath) => return self.parse_next_component(),
-    //         None => None,
-    //     }
-    // }
-
-    // #[inline]
-    // fn consume_first_component_back(&mut self) -> Option<Component<'a>> {
-    //     match self.first_comp {
-    //         Some(FirstComponent::AbsolutePath) => {
-    //             self.first_comp = None;
-    //             Some(Component::RootDir)
-    //         }
-    //         Some(FirstComponent::Prefix) => {
-    //             self.first_comp = None;
-    //             // SAFETY: Our front has the length of our Prefix component encoded at the start,
-    //             // so this slice is guaranteed to contain the Prefix component if it's
-    //             // unconsumed.
-    //             let subslice =
-    //                 unsafe { OsStrExt::from_bytes(slice::from_raw_parts(self.path, self.front)) };
-    //             // This prefix is guaranteed to be made since we confirmed
-    //             // our first component is a Prefix
-    //             let prefix = parse_prefix(subslice).unwrap();
-
-    //             Some(Component::Prefix(PrefixComponent {
-    //                 raw: subslice,
-    //                 parsed: prefix,
-    //             }))
-    //         }
-    //         _ => {
-    //             self.first_comp = None;
-    //             None
-    //         },
-    //     }
-    // }
 
     /// Normalizes away trailing separators and current directory ('.') components
     /// in the forward direction.
     #[inline]
     fn normalize_front(&mut self) {
-        // let path = &self.path[self.front..self.back];
-        // // ".a", ".." needs to rebound back to index
-        // // before the "." character
+        // ".a", ".." needs to rebound back to index
+        // before the "." character
         let mut cur_dir_present = false;
-        // match path.iter().position(|b| {
-        //     if !is_sep_byte(*b) {
-        //         if *b == b'.' && !cur_dir_present {
-        //             cur_dir_present = true;
-        //             false
-        //         } else {
-        //             true
-        //         }
-        //     } else {
-        //         cur_dir_present = false;
-        //         false
-        //     }
-        // }) {
-        //     None => self.front = self.back,
-        //     Some(i) => {
-        //         if cur_dir_present {
-        //             self.front += i - 1;
-        //         } else {
-        //             self.front += i;
-        //         }
-        //     }
-        // }
 
         while self.front < self.back {
             let b = unsafe { *self.path.add(self.front) };
@@ -424,41 +372,10 @@ impl<'a> Components<'a> {
         // "a.", ".." needs to rebound back to index
         // before the "." character
         let mut cur_dir_present = false;
-        // match path.iter().rposition(|b| {
-        //     if !is_sep_byte(*b) {
-        //         if *b == b'.' && !cur_dir_present {
-        //             cur_dir_present = true;
-        //             false
-        //         } else {
-        //             true
-        //         }
-        //     } else {
-        //         cur_dir_present = false;
-        //         false
-        //     }
-        // }) {
-        //     None => {
-        //         // For cases like "./a", where our path
-        //         // will observe "." at the end, and we need to return
-        //         // that we observed "." component instead of
-        //         // returning an empty path.
-        //         if cur_dir_present {
-        //             self.back = self.front + 1;
-        //         } else {
-        //             self.back = self.front;
-        //         }
-        //     }
-        //     Some(i) => {
-        //         if cur_dir_present {
-        //             self.back -= path.len() - i - 2;
-        //         } else {
-        //             self.back -= path.len() - i - 1;
-        //         }
-        //     }
-        // }
+        let mut back = self.back - 1;
 
-        while self.front < self.back {
-            let b = unsafe { *self.path.add(self.back - 1) };
+        while self.front < back {
+            let b = unsafe { *self.path.add(back) };;
             if !is_sep_byte(b) {
                 if b == b'.' && !cur_dir_present {
                     cur_dir_present = true;
@@ -471,11 +388,17 @@ impl<'a> Components<'a> {
                 cur_dir_present = false;
                 // false
             }
-            self.back -= 1;
+            back -= 1;
         }
 
-        if cur_dir_present {
-            self.back += 1;
+        if !is_sep_byte(unsafe {*self.path.add(back) }) {
+            if cur_dir_present {
+                self.back = back + 2;
+            } else {
+                self.back = back + 1; 
+            }
+        } else {
+            self.back = self.front;
         }
     }
 
