@@ -34,10 +34,6 @@ unsafe fn from_u8_slice(s: &[u8]) -> &Path {
     unsafe { Path::new(OsStr::from_encoded_bytes_unchecked(s)) }
 }
 
-// fn is_sep_byte(b: u8) -> bool {
-//     b == b'/'
-// }
-
 fn parse_prefix(_: &OsStr) -> Option<Prefix<'_>> {
     None
 }
@@ -246,209 +242,91 @@ enum FirstComponent {
     Prefix,
 }
 
-// // This acts similarly to a `Slice`, but it expects the whole
-// // raw u8 pointer to be preserved while using front/back to
-// // window into the path
-// struct WindowedPath<'a> {
-//     // The path left to parse components from
-//     path: *const u8,
-//     // The iterator is double-ended, and these two indices keep track of how to
-//     // subslice the path to present the unconsumed components accordingly
-//     // If `front` starts off as non-zero on creating a `Components<'_>` iterator, a
-//     // prefix is present. `back` may not equal to `path.len()` if trailing separators
-//     // are present.
-//     // front: usize,
-//     // back: usize,
-//     // True if path *physically* has a root separator; for most Windows
-//     // prefixes, it may have a "logical" root separator for the purposes of
-//     // normalization, e.g., \\server\share == \\server\share\.
-//     // has_physical_root: bool,
-//     // The first component parsed, be it a relative path (""), an absolute path ("/"),
-//     // or a Prefix, which is Windows Specific
-//     // first_comp: Option<FirstComponent>,
-//     marker: PhantomData<&'a [u8]>,
-// }
-
-// impl<'a> WindowedPath<'a> {
-//     #[inline]
-//     unsafe fn get_byte(&self, index: usize) -> u8 {
-//         debug_assert!(index >= self.front && index < self.back);
-//         unsafe { *self.path.add(index) }
-//     }
-
-//     #[inline]
-//     unsafe fn get_slice(&self, start: usize, end: usize) -> &'a [u8] {
-//         debug_assert!(end >= start && start >= self.front && end < self.back);
-//         unsafe { slice::from_raw_parts(self.path.add(start), end - start) }
-//     }
-
-//     // #[inline]
-//     // unsafe fn get_slice_end
-
-//     #[inline]
-//     fn front(&self) -> usize {
-//         self.front
-//     }
-
-//     #[inline]
-//     fn increment_front(&mut self) {
-//         debug_assert!(self.front < self.back);
-//         self.front += 1
-//     }
-
-//     #[inline]
-//     fn back(&self) -> usize {
-//         self.back 
-//     }
-
-//     #[inline]
-//     fn decrement_back(&mut self) {
-//         debug_assert!(self.back > self.front);
-//         self.back -= 1;
-//     }
-// }
-
 #[derive(Clone)]
 pub struct Components<'a> {
-    // The path left to parse components from
-    path_slice: *const u8,
-    // The length of `path_slice` 
-    len: usize,
+    path: &'a [u8],
     // prefix: Option<Prefix<'a>>,
-    // This marker is used to require that the lifetime of Components is
-    // strictly tied to how long the full original path is alive for
-    // (Optimizes Components::as_path since it doesn't need to clone)
-    marker: PhantomData<&'a [u8]>,
 }
 
 impl<'a> Components<'a> {
     /// Is the *original* path rooted?
     fn has_root(&self) -> bool {
-        if self.len != 0 {
-            return is_sep_byte(unsafe { *self.path_slice } );
+        if !self.path.is_empty() {
+            return is_sep_byte(self.path[0]);
         }
 
         false
     }
 
     /// Normalizes away trailing separators and current directory ('.') components
-    /// in the forward direction.
+    /// in the forward direction. Returns the 0-index `self.path` should start at
+    /// to subslice at in the front direction.
     #[inline]
-    fn normalize_front(&mut self) {
-        // ".a", ".." needs to rebound back to index
-        // before the "." character
+    fn normalize_front(&self, mut front: usize) -> usize {
         let mut cur_dir_present = false;
-
-        let mut front = 0;
-        while front < self.len {
-            let b = unsafe { *self.path_slice.add(front) };
-            if !is_sep_byte(b) {
-                if b == b'.' && !cur_dir_present {
+        match self.path[front..].iter().position(|b| {
+            if !is_sep_byte(*b) {
+                if *b == b'.' && !cur_dir_present {
                     cur_dir_present = true;
-                    // false
+                    false
                 } else {
-                    break;
-                    // true
+                    true
                 }
             } else {
                 cur_dir_present = false;
-                // false
+                false
             }
-            front += 1;
-        }
-
-        if cur_dir_present && front != self.len {
-            front -= 1;
-        }
-
-        self.path_slice = unsafe { self.path_slice.add(front) };
-        self.len -= front;
-    }
-
-    /// Normalizes away trailing separators and current directory ('.') components
-    /// in the backward direction.
-    #[inline]
-    fn normalize_back(&mut self) {
-        // "a.", ".." needs to rebound back to index
-        // before the "." character
-        let mut cur_dir_present = false;
-        let mut back = self.len - 1;
-
-        while back > 0 {
-            let b = unsafe { *self.path_slice.add(back) };;
-            if !is_sep_byte(b) {
-                if b == b'.' && !cur_dir_present {
-                    cur_dir_present = true;
-                    // false
+        }) {
+            None => return self.path.len(),
+            Some(i) => {
+                if cur_dir_present {
+                    front += i - 1;
                 } else {
-                    break;
-                    // true
+                    front += i;
                 }
-            } else {
-                cur_dir_present = false;
-                // false
             }
-            back -= 1;
         }
-
-        if !is_sep_byte(unsafe {*self.path_slice.add(back) }) {
-            if cur_dir_present {
-                self.len = back + 2;
-            } else {
-                self.len = back + 1; 
-            }
-        } else {
-            self.len = 0;
-        }
-    }
-
-    /// Increments our front pointer until we find the
-    /// next separator byte or have reached the component
-    /// that back index is pointing at.
-    #[inline]
-    fn find_next_separator_front(&mut self) -> usize {
-        let mut front = 0;
-        while front < self.len {
-            let b = unsafe { *self.path_slice.add(front) };
-            if is_sep_byte(b) {
-                break;
-            }
-            front += 1;
-        }
-
-        self.path_slice = unsafe { self.path_slice.add(front) };
-        self.len -= front;
         front
     }
 
-    /// Decrements our back pointer until we find the
-    /// next separator byte or have reached the component
-    /// that front index is pointing to.
+    /// Normalizes away trailing separators and current directory ('.') components
+    /// in the backward direction. Returns the 1-index `self.path` should start at
+    /// to find next separator in the back direction.
     #[inline]
-    fn find_next_separator_back(&mut self) -> usize {
-        // let path = &self.path[self.front..self.back];
-        // match path.iter().rposition(|b| is_sep_byte(*b)) {
-        //     None => self.back = self.front,
-        //     Some(i) => self.back -= path.len() - i,
-        // }
-        let len = self.len;
-        let mut back = self.len - 1;
-        
-        while back > 0 {
-            let b = unsafe { *self.path_slice.add(back) };
-            if is_sep_byte(b) {
-                break;
+    fn normalize_back(&self, mut back: usize) -> usize {
+        let mut cur_dir_present = false;
+        match self.path[..back].iter().rposition(|b| {
+            if !is_sep_byte(*b) {
+                if *b == b'.' && !cur_dir_present {
+                    cur_dir_present = true;
+                    false
+                } else {
+                    true
+                }
+            } else {
+                cur_dir_present = false;
+                false
             }
-            back -= 1;
+        }) {
+            None => {
+                // For cases like "./a", where our path
+                // will observe "." at the end, and we need to return
+                // that we observed "." component instead of
+                // returning an empty path.
+                if cur_dir_present {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+            Some(i) => {
+                if cur_dir_present {
+                    return i + 2;
+                } else {
+                    return i + 1;
+                }
+            }
         }
-
-        if is_sep_byte(unsafe { *self.path_slice.add(back) }) {
-            self.len = back + 1;
-        } else {
-            self.len = 0;
-        }
-
-        len - self.len
     }
 
     /// Parse a u8 slice into an OsStr, which is encoded into a `Component`
@@ -486,180 +364,43 @@ impl<'a> Components<'a> {
     /// ```
     #[must_use]
     pub fn as_path(&self) -> &'a Path {
-        // match self.first_comp {
-        //     Some(FirstComponent::AbsolutePath) => {
-        //         // If back index is at 0 (e.g parsing backward
-        //         // through "/foo") and we have an unconsumed
-        //         // Root component, Components::as_path needs to
-        //         // return "/" path
-        //         if self.back == 0 {
-        //             return Path::new("/");
-        //         }
-        //     }
-        //     Some(FirstComponent::Prefix) => {
-        //         // We don't want to trim away separators from a Prefix
-        //         // component
-        //         if self.front == self.back {
-        //             // SAFETY: If the first component is not consumed, then
-        //             // front index encodes the whole length of the Prefix
-        //             // component
-        //             return unsafe { from_u8_slice(slice::from_raw_parts(self.path, self.front)) };
-        //         }
-        //         // SAFETY: Our back index is guaranteed to delimit at an ascii
-        //         // separator byte, so this should present a valid path
-        //         return unsafe { from_u8_slice(slice::from_raw_parts(self.path, self.back)).trim_trailing_sep() };
-        //     }
-        //     _ => {}
-        // }
+        let end = self.normalize_back(self.path.len());
 
-        // let mut back = self.back;
-
-        // Trim front
-        // while front < back {
-        //     let b = unsafe { *self.path.add(front) };
-        //     if is_sep_byte(b) {
-        //         break;
-        //     }
-        //     front += 1;
-        // }
-
-        // let mut back = self.len;
-        // let mut cur_dir_present = false;
-
-        // while back > 0 {
-        //     let b = unsafe { *self.path.add(back - 1) };
-        //     if !is_sep_byte(b) {
-        //         if b == b'.' && !cur_dir_present {
-        //             cur_dir_present = true;
-        //             // false
-        //         } else {
-        //             break;
-        //             // true
-        //         }
-        //     } else {
-        //         cur_dir_present = false;
-        //         // false
-        //     }
-        //     back -= 1;
-        // }
-
-        // if cur_dir_present {
-        //     back += 1;
-        // }
-
-        if self.len == 0 {
-            return Path::new("");
-        }
-
-        let mut cur_dir_present = false;
-        let mut back = self.len - 1;
-
-        while back > 0 {
-            let b = unsafe { *self.path_slice.add(back) };;
-            if !is_sep_byte(b) {
-                if b == b'.' && !cur_dir_present {
-                    cur_dir_present = true;
-                    // false
-                } else {
-                    break;
-                    // true
-                }
-            } else {
-                cur_dir_present = false;
-                // false
-            }
-            back -= 1;
-        }
-
-        if !is_sep_byte(unsafe {*self.path_slice.add(back) }) {
-            if cur_dir_present {
-                back += 2;
-            } else {
-                back += 1; 
-            }
-        }
-
-        if self.has_root() && back == 0 {
+        if self.has_root() && end == 0 {
             return Path::new("/");
         }
 
-
-        // // Trim back
-        // while front < back {
-        //     let b = unsafe { *self.path.add(back - 1) };
-        //     if is_sep_byte(b) {
-        //         break;
-        //     }
-        //     back -= 1;
-        // }
-        
-
-        // SAFETY: front and back index are delimited by ascii separator bytes,
-        // where front is a byte after an ascii separator and back is at an ascii
-        // separator, so this will always produce a valid path.
-        unsafe { from_u8_slice(slice::from_raw_parts(self.path_slice, back)) }
+        // SAFETY: self.path contains a valid Path. What `end` stores is 
+        // the 1-indexing of the last byte we should normalize away, so 
+        // we should have a valid slice subslicing from there.
+        unsafe { from_u8_slice(&self.path[..end]) }
     }
 
     /// Parses the next component in `Components<'_>` from the left
     #[inline]
-    fn parse_next_component(&mut self) -> Option<Component<'a>> {
-        // Our current `self.front` index at this point is the start
-        // of the component name
-        // let before_front = 0;
-        // We trace our `self.front` idx down the path until
-        // we hit a separator.
-        let curr_front = self.find_next_separator_front();
-        let component = unsafe { self.path_slice.sub(curr_front) };
-        // let curr_front = self.front;
-        // Normalizes trailing seps and curr dirs in preparation for
-        // next front component
-        self.normalize_front();
-
-        // SAFETY: Our curr_front index always stops a byte after the ascii
-        // separator byte or at self.back (should there be no ascii separator
-        // in traversal), so we can always construct a valid u8 path slice
-
-
-        let sliced_path = if curr_front > 0 && is_sep_byte(unsafe { *self.path_slice.add(curr_front) }) {
-            unsafe { slice::from_raw_parts(component, curr_front - 1) }
-            // &self.path[before_front..curr_front - 1]
-        } else {
-            unsafe { slice::from_raw_parts(component, curr_front) }
-            // &self.path[before_front..curr_front]
+    fn parse_next_component(&mut self) -> (usize, Option<Component<'a>>) {
+        // Finds the next separator in the back direction
+        let (ind, comp) = match self.path.iter().position(|b| is_sep_byte(*b)) {
+            None => (self.path.len(), self.path),
+            Some(i) => (i + 1, &self.path[..i]),
         };
-        self.parse_single_component(sliced_path)
+
+        let end_ind = self.normalize_front(ind);
+        
+        (end_ind, self.parse_single_component(comp))
     }
 
     /// Parses the next back component in `Components<'_>` from the
     /// right
     #[inline]
-    fn parse_next_back_component(&mut self) -> Option<Component<'a>> {
-        // Our current `self.back` index at this point encompasses
-        // the parent path
-        // let before_back = self.len;
-        // We trace our `self.back` idx up the path until we reach a
-        // separator byte. This prepares the path we return on the next
-        // call to this function.
-        let bytes_read_back = self.find_next_separator_back();
-        // let curr_back = self.len;
-        // Normalizes trailing seps and curr dirs in preparation for
-        // next back component
-        // self.normalize_back();
+    fn parse_next_back_component(&mut self, mut back: usize) -> (usize, Option<Component<'a>>) {
+        // Finds the next separator in the front direction
+        let (size, comp) = match self.path[..back].iter().rposition(|b| is_sep_byte(*b)) {
+            None => (0, &self.path[0..back]),
+            Some(i) => (i + 1, &self.path[i+1..back]),
+        };
 
-        // Our curr_back is at the byte before an ascii separator byte or self.front,
-        // (should there be no ascii separator in traversal), so we can always
-        // construct a valid u8 path slice
-        // let sliced_path = if is_sep_byte(unsafe { *self.path.add(curr_back) }) {
-        //     unsafe { slice::from_raw_parts(self.path.add(curr_back + 1), before_back - (curr_back + 1)) }
-        //     // &self.path[curr_back + 1..before_back]
-        // } else {
-        //     unsafe { slice::from_raw_parts(self.path.add(curr_back), before_back - curr_back) }
-        //     // &self.path[curr_back..before_back]
-        // };
-
-        // let sliced_path = &self.path_bytes[curr_back..before_back];
-        let sliced_path = unsafe {slice::from_raw_parts(self.path_slice.add(self.len), bytes_read_back)};
-        self.parse_single_component(sliced_path)
+        (size, self.parse_single_component(comp))
     }
 }
 
@@ -671,12 +412,26 @@ impl<'a> Iterator for Components<'a> {
         // We reach this case when we no longer have anymore paths
         // to consume (return `None`), or if our front idx was initially
         // equal to back idx (e.g. if we had `C:`, `.`, `/`)
-        if self.len != 0 {
-            if self.has_root() {
-                self.normalize_front();
+        if !self.path.is_empty() {
+            if is_sep_byte(self.path[0]) {
+                let end_ind = self.normalize_front(0);
+                // let (size, comp) = self.parse_next_component();
+                self.path = if end_ind == self.path.len() {
+                    &[]
+                } else {
+                    &self.path[end_ind..]
+                };
                 return Some(Component::RootDir);
             }
-            return self.parse_next_component();
+            let (size, comp) = self.parse_next_component();
+
+            self.path = if size == self.path.len() {
+                &[]
+            } else {
+                &self.path[size..]
+            };
+
+            return comp;
         }
 
         None
@@ -689,15 +444,19 @@ impl<'a> DoubleEndedIterator for Components<'a> {
         // We reach here when we no longer have anymore paths
         // to consume, we're dealing with relative paths and
         // need to output "", or we need to output Prefix component
-        if self.len != 0 {
-            self.normalize_back();
-            if self.len == 0 {
+        if !self.path.is_empty() {
+            let back = self.normalize_back(self.path.len());
+            if back == 0 {
+                self.path = &[];
                 return Some(Component::RootDir);
             }
-            return self.parse_next_back_component();
+            let (size, comp) = self.parse_next_back_component(back);
+
+            self.path = &self.path[..size];
+
+            return comp;
         }
 
-        // self.parse_next_back_component()
         None
     }
 }
@@ -710,18 +469,15 @@ impl<'a> PartialEq for Components<'a> {
         // Fast path for exact matches, e.g. for hashmap lookups.
         // Don't explicitly compare the prefix or has_physical_root fields since they'll
         // either be covered by the `path` buffer or are only relevant for `prefix_verbatim()`.
-        if self.len  == other.len
+        if self.path.len()  == other.path.len()
         {
-            let path = unsafe { slice::from_raw_parts(self.path_slice, self.len) };
-            let other_path = unsafe { slice::from_raw_parts(other.path_slice, other.len) };
-            if path == other_path {
+            if self.path == other.path {
                 return true;
             }
         }
 
-        // // compare back to front since absolute paths often share long prefixes
+        // compare back to front since absolute paths often share long prefixes
         Iterator::eq(self.clone().rev(), other.clone().rev())
-        // compare_components(self.clone(), other.clone()) == cmp::Ordering::Equal
     }
 }
 
@@ -772,26 +528,18 @@ fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cm
     // - if found update state to only do a component-wise comparison on the remainder,
     //   otherwise do it on the full path
 
-    // SAFETY: Our `Components` struct should be able to create a valid slice since it internally
-    // acts like a slice that requires the original data to be preserved in order for Components
-    // to be used.
-    let left_slice = unsafe { slice::from_raw_parts(left.path_slice, left.len) };
-    let right_slice = unsafe { slice::from_raw_parts(right.path_slice, right.len) };
-
-    let first_difference = match left_slice.iter().zip(right_slice).position(|(&a, &b)| a != b) {
-        None if left_slice.len() == right_slice.len() => return cmp::Ordering::Equal,
-        None => left_slice.len().min(right_slice.len()),
+    let first_difference = match left.path.iter().zip(right.path).position(|(&a, &b)| a != b) {
+        None if left.path.len() == right.path.len() => return cmp::Ordering::Equal,
+        None => left.path.len().min(right.path.len()),
         Some(diff) => diff,
     };
 
     if let Some(previous_sep) =
-        left_slice[..first_difference].iter().rposition(|&b| is_sep_byte(b))
+        left.path[..first_difference].iter().rposition(|&b| is_sep_byte(b))
     {
         let mismatched_component_start = previous_sep + 1;
-        left.path_slice = unsafe { left.path_slice.add(mismatched_component_start) };
-        left.len -= mismatched_component_start;
-        right.path_slice = unsafe { right.path_slice.add(mismatched_component_start) };
-        right.len -= mismatched_component_start;
+        left.path = &left.path[left.normalize_front(mismatched_component_start)..];
+        right.path = &right.path[right.normalize_front(mismatched_component_start)..];
     } 
 
     Iterator::cmp(left, right)
@@ -801,36 +549,13 @@ fn components(path: &Path) -> Components<'_> {
     let os_str_path = path.as_os_str();
     let path_bytes = os_str_path.as_encoded_bytes();
 
-    // Windows specific component
-    let prefix = parse_prefix(os_str_path);
-    let prefix_exist = prefix.map(|_| true).unwrap_or(false);
-
-    // let mut has_root = false;
-    // let first_comp = if prefix_exist {
-    //     Some(FirstComponent::Prefix)
-    // } else if has_physical_root(path_bytes, prefix) {
-    //     has_root = true;
-    //     Some(FirstComponent::AbsolutePath)
-    // } else {
-    //     Some(FirstComponent::RelativePath)
-    // };
-
-    // If we have a prefix, we encode that index into front
-    // let front = prefix.map(|prefix| prefix.len()).unwrap_or(0);
-    // let back = path_bytes.len();
-
     let mut components = Components {
-        path_slice: path_bytes.as_ptr(),
-        // has_physical_root: has_root,
-        // front: 0,
-        len: path_bytes.len(),
+        path: path_bytes,
+        // Introducing Prefix causes massive performance degradation for
+        // Components::next (unsure why, maybe more cache misses since this
+        // struct becomes 56 bytes with Option<Prefix>?)
         // prefix: None,
-        // first_comp,
-        marker: PhantomData,
     };
-
-    // Normalize any trailing separators or cur dir (".") components away
-    // components.normalize_back();
 
     components
 }
@@ -980,14 +705,19 @@ fn bench_components_fast(c: &mut Criterion) {
     // "/b/a0..a64/a0..a64/.../a0..a64/"
     let path_c = format!("/b/{path}");
 
+
     // let path_buf: PathBuf = path.clone().into();
     // let mut comps = path_buf.components();
     // println!("Std Components");
-    // while let Some(comp) = comps.next() {
-    //     println!("Comp: {:?}", comp);
-    //     println!("{:?}", comps.as_path());
-    // }
-    // println!("{:?}", comps.as_path());
+    // // while let Some(comp) = comps.next() {
+    // //     println!("Comp: {:?}", comp);
+    // //     println!("{:?}", comps.as_path());
+    // // }
+    // let path = comps.as_path();
+
+    // comps.next();
+    
+    // println!("{:?}", path);
 
 
     // let mut comps = components(&path_buf);
@@ -1005,31 +735,31 @@ fn bench_components_fast(c: &mut Criterion) {
     // println!("{:?}", comps.as_path());
 
 
-    // c.bench_function("Components Rewrite", |b| {
-    //     b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Components Rewrite", |b| {
+        b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
+    });
 
-    c.bench_function("Raw Components Next Rewrite", |b| {
+    c.bench_function("Components Next Rewrite", |b| {
         b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
     });
 
-    c.bench_function("Raw Components Next Back Rewrite", |b| {
+    c.bench_function("Components Next Back Rewrite", |b| {
         b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
     });
 
-    c.bench_function("Raw Path Iter Rewrite", |b| {
+    c.bench_function("Path Iter Rewrite", |b| {
         b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
     });
 
-    c.bench_function("Raw As Path Iter Rewrite", |b| {
+    c.bench_function("As Path Iter Rewrite", |b| {
         b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
     });
 
-    c.bench_function("Raw q Comps Rewrite", |b| {
+    c.bench_function("Eq Comps Rewrite", |b| {
         b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
     });
 
-    c.bench_function("Raw Uneq Comps Rewrite", |b| {
+    c.bench_function("Uneq Comps Rewrite", |b| {
         b.iter(|| {
             black_box(eq_comps(
                 black_box(path.as_ref()),
@@ -1038,7 +768,7 @@ fn bench_components_fast(c: &mut Criterion) {
         })
     });
 
-    c.bench_function("Raw Uneq 2 Comps Rewrite", |b| {
+    c.bench_function("Uneq 2 Comps Rewrite", |b| {
         b.iter(|| {
             black_box(eq_comps(
                 black_box(path.as_ref()),
@@ -1047,7 +777,7 @@ fn bench_components_fast(c: &mut Criterion) {
         })
     });
 
-    c.bench_function("Raw Compare Comps Rewrite", |b| {
+    c.bench_function("Compare Comps Rewrite", |b| {
         b.iter(|| {
             black_box(compare_comps(
                 black_box(path.as_ref()),
@@ -1056,7 +786,7 @@ fn bench_components_fast(c: &mut Criterion) {
         })
     });
 
-    c.bench_function("Raw Compare Uneq Comps Rewrite", |b| {
+    c.bench_function("Compare Uneq Comps Rewrite", |b| {
         b.iter(|| {
             black_box(compare_comps(
                 black_box(path.as_ref()),
@@ -1065,7 +795,7 @@ fn bench_components_fast(c: &mut Criterion) {
         })
     });
 
-    c.bench_function("Raw Compare Uneq 2 Comps Rewrite", |b| {
+    c.bench_function("Compare Uneq 2 Comps Rewrite", |b| {
         b.iter(|| {
             black_box(compare_comps(
                 black_box(path.as_ref()),

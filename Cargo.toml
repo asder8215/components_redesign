@@ -8,9 +8,17 @@ edition = "2024"
 [dev-dependencies]
 criterion = {version = "^0.6.0"}
 
+# [[bench]]
+# name = "components"
+# harness = false
+
 [[bench]]
-name = "components"
+name = "components_slice"
 harness = false
+
+# [[bench]]
+# name = "components_three"
+# harness = false
 
 [[bench]]
 name = "std_components"

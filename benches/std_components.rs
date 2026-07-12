@@ -56,9 +56,9 @@ fn bench_components(c: &mut Criterion) {
     // "/b/a0..a64/a0..a64/.../a0..a64/"
     let path_c = format!("/b/{path}");
 
-    // c.bench_function("Std Components", |b| {
-    //     b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Std Components", |b| {
+        b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
+    });
 
     c.bench_function("Std Components Next", |b| {
         b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
@@ -68,9 +68,9 @@ fn bench_components(c: &mut Criterion) {
         b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
     });
 
-    // c.bench_function("Std Path Iter", |b| {
-    //     b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
-    // });
+    c.bench_function("Std Path Iter", |b| {
+        b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
+    });
 
     c.bench_function("Std As Path Iter", |b| {
         b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
@@ -98,32 +98,32 @@ fn bench_components(c: &mut Criterion) {
         })
     });
 
-    // c.bench_function("Std Compare Comps", |b| {
-    //     b.iter(|| {
-    //         black_box(compare_comps(
-    //             black_box(path.as_ref()),
-    //             black_box(path.as_ref()),
-    //         ))
-    //     })
-    // });
+    c.bench_function("Std Compare Comps", |b| {
+        b.iter(|| {
+            black_box(compare_comps(
+                black_box(path.as_ref()),
+                black_box(path.as_ref()),
+            ))
+        })
+    });
 
-    // c.bench_function("Std Compare Uneq Comps", |b| {
-    //     b.iter(|| {
-    //         black_box(compare_comps(
-    //             black_box(path.as_ref()),
-    //             black_box(path_b.as_ref()),
-    //         ))
-    //     })
-    // });
+    c.bench_function("Std Compare Uneq Comps", |b| {
+        b.iter(|| {
+            black_box(compare_comps(
+                black_box(path.as_ref()),
+                black_box(path_b.as_ref()),
+            ))
+        })
+    });
 
-    // c.bench_function("Std Compare Uneq 2 Comps", |b| {
-    //     b.iter(|| {
-    //         black_box(compare_comps(
-    //             black_box(path.as_ref()),
-    //             black_box(path_c.as_ref()),
-    //         ))
-    //     })
-    // });
+    c.bench_function("Std Compare Uneq 2 Comps", |b| {
+        b.iter(|| {
+            black_box(compare_comps(
+                black_box(path.as_ref()),
+                black_box(path_c.as_ref()),
+            ))
+        })
+    });
 
     // ----------- WITHOUT BLACK BOX ---------------------
 
