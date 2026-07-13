@@ -245,24 +245,28 @@ enum FirstComponent {
 #[derive(Clone)]
 pub struct Components<'a> {
     path: &'a [u8],
+    has_physical_root: bool,
     // prefix: Option<Prefix<'a>>,
+    is_done: bool,
 }
 
 impl<'a> Components<'a> {
     /// Is the *original* path rooted?
+    #[inline]
     fn has_root(&self) -> bool {
-        if !self.path.is_empty() {
-            return is_sep_byte(self.path[0]);
-        }
+        // if !self.path.is_empty() {
+        //     return is_sep_byte(self.path[0]);
+        // }
 
-        false
+        // false
+        !self.path.is_empty() && is_sep_byte(self.path[0])
     }
 
     /// Normalizes away trailing separators and current directory ('.') components
     /// in the forward direction. Returns the 0-index `self.path` should start at
     /// to subslice at in the front direction.
     #[inline]
-    fn normalize_front(&self, mut front: usize) -> usize {
+    fn normalize_front(&mut self, mut front: usize) -> usize {
         let mut cur_dir_present = false;
         match self.path[front..].iter().position(|b| {
             if !is_sep_byte(*b) {
@@ -277,7 +281,10 @@ impl<'a> Components<'a> {
                 false
             }
         }) {
-            None => return self.path.len(),
+            None => {
+                self.is_done = true;
+                return self.path.len()
+            },
             Some(i) => {
                 if cur_dir_present {
                     front += i - 1;
@@ -293,9 +300,9 @@ impl<'a> Components<'a> {
     /// in the backward direction. Returns the 1-index `self.path` should start at
     /// to find next separator in the back direction.
     #[inline]
-    fn normalize_back(&self, mut back: usize) -> usize {
+    fn normalize_back(&mut self) -> usize {
         let mut cur_dir_present = false;
-        match self.path[..back].iter().rposition(|b| {
+        match self.path.iter().rposition(|b| {
             if !is_sep_byte(*b) {
                 if *b == b'.' && !cur_dir_present {
                     cur_dir_present = true;
@@ -316,6 +323,7 @@ impl<'a> Components<'a> {
                 if cur_dir_present {
                     return 1;
                 } else {
+                    self.is_done = true;
                     return 0;
                 }
             }
@@ -364,16 +372,49 @@ impl<'a> Components<'a> {
     /// ```
     #[must_use]
     pub fn as_path(&self) -> &'a Path {
-        let end = self.normalize_back(self.path.len());
+        let mut cur_dir_present = false;
+        let (done, back) = match self.path.iter().rposition(|b| {
+            if !is_sep_byte(*b) {
+                if *b == b'.' && !cur_dir_present {
+                    cur_dir_present = true;
+                    false
+                } else {
+                    true
+                }
+            } else {
+                cur_dir_present = false;
+                false
+            }
+        }) {
+            None => {
+                // For cases like "./a", where our path
+                // will observe "." at the end, and we need to return
+                // that we observed "." component instead of
+                // returning an empty path.
+                if cur_dir_present {
+                    (false, 1)
+                } else {
+                    // self.is_done = true;
+                    (true, 0)
+                }
+            }
+            Some(i) => {
+                if cur_dir_present {
+                    (false, i + 2)
+                } else {
+                    (false, i + 1)
+                }
+            }
+        };
 
-        if self.has_root() && end == 0 {
+        if done && self.has_root() {
             return Path::new("/");
         }
 
         // SAFETY: self.path contains a valid Path. What `end` stores is 
         // the 1-indexing of the last byte we should normalize away, so 
         // we should have a valid slice subslicing from there.
-        unsafe { from_u8_slice(&self.path[..end]) }
+        unsafe { from_u8_slice(&self.path[..back]) }
     }
 
     /// Parses the next component in `Components<'_>` from the left
@@ -381,13 +422,16 @@ impl<'a> Components<'a> {
     fn parse_next_component(&mut self) -> (usize, Option<Component<'a>>) {
         // Finds the next separator in the back direction
         let (ind, comp) = match self.path.iter().position(|b| is_sep_byte(*b)) {
-            None => (self.path.len(), self.path),
+            None => {
+                // self.is_done = true;
+                (self.path.len(), self.path)
+            },
             Some(i) => (i + 1, &self.path[..i]),
         };
 
-        let end_ind = self.normalize_front(ind);
+        // let end_ind = self.normalize_front(ind);
         
-        (end_ind, self.parse_single_component(comp))
+        (ind, self.parse_single_component(comp))
     }
 
     /// Parses the next back component in `Components<'_>` from the
@@ -396,7 +440,10 @@ impl<'a> Components<'a> {
     fn parse_next_back_component(&mut self, mut back: usize) -> (usize, Option<Component<'a>>) {
         // Finds the next separator in the front direction
         let (size, comp) = match self.path[..back].iter().rposition(|b| is_sep_byte(*b)) {
-            None => (0, &self.path[0..back]),
+            None => {
+                self.is_done = true;
+                (0, &self.path[0..back])
+            },
             Some(i) => (i + 1, &self.path[i+1..back]),
         };
 
@@ -412,11 +459,13 @@ impl<'a> Iterator for Components<'a> {
         // We reach this case when we no longer have anymore paths
         // to consume (return `None`), or if our front idx was initially
         // equal to back idx (e.g. if we had `C:`, `.`, `/`)
-        if !self.path.is_empty() {
-            if is_sep_byte(self.path[0]) {
+        if !self.is_done {
+            if self.has_physical_root {
+                self.has_physical_root = false;
                 let end_ind = self.normalize_front(0);
                 // let (size, comp) = self.parse_next_component();
-                self.path = if end_ind == self.path.len() {
+                self.path = if self.is_done {
+                    // self.is_done = true;
                     &[]
                 } else {
                     &self.path[end_ind..]
@@ -425,10 +474,12 @@ impl<'a> Iterator for Components<'a> {
             }
             let (size, comp) = self.parse_next_component();
 
-            self.path = if size == self.path.len() {
+            let normalized_front_ind = self.normalize_front(size);
+
+            self.path = if self.is_done {
                 &[]
             } else {
-                &self.path[size..]
+                &self.path[normalized_front_ind..]
             };
 
             return comp;
@@ -444,16 +495,17 @@ impl<'a> DoubleEndedIterator for Components<'a> {
         // We reach here when we no longer have anymore paths
         // to consume, we're dealing with relative paths and
         // need to output "", or we need to output Prefix component
-        if !self.path.is_empty() {
-            let back = self.normalize_back(self.path.len());
-            if back == 0 {
+        // if !self.path.is_empty() {
+        if !self.is_done {
+            let back = self.normalize_back();
+            if self.is_done && self.has_physical_root {
+                self.has_physical_root = false;
                 self.path = &[];
                 return Some(Component::RootDir);
             }
             let (size, comp) = self.parse_next_back_component(back);
 
             self.path = &self.path[..size];
-
             return comp;
         }
 
@@ -511,13 +563,13 @@ impl AsRef<OsStr> for Components<'_> {
     }
 }
 
-fn has_physical_root(s: &[u8], prefix: Option<Prefix<'_>>) -> bool {
-    let path = if let Some(p) = prefix {
-        &s[p.len()..]
-    } else {
-        s
-    };
-    !path.is_empty() && is_sep_byte(path[0])
+fn has_physical_root(s: &[u8]) -> bool {
+    // let path = if let Some(p) = prefix {
+    //     &s[p.len()..]
+    // } else {
+    //     s
+    // };
+    !s.is_empty() && is_sep_byte(s[0])
 }
 
 fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cmp::Ordering {
@@ -539,9 +591,15 @@ fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cm
     {
         let mismatched_component_start = previous_sep + 1;
         left.path = &left.path[left.normalize_front(mismatched_component_start)..];
+        left.has_physical_root = false;
         right.path = &right.path[right.normalize_front(mismatched_component_start)..];
-    } 
+        right.has_physical_root = false;
+    }
 
+    // println!("{:?}", left.path);
+    // println!("{:?}", right.path);
+
+    // return cmp::Ordering::Less;
     Iterator::cmp(left, right)
 }
 
@@ -555,6 +613,8 @@ fn components(path: &Path) -> Components<'_> {
         // Components::next (unsure why, maybe more cache misses since this
         // struct becomes 56 bytes with Option<Prefix>?)
         // prefix: None,
+        has_physical_root: has_physical_root(path_bytes),
+        is_done: path_bytes.is_empty(),
     };
 
     components
