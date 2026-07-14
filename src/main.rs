@@ -234,7 +234,7 @@ enum FirstComponent {
     /// For all paths starting with `/`
     AbsolutePath,
     /// For paths without root path like `.`, `..`, `a/`
-    RelativePath,
+    // RelativePath,
     /// For Window specific paths like (`C:`, `\\?\UNC\server\share`,
     /// `\\.\COM42`, etc.)
     Prefix,
@@ -244,21 +244,26 @@ enum FirstComponent {
 pub struct Components<'a> {
     path: &'a [u8],
     has_physical_root: bool,
-    // prefix: Option<Prefix<'a>>,
     is_done: bool,
+    // prefix: Option<PrefixComponent<'a>>,
+    // I wouldn't need this field if I had `Prefix`
+    first_comp: Option<FirstComponent>,
 }
 
 impl<'a> Components<'a> {
     /// Is the *original* path rooted?
     #[inline]
     fn has_root(&self) -> bool {
-        // if !self.path.is_empty() {
-        //     return is_sep_byte(self.path[0]);
-        // }
-
-        // false
-        !self.path.is_empty() && is_sep_byte(self.path[0])
+        self.has_physical_root /* ||  self.prefix.map(|prefix| prefix.parsed.has_implicit_root()).unwrap_or(false) */
     }
+
+    // #[inline]
+    // fn prefix_verbatim(&self) -> bool {
+    //     if !HAS_PREFIXES {
+    //         return false;
+    //     }
+    //     self.prefix.as_ref().map(Prefix::is_verbatim).unwrap_or(false)
+    // }
 
     /// Normalizes away trailing separators and current directory ('.') components
     /// in the forward direction. Returns the 0-index `self.path` should start at
@@ -424,10 +429,8 @@ impl<'a> Components<'a> {
                 // self.is_done = true;
                 (self.path.len(), self.path)
             },
-            Some(i) => (i + 1, &self.path[..i]),
+            Some(i) => (i, &self.path[..i]),
         };
-
-        // let end_ind = self.normalize_front(ind);
         
         (ind, self.parse_single_component(comp))
     }
@@ -442,7 +445,7 @@ impl<'a> Components<'a> {
                 self.is_done = true;
                 (0, &self.path[0..back])
             },
-            Some(i) => (i + 1, &self.path[i+1..back]),
+            Some(i) => (i, &self.path[i+1..back]),
         };
 
         (size, self.parse_single_component(comp))
@@ -458,30 +461,92 @@ impl<'a> Iterator for Components<'a> {
         // to consume (return `None`), or if our front idx was initially
         // equal to back idx (e.g. if we had `C:`, `.`, `/`)
         if !self.is_done {
-            if self.has_physical_root {
-                self.has_physical_root = false;
-                let end_ind = self.normalize_front(0);
-                // let (size, comp) = self.parse_next_component();
-                self.path = if self.is_done {
-                    // self.is_done = true;
-                    &[]
-                } else {
-                    &self.path[end_ind..]
-                };
-                return Some(Component::RootDir);
+
+            match self.first_comp {
+                Some(FirstComponent::AbsolutePath) => {
+                    self.has_physical_root = false;
+                    let end_ind = self.normalize_front(0);
+                    // let (size, comp) = self.parse_next_component();
+                    self.path = if self.is_done {
+                        // self.is_done = true;
+                        &[]
+                    } else {
+                        &self.path[end_ind..]
+                    };
+                    self.first_comp = None;
+                    return Some(Component::RootDir);
+                },
+                // Some(FirstComponent::Prefix) => {
+                //     let prefix_comp = self.prefix.take().unwrap();
+
+                //     if self.has_physical_root {
+                //         self.first_comp = Some(FirstComponent::AbsolutePath);
+                //     } else {
+                //         self.first_comp = None;
+                //     }
+
+                //     return Some(Component::Prefix(prefix_comp));
+                // },
+                _ => {
+                    let (size, comp) = self.parse_next_component();
+                    let normalized_front_ind = self.normalize_front(size);
+
+                    self.path = if self.is_done {
+                        &[]
+                    } else {
+                        &self.path[normalized_front_ind..]
+                    };
+
+                    return comp;
+                }
             }
-            let (size, comp) = self.parse_next_component();
+            // if self.prefix.is_some() {
+            //     let prefix = self.prefix.unwrap();
+            //     self.prefix = None;
+            //     let comp = &self.path[..prefix.len()];
+            //     self.path = &self.path[prefix.len()..];
 
-            let normalized_front_ind = self.normalize_front(size);
+            //     // SAFETY: We already parsed the `Prefix` component when constructing
+            //     // `Component` struct, which is stored in the prefix field. Slicing the 
+            //     // path_bytes with length of the prefix field should then give us a valid
+            //     // u8 slice representing the prefix. 
+            //     return Some(Component::Prefix(PrefixComponent { raw: unsafe { OsStr::from_encoded_bytes_unchecked(comp) }, parsed: prefix }));
+            // }
 
-            self.path = if self.is_done {
-                &[]
-            } else {
-                &self.path[normalized_front_ind..]
-            };
+            // match self.first_comp {
 
-            return comp;
+            // }
+            
+            // if self.has_physical_root {
+            //     self.has_physical_root = false;
+            //     let end_ind = self.normalize_front(0);
+            //     // let (size, comp) = self.parse_next_component();
+            //     self.path = if self.is_done {
+            //         // self.is_done = true;
+            //         &[]
+            //     } else {
+            //         &self.path[end_ind..]
+            //     };
+            //     return Some(Component::RootDir);
+            // }
+            // let (size, comp) = self.parse_next_component();
+
+            // let normalized_front_ind = self.normalize_front(size);
+
+            // self.path = if self.is_done {
+            //     &[]
+            // } else {
+            //     &self.path[normalized_front_ind..]
+            // };
+
+            // return comp;
         }
+
+        // if let Some(prefix_comp) = self.prefix {
+        //     self.prefix = None;
+        //     self.first_comp = None;
+        //     return Some(Component::Prefix(prefix_comp));
+        // }
 
         None
     }
@@ -498,6 +563,9 @@ impl<'a> DoubleEndedIterator for Components<'a> {
             let back = self.normalize_back();
             if self.is_done && self.has_physical_root {
                 self.has_physical_root = false;
+                if matches!(self.first_comp, Some(FirstComponent::AbsolutePath)) {
+                    self.first_comp = None;
+                }
                 self.path = &[];
                 return Some(Component::RootDir);
             }
@@ -506,6 +574,12 @@ impl<'a> DoubleEndedIterator for Components<'a> {
             self.path = &self.path[..size];
             return comp;
         }
+
+        // if let Some(prefix_comp) = self.prefix {
+        //     self.prefix = None;
+        //     self.first_comp = None;
+        //     return Some(Component::Prefix(prefix_comp));
+        // }
 
         None
     }
@@ -516,18 +590,105 @@ impl FusedIterator for Components<'_> {}
 impl<'a> PartialEq for Components<'a> {
     #[inline]
     fn eq(&self, other: &Components<'a>) -> bool {
-        // Fast path for exact matches, e.g. for hashmap lookups.
-        // Don't explicitly compare the prefix or has_physical_root fields since they'll
-        // either be covered by the `path` buffer or are only relevant for `prefix_verbatim()`.
-        if self.path.len()  == other.path.len()
-        {
-            if self.path == other.path {
-                return true;
-            }
+        // Fast path for exact matches, e.g. for hashmap lookups. 
+        if self.path == other.path {
+            // if self.prefix.is_none() && other.prefix.is_none(){
+            //     return true;
+            // } else if let Some(self_prefix) = self.prefix &&
+            //     let Some(other_prefix) = other.prefix {
+            //         return self_prefix.raw == other_prefix.raw;
+            // }
+            // else {
+            //     return false;
+            // }
+            return true;
         }
 
-        // compare back to front since absolute paths often share long prefixes
-        Iterator::eq(self.clone().rev(), other.clone().rev())
+        let mut left = self.clone();
+        let mut right = other.clone();
+
+        // if left.prefix.is_none() && right.prefix.is_none() {
+        //     let first_difference = match left.path.iter().zip(right.path).rposition(|(&a, &b)| a != b) {
+        //         None => left.path.len().min(right.path.len()),
+        //         Some(diff) => left.path.len().min(right.path.len()) - diff - 1,
+        //     };
+
+        //     // let left_byte = left.path[first_difference];
+        //     // let right_byte = 
+
+        //     if let Some(previous_sep) =
+        //         left.path[left.path.len() - first_difference..].iter().position(|&b| is_sep_byte(b))
+        //     {
+        //         // previous_sep;
+        //         left.path = &left.path[previous_sep..];
+        //         left.has_physical_root = false;
+        //         left.first_comp = None;
+        //         // right.path = &right.path[..previous_sep];
+        //         // right.has_physical_root = false;
+        //         // right.first_comp = None;
+        //     }
+
+        //     if let Some(previous_sep) = right.path[right.path.len() - first_difference..].iter().rposition(|&b| is_sep_byte(b))
+        //     {
+        //         right.path = &right.path[previous_sep..];
+        //         right.has_physical_root = false;
+        //         right.first_comp = None;
+        //     }
+        // }
+
+        // if left.prefix.is_none() && right.prefix.is_none() {
+        //     let first_difference = match left.path.iter().zip(right.path).position(|(&a, &b)| a != b) {
+        //         None => left.path.len().min(right.path.len()),
+        //         Some(diff) => diff,
+        //     };
+
+        //     if let Some(previous_sep) =
+        //         left.path[..first_difference].iter().rposition(|&b| is_sep_byte(b))
+        //     {
+        //         let mismatched_component_start = previous_sep + 1;
+        //         left.path = &left.path[left.normalize_front(mismatched_component_start)..];
+        //         left.has_physical_root = false;
+        //         left.first_comp = None;
+        //         right.path = &right.path[right.normalize_front(mismatched_component_start)..];
+        //         right.has_physical_root = false;
+        //         right.first_comp = None;
+        //     }
+        // }
+
+        // // compare back to front since absolute paths often share long prefixes
+        // // Iterator::eq(self.clone().rev(), other.clone().rev())
+        // Iterator::eq(left, right)
+
+        // if left.prefix.is_none() && right.prefix.is_none() {
+            let first_difference = match left.path.iter().zip(right.path).rposition(|(&a, &b)| a != b) {
+                None => left.path.len().min(right.path.len()),
+                Some(diff) => left.path.len().min(right.path.len()) - diff - 1,
+            };
+
+            // let left_byte = left.path[first_difference];
+            // let right_byte = 
+
+            if let Some(previous_sep) =
+                left.path[left.path.len() - first_difference..].iter().position(|&b| is_sep_byte(b))
+            {
+                // previous_sep;
+                left.path = &left.path[previous_sep..];
+                left.has_physical_root = false;
+                left.first_comp = None;
+                // right.path = &right.path[..previous_sep];
+                // right.has_physical_root = false;
+                // right.first_comp = None;
+            }
+
+            if let Some(previous_sep) = right.path[right.path.len() - first_difference..].iter().rposition(|&b| is_sep_byte(b))
+            {
+                right.path = &right.path[previous_sep..];
+                right.has_physical_root = false;
+                right.first_comp = None;
+            }
+        // }
+
+        Iterator::eq(left.rev(), right.rev())
     }
 }
 
@@ -561,13 +722,52 @@ impl AsRef<OsStr> for Components<'_> {
     }
 }
 
-fn has_physical_root(s: &[u8]) -> bool {
-    // let path = if let Some(p) = prefix {
-    //     &s[p.len()..]
-    // } else {
-    //     s
-    // };
-    !s.is_empty() && is_sep_byte(s[0])
+fn has_physical_root(s: &[u8], prefix: Option<Prefix<'_>>) -> bool {
+    let path = if let Some(p) = prefix { &s[p.len()..] } else { s };
+    !path.is_empty() && is_sep_byte(path[0])
+}
+
+fn eq_components(mut left: Components<'_>, mut right: Components<'_>) -> bool {
+    // if left.prefix.is_none() && right.prefix.is_none() {
+        // One of them is an empty path
+        if left.is_done != left.is_done {
+            return false;
+        }
+
+        // Both are empty paths
+        if left.is_done && right.is_done {
+            return true;
+        }
+    // }
+
+    let mut left_iter = left.path.iter();
+    let mut right_iter = right.path.iter();
+    let mut bytes_consumed = 0;
+
+    let (left_diff, right_diff) = 'diff: {
+        while let Some(left_byte) = left_iter.next_back() && let Some(right_byte) = right_iter.next_back() {
+            bytes_consumed += 1;
+            if left_byte != right_byte {
+                break 'diff (left.path.len() - bytes_consumed, right.path.len() - bytes_consumed)
+            }
+        }
+        
+        (left.path.len() - bytes_consumed, right.path.len() - bytes_consumed)
+    };
+
+    if let Some(next_sep) =
+        left.path[left_diff..].iter().position(|&b| is_sep_byte(b))
+    {
+        left.path = &left.path[..left_diff + next_sep + 1];
+    }
+
+    if let Some(next_sep) =
+        right.path[right_diff..].iter().position(|&b| is_sep_byte(b))
+    {
+        right.path = &right.path[..right_diff + next_sep + 1];
+    }
+
+    Iterator::eq(left.rev(), right.rev())
 }
 
 fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cmp::Ordering {
@@ -579,7 +779,7 @@ fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cm
     //   otherwise do it on the full path
 
     let first_difference = match left.path.iter().zip(right.path).position(|(&a, &b)| a != b) {
-        None if left.path.len() == right.path.len() => return cmp::Ordering::Equal,
+        None if left.path.len() == right.path.len() /*&& left.prefix.is_none() && right.prefix.is_none()*/ => return cmp::Ordering::Equal,
         None => left.path.len().min(right.path.len()),
         Some(diff) => diff,
     };
@@ -590,37 +790,57 @@ fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cm
         let mismatched_component_start = previous_sep + 1;
         left.path = &left.path[left.normalize_front(mismatched_component_start)..];
         left.has_physical_root = false;
+        left.first_comp = None;
         right.path = &right.path[right.normalize_front(mismatched_component_start)..];
         right.has_physical_root = false;
+        right.first_comp = None;
     }
 
-    // println!("{:?}", left.path);
-    // println!("{:?}", right.path);
-
-    // return cmp::Ordering::Less;
     Iterator::cmp(left, right)
 }
 
 fn components(path: &Path) -> Components<'_> {
     let os_str_path = path.as_os_str();
+    // let prefix = parse_prefix(os_str_path);
+    // let (prefix_comp, path_bytes) = if let Some(prefix) = prefix {
+    //     let path = os_str_path.as_encoded_bytes();
+    //     let prefix_len = prefix.len();
+    //     if path.len() == prefix_len {
+    //         (Some(PrefixComponent { raw: unsafe { OsStr::from_encoded_bytes_unchecked(path) }, parsed: prefix}), &path[..0])
+    //     } else {
+    //         (Some(PrefixComponent { raw: unsafe { OsStr::from_encoded_bytes_unchecked(&path[..prefix_len]) }, parsed: prefix}), &path[prefix_len..])
+    //     }
+    // } else {
+    //     let path = os_str_path.as_encoded_bytes();
+    //     (None, path)
+    // };
+
     let path_bytes = os_str_path.as_encoded_bytes();
+
+    // let has_physical_root = has_physical_root(path_bytes, prefix);
+    let has_physical_root = has_physical_root(path_bytes, None);
+    let first_comp = /*if prefix.is_some() {
+        Some(FirstComponent::Prefix)
+    } else */if has_physical_root {
+        Some(FirstComponent::AbsolutePath)
+    } else {
+        None
+    };
 
     let mut components = Components {
         path: path_bytes,
-        // Introducing Prefix causes massive performance degradation for
-        // Components::next (unsure why, maybe more cache misses since this
-        // struct becomes 56 bytes with Option<Prefix>?)
-        // prefix: None,
-        has_physical_root: has_physical_root(path_bytes),
+        has_physical_root,
         is_done: path_bytes.is_empty(),
+        // prefix: prefix_comp,
+        first_comp
     };
 
     components
 }
 
 #[inline]
-fn eq_components(path: &Path, other: &Path) -> bool {
-    path.as_os_str() == other.as_os_str() || Iterator::eq(components(path).rev(), components(other).rev())
+fn _eq_comps(path: &Path, other: &Path) -> bool {
+    path.as_os_str() == other.as_os_str() || eq_components(components(path), components(other))
 }
 
 #[derive(Clone)]
@@ -704,12 +924,12 @@ fn components_iter(path: &Path) {
 }
 
 fn components_next_iter(path: &Path) {
-    // let mut comps = Iter {
-    //     inner: components(path),
-    // };
-    // while let Some(comp) = comps.next() {}
-    let mut comps = path.components();
+    let mut comps = Iter {
+        inner: components(path),
+    };
     while let Some(comp) = comps.next() {}
+    // let mut comps = path.components();
+    // while let Some(comp) = comps.next() {}
 }
 
 fn components_next_back_iter(path: &Path) {
@@ -741,13 +961,16 @@ fn eq_comps(path: &Path, other_path: &Path) {
     // let comp = components(path);
     // let other_comp = components(other_path);
     // comp == other_comp;
-    // path.components() == other_path.components();
-    eq_components(path, other_path);
+    // path > other_path;
+    path.components() == other_path.components();
+    // path == other_path;
+    // _eq_comps(path, other_path);
 }
 
 fn compare_comps(path: &Path, other_path: &Path) {
     // let comp = components(path);
     // let other_comp = components(other_path);
+    // path > other_path;
     let comp = path.components();
     let other_comp = other_path.components();
     // println!("{:?}", comp > other_comp);
@@ -756,7 +979,7 @@ fn compare_comps(path: &Path, other_path: &Path) {
 
 fn main() {
     let mut path = String::from("/");
-    let chars = vec!["a"; 64];
+    let chars = vec!["a"; 108];
     let mut str = chars.join("");
     str.push('/');
 
@@ -764,11 +987,13 @@ fn main() {
         path.push_str(&str);
     }
 
-    // let path_b = format!("/b/{path}");
-    let path_b = format!("{path}/b/");
+    let path_b = format!("/b/{path}");
+    // let path_b = format!("{path}/b/");
 
     for i in 0..10000 {
-        compare_comps(path.as_ref(), path_b.as_ref());
+        // compare_comps(path.as_ref(), path_b.as_ref());
+        eq_comps(path.as_ref(), path_b.as_ref());
+
         // components_next_iter(path.as_ref());
     }
 }
