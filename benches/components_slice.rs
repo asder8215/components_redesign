@@ -1,9 +1,12 @@
-#![feature(path_trailing_sep)]
 #![allow(dead_code)]
-#![allow(unused)]
-use core::slice;
 use std::{
-    cmp, ffi::OsStr, fmt, hash::{Hash, Hasher}, hint::black_box, iter::FusedIterator, marker::PhantomData, ops::Index, os::unix::ffi::OsStrExt, path::{MAIN_SEPARATOR, Path, PathBuf}
+    cmp,
+    ffi::OsStr,
+    fmt,
+    hash::{Hash, Hasher},
+    hint::black_box,
+    iter::FusedIterator,
+    path::{MAIN_SEPARATOR, Path},
 };
 
 use criterion::{Criterion, criterion_group, criterion_main};
@@ -34,6 +37,7 @@ unsafe fn from_u8_slice(s: &[u8]) -> &Path {
     unsafe { Path::new(OsStr::from_encoded_bytes_unchecked(s)) }
 }
 
+#[allow(unused)]
 fn parse_prefix(_: &OsStr) -> Option<Prefix<'_>> {
     None
 }
@@ -76,6 +80,7 @@ pub enum Prefix<'a> {
 }
 
 impl<'a> Prefix<'a> {
+    #[allow(unused)]
     #[inline]
     fn len(&self) -> usize {
         use self::Prefix::*;
@@ -112,11 +117,13 @@ impl<'a> Prefix<'a> {
         matches!(*self, Verbatim(_) | VerbatimDisk(_) | VerbatimUNC(..))
     }
 
+    #[allow(unused)]
     #[inline]
     fn is_drive(&self) -> bool {
         matches!(*self, Prefix::Disk(_))
     }
 
+    #[allow(unused)]
     #[inline]
     fn has_implicit_root(&self) -> bool {
         !self.is_drive()
@@ -230,36 +237,38 @@ impl<'a> Component<'a> {
     }
 }
 
-/// This is what the first component of our path is
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
-enum FirstComponent {
-    /// For all paths starting with `/`
-    AbsolutePath,
-    /// For paths without root path like `.`, `..`, `a/`
-    RelativePath,
-    /// For Window specific paths like (`C:`, `\\?\UNC\server\share`,
-    /// `\\.\COM42`, etc.)
-    Prefix,
+/// Component parsing works by a double-ended state machine; the cursors at the
+/// front and back of the path each keep track of what parts of the path have
+/// been consumed so far.
+///
+/// Going front to back, a path is made up of a prefix, a starting
+/// directory component, and a body (of normal components)
+#[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
+enum State {
+    Absolute = 1, // A root component (i.e. '/')
+    Relative = 2, // A relative component ('foo')
+    Done = 3,     // Iterator is fully consumed
 }
 
 #[derive(Clone)]
 pub struct Components<'a> {
+    // The path left to parse components from
     path: &'a [u8],
-    has_physical_root: bool,
-    // prefix: Option<Prefix<'a>>,
-    is_done: bool,
+    // The current state of the iterator
+    state: State,
 }
 
 impl<'a> Components<'a> {
+    /// Checks if all bytes of our path have been consumed
+    #[inline]
+    fn is_done(&self) -> bool {
+        self.state == State::Done
+    }
+
     /// Is the *original* path rooted?
     #[inline]
     fn has_root(&self) -> bool {
-        // if !self.path.is_empty() {
-        //     return is_sep_byte(self.path[0]);
-        // }
-
-        // false
-        !self.path.is_empty() && is_sep_byte(self.path[0])
+        self.state == State::Absolute
     }
 
     /// Normalizes away trailing separators and current directory ('.') components
@@ -282,9 +291,9 @@ impl<'a> Components<'a> {
             }
         }) {
             None => {
-                self.is_done = true;
-                return self.path.len()
-            },
+                self.state = State::Done;
+                return self.path.len();
+            }
             Some(i) => {
                 if cur_dir_present {
                     front += i - 1;
@@ -321,17 +330,17 @@ impl<'a> Components<'a> {
                 // that we observed "." component instead of
                 // returning an empty path.
                 if cur_dir_present {
-                    return 1;
+                    1
                 } else {
-                    self.is_done = true;
-                    return 0;
+                    self.state = State::Done;
+                    0
                 }
             }
             Some(i) => {
                 if cur_dir_present {
-                    return i + 2;
+                    i + 2
                 } else {
-                    return i + 1;
+                    i + 1
                 }
             }
         }
@@ -341,11 +350,11 @@ impl<'a> Components<'a> {
     #[inline]
     fn parse_single_component(&self, slice: &'a [u8]) -> Option<Component<'a>> {
         match slice {
-            [] => return None,
+            [] => None,
             [b'.'] => Some(Component::CurDir),
             [b'.', b'.'] => Some(Component::ParentDir),
             _ => {
-                let root_slice = [MAIN_SEPARATOR as u8];
+                let root_slice = MAIN_SEPARATOR_STR.as_bytes();
                 if slice == root_slice {
                     return Some(Component::RootDir);
                 }
@@ -372,6 +381,7 @@ impl<'a> Components<'a> {
     /// ```
     #[must_use]
     pub fn as_path(&self) -> &'a Path {
+        // Normalize bytes from the right
         let mut cur_dir_present = false;
         let (done, back) = match self.path.iter().rposition(|b| {
             if !is_sep_byte(*b) {
@@ -410,44 +420,36 @@ impl<'a> Components<'a> {
         if done && self.has_root() {
             return Path::new("/");
         }
-
-        // SAFETY: self.path contains a valid Path. What `end` stores is 
-        // the 1-indexing of the last byte we should normalize away, so 
-        // we should have a valid slice subslicing from there.
+        // SAFETY: Back should be at a separator byte (or index 0 if
+        // no separator byte exist), which slicing path_bytes at that index
+        // should give us a valid slice
         unsafe { from_u8_slice(&self.path[..back]) }
     }
 
     /// Parses the next component in `Components<'_>` from the left
     #[inline]
     fn parse_next_component(&mut self) -> (usize, Option<Component<'a>>) {
-        // Finds the next separator in the back direction
-        let (ind, comp) = match self.path.iter().position(|b| is_sep_byte(*b)) {
-            None => {
-                // self.is_done = true;
-                (self.path.len(), self.path)
-            },
+        let (front_ind, comp) = match self.path.iter().position(|b| is_sep_byte(*b)) {
+            None => (self.path.len(), self.path),
             Some(i) => (i + 1, &self.path[..i]),
         };
 
-        // let end_ind = self.normalize_front(ind);
-        
-        (ind, self.parse_single_component(comp))
+        (front_ind, self.parse_single_component(comp))
     }
 
     /// Parses the next back component in `Components<'_>` from the
     /// right
     #[inline]
-    fn parse_next_back_component(&mut self, mut back: usize) -> (usize, Option<Component<'a>>) {
-        // Finds the next separator in the front direction
-        let (size, comp) = match self.path[..back].iter().rposition(|b| is_sep_byte(*b)) {
+    fn parse_next_back_component(&mut self, back: usize) -> (usize, Option<Component<'a>>) {
+        let (back_ind, comp) = match self.path[..back].iter().rposition(|b| is_sep_byte(*b)) {
             None => {
-                self.is_done = true;
-                (0, &self.path[0..back])
-            },
-            Some(i) => (i + 1, &self.path[i+1..back]),
+                self.state = State::Done;
+                (0, &self.path[..back])
+            }
+            Some(i) => (i, &self.path[i + 1..back]),
         };
 
-        (size, self.parse_single_component(comp))
+        (back_ind, self.parse_single_component(comp))
     }
 }
 
@@ -456,35 +458,39 @@ impl<'a> Iterator for Components<'a> {
 
     #[inline]
     fn next(&mut self) -> Option<Component<'a>> {
-        // We reach this case when we no longer have anymore paths
-        // to consume (return `None`), or if our front idx was initially
-        // equal to back idx (e.g. if we had `C:`, `.`, `/`)
-        if !self.is_done {
-            if self.has_physical_root {
-                self.has_physical_root = false;
-                let end_ind = self.normalize_front(0);
-                // let (size, comp) = self.parse_next_component();
-                self.path = if self.is_done {
-                    // self.is_done = true;
-                    &[]
-                } else {
-                    &self.path[end_ind..]
-                };
-                return Some(Component::RootDir);
+        // Changing this to a pure match case body with State::Absolute,
+        // State::Relative, State::Done causes performance degradation
+        // with `Components` ordering. Unsure why, but writing the code like
+        // this maintains performance on par with the prefixed version.
+        if !self.is_done() {
+            match self.state {
+                State::Absolute => {
+                    let end_ind = self.normalize_front(0);
+                    self.path = if self.is_done() {
+                        &[]
+                    } else {
+                        self.state = State::Relative;
+                        &self.path[end_ind..]
+                    };
+
+                    if !self.is_done() {
+                        self.state = State::Relative;
+                    }
+
+                    return Some(Component::RootDir);
+                }
+                _ => {
+                    let (front_ind, comp) = self.parse_next_component();
+                    let normalized_front_ind = self.normalize_front(front_ind);
+                    self.path = if self.is_done() {
+                        &[]
+                    } else {
+                        &self.path[normalized_front_ind..]
+                    };
+                    return comp;
+                }
             }
-            let (size, comp) = self.parse_next_component();
-
-            let normalized_front_ind = self.normalize_front(size);
-
-            self.path = if self.is_done {
-                &[]
-            } else {
-                &self.path[normalized_front_ind..]
-            };
-
-            return comp;
         }
-
         None
     }
 }
@@ -492,21 +498,16 @@ impl<'a> Iterator for Components<'a> {
 impl<'a> DoubleEndedIterator for Components<'a> {
     #[inline]
     fn next_back(&mut self) -> Option<Component<'a>> {
-        // We reach here when we no longer have anymore paths
-        // to consume, we're dealing with relative paths and
-        // need to output "", or we need to output Prefix component
-        // if !self.path.is_empty() {
-        if !self.is_done {
+        if !self.is_done() {
             let back = self.normalize_back();
-            if self.is_done && self.has_physical_root {
-                self.has_physical_root = false;
+            if self.is_done() {
                 self.path = &[];
                 return Some(Component::RootDir);
+            } else {
+                let (back_ind, comp) = self.parse_next_back_component(back);
+                self.path = &self.path[..back_ind];
+                return comp;
             }
-            let (size, comp) = self.parse_next_back_component(back);
-
-            self.path = &self.path[..size];
-            return comp;
         }
 
         None
@@ -519,17 +520,11 @@ impl<'a> PartialEq for Components<'a> {
     #[inline]
     fn eq(&self, other: &Components<'a>) -> bool {
         // Fast path for exact matches, e.g. for hashmap lookups.
-        // Don't explicitly compare the prefix or has_physical_root fields since they'll
-        // either be covered by the `path` buffer or are only relevant for `prefix_verbatim()`.
-        if self.path.len()  == other.path.len()
-        {
-            if self.path == other.path {
-                return true;
-            }
+        if self.path == other.path {
+            return true;
         }
 
-        // compare back to front since absolute paths often share long prefixes
-        Iterator::eq(self.clone().rev(), other.clone().rev())
+        eq_components(self.clone(), other.clone())
     }
 }
 
@@ -563,13 +558,68 @@ impl AsRef<OsStr> for Components<'_> {
     }
 }
 
-fn has_physical_root(s: &[u8]) -> bool {
-    // let path = if let Some(p) = prefix {
-    //     &s[p.len()..]
-    // } else {
-    //     s
-    // };
-    !s.is_empty() && is_sep_byte(s[0])
+#[inline]
+fn eq_components(mut left: Components<'_>, mut right: Components<'_>) -> bool {
+    // One of them is an empty path
+    if left.is_done() != left.is_done() {
+        return false;
+    }
+
+    // Both are empty paths
+    if left.is_done() && right.is_done() {
+        return true;
+    }
+
+    let (left_diff, right_diff) = match left
+        .path
+        .iter()
+        .rev()
+        .zip(right.path.iter().rev())
+        .enumerate()
+        .find(|(_, (a, b))| a != b)
+    {
+        None => {
+            let bytes_consumed = left.path.len().min(right.path.len());
+            (
+                left.path.len() - bytes_consumed,
+                right.path.len() - bytes_consumed,
+            )
+        }
+        Some((index, (a, b))) => {
+            let a = *a;
+            let b = *b;
+            if a != b {
+                if a != MAIN_SEPARATOR as u8 && a != b'.' && b != MAIN_SEPARATOR as u8 && b != b'.'
+                {
+                    return false;
+                }
+            }
+
+            (left.path.len() - index - 1, right.path.len() - index - 1)
+        }
+    };
+
+    // Cases like "foo/./bar" == "foo/bar", "foobar/bar" == "foobar", needs to consider
+    // whether left_diff/right_diff is at a separator byte or not.
+    if left.path[left_diff] != MAIN_SEPARATOR as u8 {
+        if let Some(next_sep) = left.path[left_diff..].iter().position(|&b| is_sep_byte(b)) {
+            left.path = &left.path[..left_diff + next_sep];
+            right.path = &right.path[..right_diff + next_sep];
+        }
+    } else if right.path[right_diff] != MAIN_SEPARATOR as u8 {
+        if let Some(next_sep) = right.path[right_diff..]
+            .iter()
+            .position(|&b| is_sep_byte(b))
+        {
+            left.path = &left.path[..left_diff + next_sep];
+            right.path = &right.path[..right_diff + next_sep];
+        }
+    } else {
+        left.path = &left.path[..left_diff];
+        right.path = &right.path[..right_diff];
+    }
+
+    Iterator::eq(left.rev(), right.rev())
 }
 
 fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cmp::Ordering {
@@ -580,49 +630,67 @@ fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cm
     // - if found update state to only do a component-wise comparison on the remainder,
     //   otherwise do it on the full path
 
-    let first_difference = match left.path.iter().zip(right.path).position(|(&a, &b)| a != b) {
-        None if left.path.len() == right.path.len() => return cmp::Ordering::Equal,
-        None => left.path.len().min(right.path.len()),
-        Some(diff) => diff,
-    };
-
-    if let Some(previous_sep) =
-        left.path[..first_difference].iter().rposition(|&b| is_sep_byte(b))
-    {
-        let mismatched_component_start = previous_sep + 1;
-        left.path = &left.path[left.normalize_front(mismatched_component_start)..];
-        left.has_physical_root = false;
-        right.path = &right.path[right.normalize_front(mismatched_component_start)..];
-        right.has_physical_root = false;
+    if left.path == right.path {
+        return cmp::Ordering::Equal;
     }
 
-    // println!("{:?}", left.path);
-    // println!("{:?}", right.path);
+    let first_difference = match left
+        .path
+        .iter()
+        .zip(right.path)
+        .enumerate()
+        .find(|(_, (a, b))| a != b)
+    {
+        None => left.path.len().min(right.path.len()),
+        Some((index, (a, b))) => {
+            let a = *a;
+            let b = *b;
 
-    // return cmp::Ordering::Less;
+            if a != MAIN_SEPARATOR as u8 && a != b'.' && b != MAIN_SEPARATOR as u8 && b != b'.' {
+                return a.cmp(&b);
+            }
+
+            index
+        }
+    };
+
+    if let Some(previous_sep) = left.path[..first_difference]
+        .iter()
+        .rposition(|&b| is_sep_byte(b))
+    {
+        // If our state initially started as an absolute path, the root component
+        // is guaranteed to be sliced away, so treat the state as if it were a
+        // relative component
+        let mismatched_component_start = previous_sep + 1;
+        left.state = State::Relative;
+        right.state = State::Relative;
+        left.path = &left.path[left.normalize_front(mismatched_component_start)..];
+        right.path = &right.path[right.normalize_front(mismatched_component_start)..];
+    }
+
     Iterator::cmp(left, right)
 }
 
+#[inline]
 fn components(path: &Path) -> Components<'_> {
     let os_str_path = path.as_os_str();
-    let path_bytes = os_str_path.as_encoded_bytes();
+    let path = os_str_path.as_encoded_bytes();
 
-    let mut components = Components {
-        path: path_bytes,
-        // Introducing Prefix causes massive performance degradation for
-        // Components::next (unsure why, maybe more cache misses since this
-        // struct becomes 56 bytes with Option<Prefix>?)
-        // prefix: None,
-        has_physical_root: has_physical_root(path_bytes),
-        is_done: path_bytes.is_empty(),
+    let state = if path.is_empty() {
+        State::Done
+    } else if is_sep_byte(path[0]) {
+        State::Absolute
+    } else {
+        State::Relative
     };
 
-    components
+    Components { path, state }
 }
 
+// This is unused
 #[inline]
-fn eq_components(path: &Path, other: &Path) -> bool {
-    path.as_os_str() == other.as_os_str() || Iterator::eq(components(path).rev(), components(other).rev())
+fn _eq_comps(path: &Path, other: &Path) -> bool {
+    path.as_os_str() == other.as_os_str() || eq_components(components(path), components(other))
 }
 
 #[derive(Clone)]
@@ -700,231 +768,465 @@ impl<'a> DoubleEndedIterator for Iter<'a> {
 
 impl FusedIterator for Iter<'_> {}
 
+#[allow(dead_code)]
 fn components_iter(path: &Path) {
     let comps = components(path);
-    for comp in comps {}
+    for _ in comps {}
 }
 
 fn components_next_iter(path: &Path) {
-    let mut comps = Iter {
-        inner: components(path),
-    };
-    while let Some(comp) = comps.next() {}
+    for _ in 0..100 {
+        let mut comps = components(path);
+        while let Some(_) = comps.next() {}
+    }
 }
 
 fn components_next_back_iter(path: &Path) {
-    let mut comps = Iter {
-        inner: components(path),
-    };
-    while let Some(comp) = comps.next_back() {}
+    for _ in 0..100 {
+        let mut comps = components(path);
+        while let Some(_) = comps.next_back() {}
+    }
 }
 
+#[allow(dead_code)]
 fn path_iter(path: &Path) {
     let comps = Iter {
         inner: components(path),
     };
-    for comp in comps {}
+    for _ in comps {}
 }
 
 fn as_path_iter(path: &Path) {
-    let mut comps = Iter {
-        inner: components(path),
-    };
-    while let Some(comp) = comps.next() {
-        let path = comps.as_path();
+    for _ in 0..100 {
+        let mut comps = components(path);
+        while let Some(_) = comps.next() {
+            let _ = comps.as_path();
+        }
     }
 }
 
+#[allow(unused_must_use)]
 fn eq_comps(path: &Path, other_path: &Path) {
-    // let comp = components(path);
-    // let other_comp = components(other_path);
-    // comp == other_comp;
-    eq_components(path, other_path);
+    for _ in 0..100 {
+        // components(path) == components(other_path);
+        _eq_comps(path, other_path);
+    }
 }
 
+#[allow(unused_must_use)]
 fn compare_comps(path: &Path, other_path: &Path) {
-    let comp = components(path);
-    let other_comp = components(other_path);
-    // println!("{:?}", comp > other_comp);
-    comp > other_comp;
+    for _ in 0..100 {
+        let comp = components(path);
+        let other_comp = components(other_path);
+        comp > other_comp;
+    }
+}
+
+#[allow(dead_code)]
+fn std_components_iter(path: &Path) {
+    for _ in 0..100 {
+        let comps = path.components();
+        for _ in comps {}
+    }
+}
+
+fn std_components_next_iter(path: &Path) {
+    for _ in 0..100 {
+        let mut comps = path.components();
+        while let Some(_) = comps.next() {}
+    }
+}
+
+fn std_components_next_back_iter(path: &Path) {
+    for _ in 0..100 {
+        let mut comps = path.components();
+        while let Some(_) = comps.next_back() {}
+    }
+}
+
+#[allow(dead_code)]
+fn std_path_iter(path: &Path) {
+    for _ in 0..100 {
+        let comps = path.iter();
+        for _ in comps {}
+    }
+}
+
+fn std_as_path_iter(path: &Path) {
+    for _ in 0..100 {
+        let mut comps = path.iter();
+        while let Some(_) = comps.next() {
+            let _ = comps.as_path();
+        }
+    }
+}
+
+#[allow(unused_must_use)]
+fn std_eq_comps(path: &Path, other_path: &Path) {
+    for _ in 0..100 {
+        path.components() == other_path.components();
+    }
+}
+
+#[allow(unused_must_use)]
+fn std_compare_comps(path: &Path, other_path: &Path) {
+    for _ in 0..100 {
+        let comp = path.components();
+        let other_comp = other_path.components();
+        comp > other_comp;
+    }
 }
 
 fn bench_components_fast(c: &mut Criterion) {
-    let mut path = String::from("/");
-    let chars = vec!["a"; 64];
-    let mut str = chars.join("");
-    str.push('/');
+    // maximum bytes for a file name on Linux,
+    // we'll use this as an ideal limit on what a long
+    // path component looks like
+    const NAME_MAX: usize = 255;
+    // path max on Linux, we'll use this as an ideal
+    // limit on what a long path should be
+    const PATH_MAX: usize = 4096;
 
-    for i in 0..1000 {
-        path.push_str(&str);
+    let mut path_strings = vec![];
+    // let short_comp = vec!["a/"].join("");
+    let mut long_comp = vec!["a"; NAME_MAX].join("");
+    long_comp.push('/');
+
+    let mut comp_len = 2;
+
+    while comp_len <= NAME_MAX + 1 {
+        let mut relative_short_path_short_comps = String::new();
+        let mut absolute_short_path_short_comps = String::from("/");
+        let mut comp = vec!["a"; comp_len - 1].join("");
+        comp.push('/');
+        relative_short_path_short_comps.push_str(&comp);
+        absolute_short_path_short_comps.push_str(&comp);
+
+        path_strings.push((
+            format!("Rel Short Path with {} byte comps", comp_len - 1),
+            relative_short_path_short_comps,
+        ));
+        path_strings.push((
+            format!("Abs Short Path with {} byte comps", comp_len - 1),
+            absolute_short_path_short_comps,
+        ));
+        comp_len = comp_len * 2;
     }
 
-    // "/a0..a64/a0..a64/a0..a64/.../b/"
-    let path_b = format!("{path}/b/");
+    comp_len = 2;
+    while comp_len <= NAME_MAX + 1 {
+        let mut relative_short_path_short_comps = String::new();
+        let mut absolute_short_path_short_comps = String::from("/");
+        let mut comp = vec!["a"; comp_len - 1].join("");
+        comp.push('/');
 
-    // "/b/a0..a64/a0..a64/.../a0..a64/"
-    let path_c = format!("/b/{path}");
+        for _ in 0..PATH_MAX / comp.len() {
+            relative_short_path_short_comps.push_str(&comp);
+            absolute_short_path_short_comps.push_str(&comp);
+        }
 
+        path_strings.push((
+            format!("Rel Long Path with {} byte comps", comp_len - 1),
+            relative_short_path_short_comps,
+        ));
+        path_strings.push((
+            format!("Abs Long Path with {} byte comps", comp_len - 1),
+            absolute_short_path_short_comps,
+        ));
+        comp_len = comp_len * 2;
+    }
 
-    // let path_buf: PathBuf = path.clone().into();
-    // let mut comps = path_buf.components();
-    // println!("Std Components");
-    // // while let Some(comp) = comps.next() {
-    // //     println!("Comp: {:?}", comp);
-    // //     println!("{:?}", comps.as_path());
-    // // }
-    // let path = comps.as_path();
+    // Short Paths: 1 path component
+    // let mut relative_short_path_short_comps = String::new();
+    // let mut absolute_short_path_short_comps = String::from("/");
+    // relative_short_path_short_comps.push_str(&short_comp);
+    // absolute_short_path_short_comps.push_str(&short_comp);
+    // path_strings.push(("Rel Short Path Short Comp", relative_short_path_short_comps));
+    // path_strings.push(("Abs Short Path Short Comp", absolute_short_path_short_comps));
 
-    // comps.next();
-    
-    // println!("{:?}", path);
+    // let mut relative_short_path_long_comps = String::new();
+    // let mut absolute_short_path_long_comps = String::from("/");
+    // relative_short_path_long_comps.push_str(&long_comp);
+    // absolute_short_path_long_comps.push_str(&long_comp);
+    // path_strings.push(("Rel Short Path Long Comp", relative_short_path_long_comps));
+    // path_strings.push(("Abs Short Path Long Comp", absolute_short_path_long_comps));
 
+    // Long Paths: PATH_MAX/sizeof(comp bytes)
+    // let mut relative_long_path_short_comps = String::new();
+    // let mut absolute_long_path_short_comps = String::from("/");
 
-    // let mut comps = components(&path_buf);
-    // println!("Components Rewrite");
-    // while let Some(comp) = comps.next() {
-    //     println!("Comp: {:?}", comp);
-    //     println!("{:?}", comps.as_path());
+    // for _ in 0..PATH_MAX / 2 {
+    //     relative_long_path_short_comps.push_str(&short_comp);
+    //     absolute_long_path_short_comps.push_str(&short_comp);
     // }
 
-    // println!("{:?}", comps.as_path());
+    // path_strings.push(("Rel Long Path Short Comp", relative_long_path_short_comps));
+    // path_strings.push(("Abs Long Path Short Comp", absolute_long_path_short_comps));
 
+    // let mut relative_long_path_long_comps = String::new();
+    // let mut absolute_long_path_long_comps = String::from("/");
 
-    // drop(path_buf);
+    // // +1 for separator byte
+    // for _ in 0..PATH_MAX / (NAME_MAX + 1) {
+    //     relative_long_path_long_comps.push_str(&long_comp);
+    //     absolute_long_path_long_comps.push_str(&long_comp);
+    // }
 
-    // println!("{:?}", comps.as_path());
+    // path_strings.push(("Rel Long Path Long Comp", relative_long_path_long_comps));
+    // path_strings.push(("Abs Long Path Long Comp", absolute_long_path_long_comps));
 
+    // // Inconsistent sized paths: Similar as long path, but randomly
+    // // sized components
+    // let mut relative_long_path_inconsistent_comps = String::new();
+    // let mut absolute_long_path_inconsistent_comps = String::from("/");
 
-    c.bench_function("Components Rewrite", |b| {
-        b.iter(|| black_box(components_iter(black_box(path.as_ref()))))
-    });
+    // let mut counter = PATH_MAX;
+    // while counter > 1 {
+    //     let rand = random_range(1..=cmp::min(NAME_MAX, counter));
+    //     let mut a_string = String::new();
 
-    c.bench_function("Components Next Rewrite", |b| {
-        b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
-    });
+    //     for _ in 0..rand {
+    //         a_string.push('a');
+    //     }
 
-    c.bench_function("Components Next Back Rewrite", |b| {
-        b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
-    });
+    //     relative_long_path_inconsistent_comps.push_str(&a_string);
+    //     absolute_long_path_inconsistent_comps.push_str(&a_string);
 
-    c.bench_function("Path Iter Rewrite", |b| {
-        b.iter(|| black_box(path_iter(black_box(path.as_ref()))))
-    });
+    //     counter -= rand;
 
-    c.bench_function("As Path Iter Rewrite", |b| {
-        b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
-    });
+    //     if counter > 1 {
+    //         relative_long_path_inconsistent_comps.push('/');
+    //         absolute_long_path_inconsistent_comps.push('/');
+    //         counter -= 1;
+    //     }
+    // }
 
-    c.bench_function("Eq Comps Rewrite", |b| {
-        b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
-    });
+    // println!("Rel Long Path Inconsistent Comp chosen: {:?}", relative_long_path_inconsistent_comps);
+    // println!();
+    // println!("Abs Long Path Inconsistent Comp chosen: {:?}", absolute_long_path_inconsistent_comps);
+    // println!();
 
-    c.bench_function("Uneq Comps Rewrite", |b| {
-        b.iter(|| {
-            black_box(eq_comps(
-                black_box(path.as_ref()),
-                black_box(path_b.as_ref()),
-            ))
-        })
-    });
+    // Inconsistent sized component paths are generated from above randomization
+    let relative_long_path_inconsistent_comps = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaa/aaa/aaaaaa/aaa".to_string();
+    let absolute_long_path_inconsistent_comps = "/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaa/aaa/aaaaaa/aaa".to_string();
 
-    c.bench_function("Uneq 2 Comps Rewrite", |b| {
-        b.iter(|| {
-            black_box(eq_comps(
-                black_box(path.as_ref()),
-                black_box(path_c.as_ref()),
-            ))
-        })
-    });
+    path_strings.push((
+        "Rel Long Path Inconsistent Comp".to_string(),
+        relative_long_path_inconsistent_comps,
+    ));
+    path_strings.push((
+        "Abs Long Path Inconsistent Comp".to_string(),
+        absolute_long_path_inconsistent_comps,
+    ));
 
-    c.bench_function("Compare Comps Rewrite", |b| {
-        b.iter(|| {
-            black_box(compare_comps(
-                black_box(path.as_ref()),
-                black_box(path.as_ref()),
-            ))
-        })
-    });
+    for (case, path) in path_strings {
+        let mut start_path_fail = path.clone();
+        let mut mid_path_fail = path.clone();
+        let mut end_path_fail = path.clone();
+        start_path_fail.insert_str(1, "b/");
+        mid_path_fail.insert_str(mid_path_fail.len() / 2, "b/");
+        end_path_fail.push_str("b/");
 
-    c.bench_function("Compare Uneq Comps Rewrite", |b| {
-        b.iter(|| {
-            black_box(compare_comps(
-                black_box(path.as_ref()),
-                black_box(path_b.as_ref()),
-            ))
-        })
-    });
+        c.bench_function(&format!("{:?}, Components Next Rewrite", case), |b| {
+            b.iter(|| black_box(components_next_iter(black_box(path.as_ref()))))
+        });
 
-    c.bench_function("Compare Uneq 2 Comps Rewrite", |b| {
-        b.iter(|| {
-            black_box(compare_comps(
-                black_box(path.as_ref()),
-                black_box(path_c.as_ref()),
-            ))
-        })
-    });
+        c.bench_function(&format!("{:?}, Components Next Back Rewrite", case), |b| {
+            b.iter(|| black_box(components_next_back_iter(black_box(path.as_ref()))))
+        });
 
-    // ----------- WITHOUT BLACK BOX ---------------------
+        c.bench_function(&format!("{:?}, As Path Iter Rewrite", case), |b| {
+            b.iter(|| black_box(as_path_iter(black_box(path.as_ref()))))
+        });
 
-    // c.bench_function("Components Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         components_iter(path.as_ref())
-    //     })
-    // });
+        c.bench_function(&format!("{:?}, Components Equality Succeed", case), |b| {
+            b.iter(|| black_box(eq_comps(black_box(path.as_ref()), black_box(path.as_ref()))))
+        });
 
-    // c.bench_function("Components Next Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         components_next_iter(path.as_ref())
-    //     })
-    // });
+        c.bench_function(
+            &format!("{:?}, Components Equality Fail from Start", case),
+            |b| {
+                b.iter(|| {
+                    black_box(eq_comps(
+                        black_box(path.as_ref()),
+                        black_box(start_path_fail.as_ref()),
+                    ))
+                })
+            },
+        );
 
-    // c.bench_function("Components Next Back Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         components_next_back_iter(path.as_ref())
-    //     })
-    // });
+        c.bench_function(
+            &format!("{:?}, Components Equality Fail from Mid", case),
+            |b| {
+                b.iter(|| {
+                    black_box(eq_comps(
+                        black_box(path.as_ref()),
+                        black_box(mid_path_fail.as_ref()),
+                    ))
+                })
+            },
+        );
 
-    // c.bench_function("Path Iter Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         path_iter(path.as_ref())
-    //     })
-    // });
+        c.bench_function(
+            &format!("{:?}, Components Equality Fail from End", case),
+            |b| {
+                b.iter(|| {
+                    black_box(eq_comps(
+                        black_box(path.as_ref()),
+                        black_box(end_path_fail.as_ref()),
+                    ))
+                })
+            },
+        );
 
-    // c.bench_function("As Path Iter Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         as_path_iter(path.as_ref())
-    //     })
-    // });
+        c.bench_function(&format!("{:?}, Components Comparison Succeed", case), |b| {
+            b.iter(|| {
+                black_box(compare_comps(
+                    black_box(path.as_ref()),
+                    black_box(path.as_ref()),
+                ))
+            })
+        });
 
-    // c.bench_function("Eq Comps Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         eq_comps(path.as_ref(), path.as_ref())
-    //     })
-    // });
+        c.bench_function(
+            &format!("{:?}, Components Comparison Fail from Start", case),
+            |b| {
+                b.iter(|| {
+                    black_box(compare_comps(
+                        black_box(path.as_ref()),
+                        black_box(start_path_fail.as_ref()),
+                    ))
+                })
+            },
+        );
 
-    // c.bench_function("Uneq Comps Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         eq_comps(path.as_ref(), path_b.as_ref())
-    //     })
-    // });
+        c.bench_function(
+            &format!("{:?}, Components Comparison Fail from Mid", case),
+            |b| {
+                b.iter(|| {
+                    black_box(compare_comps(
+                        black_box(path.as_ref()),
+                        black_box(mid_path_fail.as_ref()),
+                    ))
+                })
+            },
+        );
 
-    // c.bench_function("Uneq Comps 2 Rewrite (No BB)", |b| {
-    //     b.iter(|| {
-    //         eq_comps(path.as_ref(), path_c.as_ref())
-    //     })
-    // });
+        c.bench_function(
+            &format!("{:?}, Components Comparison Fail from End", case),
+            |b| {
+                b.iter(|| {
+                    black_box(compare_comps(
+                        black_box(path.as_ref()),
+                        black_box(end_path_fail.as_ref()),
+                    ))
+                })
+            },
+        );
 
-    // c.bench_function("Compare Comps Rewrite (No BB)", |b| {
-    //     b.iter(|| compare_comps(path.as_ref(), path.as_ref()))
-    // });
+        c.bench_function(&format!("{:?}, Std Components Next", case), |b| {
+            b.iter(|| black_box(std_components_next_iter(black_box(path.as_ref()))))
+        });
 
-    // c.bench_function("Compare Uneq Comps Rewrite (No BB)", |b| {
-    //     b.iter(|| compare_comps(path.as_ref(), path_b.as_ref()))
-    // });
+        c.bench_function(&format!("{:?}, Std Components Next Back", case), |b| {
+            b.iter(|| black_box(std_components_next_back_iter(black_box(path.as_ref()))))
+        });
 
-    // c.bench_function("Compare Uneq Comps 2 Rewrite (No BB)", |b| {
-    //     b.iter(|| compare_comps(path.as_ref(), path_c.as_ref()))
-    // });
+        c.bench_function(&format!("{:?}, Std As Path Iter", case), |b| {
+            b.iter(|| black_box(std_as_path_iter(black_box(path.as_ref()))))
+        });
+
+        c.bench_function(&format!("{:?}, Std Components Equality", case), |b| {
+            b.iter(|| {
+                black_box(std_eq_comps(
+                    black_box(path.as_ref()),
+                    black_box(path.as_ref()),
+                ))
+            })
+        });
+
+        c.bench_function(
+            &format!("{:?}, Std Components Equality Fail from Start", case),
+            |b| {
+                b.iter(|| {
+                    black_box(std_eq_comps(
+                        black_box(path.as_ref()),
+                        black_box(start_path_fail.as_ref()),
+                    ))
+                })
+            },
+        );
+
+        c.bench_function(
+            &format!("{:?}, Std Components Equality Fail from Mid", case),
+            |b| {
+                b.iter(|| {
+                    black_box(std_eq_comps(
+                        black_box(path.as_ref()),
+                        black_box(mid_path_fail.as_ref()),
+                    ))
+                })
+            },
+        );
+
+        c.bench_function(
+            &format!("{:?}, Std Components Equality Fail from End", case),
+            |b| {
+                b.iter(|| {
+                    black_box(std_eq_comps(
+                        black_box(path.as_ref()),
+                        black_box(end_path_fail.as_ref()),
+                    ))
+                })
+            },
+        );
+
+        c.bench_function(
+            &format!("{:?}, Std Components Comparison Succeed", case),
+            |b| {
+                b.iter(|| {
+                    black_box(std_compare_comps(
+                        black_box(path.as_ref()),
+                        black_box(path.as_ref()),
+                    ))
+                })
+            },
+        );
+        c.bench_function(
+            &format!("{:?}, Std Components Comparison Fail from Start", case),
+            |b| {
+                b.iter(|| {
+                    black_box(std_compare_comps(
+                        black_box(path.as_ref()),
+                        black_box(start_path_fail.as_ref()),
+                    ))
+                })
+            },
+        );
+
+        c.bench_function(
+            &format!("{:?}, Std Components Comparison Fail from Mid", case),
+            |b| {
+                b.iter(|| {
+                    black_box(std_compare_comps(
+                        black_box(path.as_ref()),
+                        black_box(mid_path_fail.as_ref()),
+                    ))
+                })
+            },
+        );
+
+        c.bench_function(
+            &format!("{:?}, Std Components Comparison Fail from End", case),
+            |b| {
+                b.iter(|| {
+                    black_box(std_compare_comps(
+                        black_box(path.as_ref()),
+                        black_box(end_path_fail.as_ref()),
+                    ))
+                })
+            },
+        );
+    }
 }
 
 criterion_group!(benches, bench_components_fast);

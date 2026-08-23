@@ -3,7 +3,14 @@
 #![allow(unused)]
 use core::slice;
 use std::{
-    cmp, ffi::OsStr, fmt, hash::{Hash, Hasher}, hint::black_box, iter::FusedIterator, marker::PhantomData, path::{MAIN_SEPARATOR, Path}
+    cmp,
+    ffi::OsStr,
+    fmt,
+    hash::{Hash, Hasher},
+    hint::black_box,
+    iter::FusedIterator,
+    marker::PhantomData,
+    path::{MAIN_SEPARATOR, Path},
 };
 
 use criterion::{Criterion, criterion_group, criterion_main};
@@ -200,8 +207,16 @@ impl<'a> Components<'a> {
     // Given the iteration so far, how much of the pre-State::Body path is left?
     #[inline]
     fn len_before_body(&self) -> usize {
-        let root = if self.front <= State::StartDir && self.has_physical_root { 1 } else { 0 };
-        let cur_dir = if self.front <= State::StartDir && self.include_cur_dir() { 1 } else { 0 };
+        let root = if self.front <= State::StartDir && self.has_physical_root {
+            1
+        } else {
+            0
+        };
+        let cur_dir = if self.front <= State::StartDir && self.include_cur_dir() {
+            1
+        } else {
+            0
+        };
         root + cur_dir
     }
 
@@ -245,26 +260,26 @@ impl<'a> Components<'a> {
                     Some(i) => (1, &path[..i]),
                 };
                 // SAFETY: `comp` is a valid substring, since it is split on a separator.
-                let (size, comp) = (comp.len() + extra, unsafe { 
+                let (size, comp) = (comp.len() + extra, unsafe {
                     match comp {
                         b"." => None, // . components are normalized away, except at
                         // the beginning of a path, which is treated
                         // separately via `include_cur_dir`
                         b".." => Some(Component::ParentDir),
                         b"" => None,
-                        _ => Some(Component::Normal(unsafe { OsStr::from_encoded_bytes_unchecked(comp) })),
+                        _ => Some(Component::Normal(unsafe {
+                            OsStr::from_encoded_bytes_unchecked(comp)
+                        })),
                     }
-                 });
+                });
                 if comp.is_some() {
                     break;
                 } else {
                     // self.path = unsafe { self.path.add(size) };
                     front = size;
-                    len -= size; 
+                    len -= size;
                 }
             }
-            
-            
         }
 
         if self.back == State::Body {
@@ -272,22 +287,25 @@ impl<'a> Components<'a> {
                 // let (size, comp) = self.parse_next_component_back();
                 debug_assert!(self.back == State::Body);
                 let start = self.len_before_body();
-                let path = unsafe { slice::from_raw_parts(self.path.add(front + start), len - start) };
+                let path =
+                    unsafe { slice::from_raw_parts(self.path.add(front + start), len - start) };
                 let (extra, comp) = match path.iter().rposition(|b| self.is_sep_byte(*b)) {
                     None => (0, path),
                     Some(i) => (1, &path[i + 1..]),
                 };
                 // SAFETY: `comp` is a valid substring, since it is split on a separator.
-                let (size, comp) = (comp.len() + extra, unsafe { 
+                let (size, comp) = (comp.len() + extra, unsafe {
                     match comp {
                         b"." => None, // . components are normalized away, except at
                         // the beginning of a path, which is treated
                         // separately via `include_cur_dir`
                         b".." => Some(Component::ParentDir),
                         b"" => None,
-                        _ => Some(Component::Normal(unsafe { OsStr::from_encoded_bytes_unchecked(comp) })),
+                        _ => Some(Component::Normal(unsafe {
+                            OsStr::from_encoded_bytes_unchecked(comp)
+                        })),
                     }
-                 });
+                });
                 if comp.is_some() {
                     break;
                 } else {
@@ -314,7 +332,7 @@ impl<'a> Components<'a> {
             return false;
         }
         // let slice = &self.path[0..];
-        let slice = unsafe {slice::from_raw_parts(self.path, self.len)};
+        let slice = unsafe { slice::from_raw_parts(self.path, self.len) };
         match slice {
             [b'.'] => true,
             [b'.', b, ..] => self.is_sep_byte(*b),
@@ -331,7 +349,9 @@ impl<'a> Components<'a> {
             // separately via `include_cur_dir`
             b".." => Some(Component::ParentDir),
             b"" => None,
-            _ => Some(Component::Normal(unsafe { OsStr::from_encoded_bytes_unchecked(comp) })),
+            _ => Some(Component::Normal(unsafe {
+                OsStr::from_encoded_bytes_unchecked(comp)
+            })),
         }
     }
 
@@ -345,7 +365,9 @@ impl<'a> Components<'a> {
             Some(i) => (1, &path[..i]),
         };
         // SAFETY: `comp` is a valid substring, since it is split on a separator.
-        (comp.len() + extra, unsafe { self.parse_single_component(comp) })
+        (comp.len() + extra, unsafe {
+            self.parse_single_component(comp)
+        })
     }
 
     // parse a component from the right, saying how many bytes to consume to
@@ -359,7 +381,9 @@ impl<'a> Components<'a> {
             Some(i) => (1, &path[start + i + 1..]),
         };
         // SAFETY: `comp` is a valid substring, since it is split on a separator.
-        (comp.len() + extra, unsafe { self.parse_single_component(comp) })
+        (comp.len() + extra, unsafe {
+            self.parse_single_component(comp)
+        })
     }
 
     // trim away repeated separators (i.e., empty components) on the left
@@ -446,7 +470,7 @@ impl<'a> DoubleEndedIterator for Components<'a> {
                     self.back = State::StartDir;
                 }
                 State::StartDir => {
-                    self.back =  State::Done;
+                    self.back = State::Done;
                     if self.has_physical_root {
                         self.len -= 1;
                         return Some(Component::RootDir);
@@ -549,8 +573,9 @@ fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cm
             Some(diff) => diff,
         };
 
-        if let Some(previous_sep) =
-            left_path[..first_difference].iter().rposition(|&b| left.is_sep_byte(b))
+        if let Some(previous_sep) = left_path[..first_difference]
+            .iter()
+            .rposition(|&b| left.is_sep_byte(b))
         {
             let mismatched_component_start = previous_sep + 1;
             left.path = unsafe { left.path.add(mismatched_component_start) };

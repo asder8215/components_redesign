@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+rand = "0.10.2"
 
 [dev-dependencies]
 criterion = {version = "^0.6.0"}
@@ -20,6 +21,6 @@ harness = false
 # name = "components_three"
 # harness = false
 
-[[bench]]
-name = "std_components"
-harness = false
+# [[bench]]
+# name = "std_components"
+# harness = false

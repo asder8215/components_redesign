@@ -3,7 +3,16 @@
 #![allow(unused)]
 use core::slice;
 use std::{
-    cmp, ffi::OsStr, fmt, hash::{Hash, Hasher}, hint::black_box, iter::FusedIterator, marker::PhantomData, ops::Index, os::unix::ffi::OsStrExt, path::{MAIN_SEPARATOR, Path, PathBuf}
+    cmp,
+    ffi::OsStr,
+    fmt,
+    hash::{Hash, Hasher},
+    hint::black_box,
+    iter::FusedIterator,
+    marker::PhantomData,
+    ops::Index,
+    os::unix::ffi::OsStrExt,
+    path::{MAIN_SEPARATOR, Path, PathBuf},
 };
 
 use criterion::{Criterion, criterion_group, criterion_main};
@@ -298,7 +307,7 @@ enum FirstComponent {
 
 //     #[inline]
 //     fn back(&self) -> usize {
-//         self.back 
+//         self.back
 //     }
 
 //     #[inline]
@@ -312,7 +321,7 @@ enum FirstComponent {
 pub struct Components<'a> {
     // The path left to parse components from
     path_slice: *const u8,
-    // The length of `path_slice` 
+    // The length of `path_slice`
     len: usize,
     // prefix: Option<Prefix<'a>>,
     // This marker is used to require that the lifetime of Components is
@@ -325,7 +334,7 @@ impl<'a> Components<'a> {
     /// Is the *original* path rooted?
     fn has_root(&self) -> bool {
         if self.len != 0 {
-            return is_sep_byte(unsafe { *self.path_slice } );
+            return is_sep_byte(unsafe { *self.path_slice });
         }
 
         false
@@ -375,7 +384,7 @@ impl<'a> Components<'a> {
         let mut back = self.len - 1;
 
         while back > 0 {
-            let b = unsafe { *self.path_slice.add(back) };;
+            let b = unsafe { *self.path_slice.add(back) };
             if !is_sep_byte(b) {
                 if b == b'.' && !cur_dir_present {
                     cur_dir_present = true;
@@ -391,11 +400,11 @@ impl<'a> Components<'a> {
             back -= 1;
         }
 
-        if !is_sep_byte(unsafe {*self.path_slice.add(back) }) {
+        if !is_sep_byte(unsafe { *self.path_slice.add(back) }) {
             if cur_dir_present {
                 self.len = back + 2;
             } else {
-                self.len = back + 1; 
+                self.len = back + 1;
             }
         } else {
             self.len = 0;
@@ -433,7 +442,7 @@ impl<'a> Components<'a> {
         // }
         let len = self.len;
         let mut back = self.len - 1;
-        
+
         while back > 0 {
             let b = unsafe { *self.path_slice.add(back) };
             if is_sep_byte(b) {
@@ -555,7 +564,7 @@ impl<'a> Components<'a> {
         let mut back = self.len - 1;
 
         while back > 0 {
-            let b = unsafe { *self.path_slice.add(back) };;
+            let b = unsafe { *self.path_slice.add(back) };
             if !is_sep_byte(b) {
                 if b == b'.' && !cur_dir_present {
                     cur_dir_present = true;
@@ -571,18 +580,17 @@ impl<'a> Components<'a> {
             back -= 1;
         }
 
-        if !is_sep_byte(unsafe {*self.path_slice.add(back) }) {
+        if !is_sep_byte(unsafe { *self.path_slice.add(back) }) {
             if cur_dir_present {
                 back += 2;
             } else {
-                back += 1; 
+                back += 1;
             }
         }
 
         if self.has_root() && back == 0 {
             return Path::new("/");
         }
-
 
         // // Trim back
         // while front < back {
@@ -592,7 +600,6 @@ impl<'a> Components<'a> {
         //     }
         //     back -= 1;
         // }
-        
 
         // SAFETY: front and back index are delimited by ascii separator bytes,
         // where front is a byte after an ascii separator and back is at an ascii
@@ -619,14 +626,14 @@ impl<'a> Components<'a> {
         // separator byte or at self.back (should there be no ascii separator
         // in traversal), so we can always construct a valid u8 path slice
 
-
-        let sliced_path = if curr_front > 0 && is_sep_byte(unsafe { *self.path_slice.add(curr_front) }) {
-            unsafe { slice::from_raw_parts(component, curr_front - 1) }
-            // &self.path[before_front..curr_front - 1]
-        } else {
-            unsafe { slice::from_raw_parts(component, curr_front) }
-            // &self.path[before_front..curr_front]
-        };
+        let sliced_path =
+            if curr_front > 0 && is_sep_byte(unsafe { *self.path_slice.add(curr_front) }) {
+                unsafe { slice::from_raw_parts(component, curr_front - 1) }
+                // &self.path[before_front..curr_front - 1]
+            } else {
+                unsafe { slice::from_raw_parts(component, curr_front) }
+                // &self.path[before_front..curr_front]
+            };
         self.parse_single_component(sliced_path)
     }
 
@@ -658,7 +665,8 @@ impl<'a> Components<'a> {
         // };
 
         // let sliced_path = &self.path_bytes[curr_back..before_back];
-        let sliced_path = unsafe {slice::from_raw_parts(self.path_slice.add(self.len), bytes_read_back)};
+        let sliced_path =
+            unsafe { slice::from_raw_parts(self.path_slice.add(self.len), bytes_read_back) };
         self.parse_single_component(sliced_path)
     }
 }
@@ -710,8 +718,7 @@ impl<'a> PartialEq for Components<'a> {
         // Fast path for exact matches, e.g. for hashmap lookups.
         // Don't explicitly compare the prefix or has_physical_root fields since they'll
         // either be covered by the `path` buffer or are only relevant for `prefix_verbatim()`.
-        if self.len  == other.len
-        {
+        if self.len == other.len {
             let path = unsafe { slice::from_raw_parts(self.path_slice, self.len) };
             let other_path = unsafe { slice::from_raw_parts(other.path_slice, other.len) };
             if path == other_path {
@@ -778,21 +785,26 @@ fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cm
     let left_slice = unsafe { slice::from_raw_parts(left.path_slice, left.len) };
     let right_slice = unsafe { slice::from_raw_parts(right.path_slice, right.len) };
 
-    let first_difference = match left_slice.iter().zip(right_slice).position(|(&a, &b)| a != b) {
+    let first_difference = match left_slice
+        .iter()
+        .zip(right_slice)
+        .position(|(&a, &b)| a != b)
+    {
         None if left_slice.len() == right_slice.len() => return cmp::Ordering::Equal,
         None => left_slice.len().min(right_slice.len()),
         Some(diff) => diff,
     };
 
-    if let Some(previous_sep) =
-        left_slice[..first_difference].iter().rposition(|&b| is_sep_byte(b))
+    if let Some(previous_sep) = left_slice[..first_difference]
+        .iter()
+        .rposition(|&b| is_sep_byte(b))
     {
         let mismatched_component_start = previous_sep + 1;
         left.path_slice = unsafe { left.path_slice.add(mismatched_component_start) };
         left.len -= mismatched_component_start;
         right.path_slice = unsafe { right.path_slice.add(mismatched_component_start) };
         right.len -= mismatched_component_start;
-    } 
+    }
 
     Iterator::cmp(left, right)
 }
@@ -837,7 +849,8 @@ fn components(path: &Path) -> Components<'_> {
 
 #[inline]
 fn eq_components(path: &Path, other: &Path) -> bool {
-    path.as_os_str() == other.as_os_str() || Iterator::eq(components(path).rev(), components(other).rev())
+    path.as_os_str() == other.as_os_str()
+        || Iterator::eq(components(path).rev(), components(other).rev())
 }
 
 #[derive(Clone)]
@@ -989,7 +1002,6 @@ fn bench_components_fast(c: &mut Criterion) {
     // }
     // println!("{:?}", comps.as_path());
 
-
     // let mut comps = components(&path_buf);
     // println!("Components Rewrite");
     // while let Some(comp) = comps.next() {
@@ -999,11 +1011,9 @@ fn bench_components_fast(c: &mut Criterion) {
 
     // println!("{:?}", comps.as_path());
 
-
     // drop(path_buf);
 
     // println!("{:?}", comps.as_path());
-
 
     // c.bench_function("Components Rewrite", |b| {
     //     b.iter(|| black_box(components_iter(black_box(path.as_ref()))))

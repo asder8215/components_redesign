@@ -202,8 +202,16 @@ impl<'a> Components<'a> {
     // Given the iteration so far, how much of the pre-State::Body path is left?
     #[inline]
     fn len_before_body(&self) -> usize {
-        let root = if self.front <= State::StartDir && self.has_physical_root { 1 } else { 0 };
-        let cur_dir = if self.front <= State::StartDir && self.include_cur_dir() { 1 } else { 0 };
+        let root = if self.front <= State::StartDir && self.has_physical_root {
+            1
+        } else {
+            0
+        };
+        let cur_dir = if self.front <= State::StartDir && self.include_cur_dir() {
+            1
+        } else {
+            0
+        };
         root + cur_dir
     }
 
@@ -273,7 +281,9 @@ impl<'a> Components<'a> {
             // separately via `include_cur_dir`
             b".." => Some(Component::ParentDir),
             b"" => None,
-            _ => Some(Component::Normal(unsafe { OsStr::from_encoded_bytes_unchecked(comp) })),
+            _ => Some(Component::Normal(unsafe {
+                OsStr::from_encoded_bytes_unchecked(comp)
+            })),
         }
     }
 
@@ -286,7 +296,9 @@ impl<'a> Components<'a> {
             Some(i) => (1, &self.path[..i]),
         };
         // SAFETY: `comp` is a valid substring, since it is split on a separator.
-        (comp.len() + extra, unsafe { self.parse_single_component(comp) })
+        (comp.len() + extra, unsafe {
+            self.parse_single_component(comp)
+        })
     }
 
     // parse a component from the right, saying how many bytes to consume to
@@ -294,12 +306,17 @@ impl<'a> Components<'a> {
     fn parse_next_component_back(&self) -> (usize, Option<Component<'a>>) {
         debug_assert!(self.back == State::Body);
         let start = self.len_before_body();
-        let (extra, comp) = match self.path[start..].iter().rposition(|b| self.is_sep_byte(*b)) {
+        let (extra, comp) = match self.path[start..]
+            .iter()
+            .rposition(|b| self.is_sep_byte(*b))
+        {
             None => (0, &self.path[start..]),
             Some(i) => (1, &self.path[start + i + 1..]),
         };
         // SAFETY: `comp` is a valid substring, since it is split on a separator.
-        (comp.len() + extra, unsafe { self.parse_single_component(comp) })
+        (comp.len() + extra, unsafe {
+            self.parse_single_component(comp)
+        })
     }
 
     // trim away repeated separators (i.e., empty components) on the left
@@ -381,7 +398,7 @@ impl<'a> DoubleEndedIterator for Components<'a> {
                     self.back = State::StartDir;
                 }
                 State::StartDir => {
-                    self.back =  State::Done;
+                    self.back = State::Done;
                     if self.has_physical_root {
                         self.path = &self.path[..self.path.len() - 1];
                         return Some(Component::RootDir);
@@ -403,7 +420,12 @@ impl FusedIterator for Components<'_> {}
 impl<'a> PartialEq for Components<'a> {
     #[inline]
     fn eq(&self, other: &Components<'a>) -> bool {
-        let Components { path: _, front: _, back: _, has_physical_root: _, } = self;
+        let Components {
+            path: _,
+            front: _,
+            back: _,
+            has_physical_root: _,
+        } = self;
 
         // Fast path for exact matches, e.g. for hashmap lookups.
         // Don't explicitly compare the prefix or has_physical_root fields since they'll
@@ -482,8 +504,9 @@ fn compare_components(mut left: Components<'_>, mut right: Components<'_>) -> cm
             Some(diff) => diff,
         };
 
-        if let Some(previous_sep) =
-            left.path[..first_difference].iter().rposition(|&b| left.is_sep_byte(b))
+        if let Some(previous_sep) = left.path[..first_difference]
+            .iter()
+            .rposition(|&b| left.is_sep_byte(b))
         {
             let mismatched_component_start = previous_sep + 1;
             left.path = &left.path[mismatched_component_start..];
