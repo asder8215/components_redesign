@@ -1,0 +1,4504 @@
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+"Rel Short Path with 1 byte comps", Components Next Rewrite
+                        time:   [150.28 ns 150.30 ns 150.34 ns]
+Found 9 outliers among 100 measurements (9.00%)
+  5 (5.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Short Path with 1 byte comps", Components Next Back Rewrite
+                        time:   [212.88 ns 213.24 ns 213.69 ns]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Short Path with 1 byte comps", As Path Iter Rewrite
+                        time:   [151.35 ns 151.50 ns 151.65 ns]
+Found 7 outliers among 100 measurements (7.00%)
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 1 byte comps", Components Equality Succeed
+                        time:   [213.06 ns 213.16 ns 213.28 ns]
+Found 17 outliers among 100 measurements (17.00%)
+  3 (3.00%) low mild
+  3 (3.00%) high mild
+  11 (11.00%) high severe
+
+"Rel Short Path with 1 byte comps", Components Equality Fail from Start
+                        time:   [1.4236 µs 1.4272 µs 1.4318 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  4 (4.00%) low mild
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 1 byte comps", Components Equality Fail from Mid
+                        time:   [1.4433 µs 1.4486 µs 1.4550 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  3 (3.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 1 byte comps", Components Equality Fail from End
+                        time:   [176.17 ns 176.55 ns 176.97 ns]
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Short Path with 1 byte comps", Components Comparison Succeed
+                        time:   [238.49 ns 238.94 ns 239.54 ns]
+
+"Rel Short Path with 1 byte comps", Components Comparison Fail from Start
+                        time:   [926.73 ns 928.01 ns 929.61 ns]
+Found 12 outliers among 100 measurements (12.00%)
+  2 (2.00%) low mild
+  3 (3.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Short Path with 1 byte comps", Components Comparison Fail from Mid
+                        time:   [926.46 ns 926.85 ns 927.30 ns]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 1 byte comps", Components Comparison Fail from End
+                        time:   [445.36 ns 446.39 ns 447.57 ns]
+Found 21 outliers among 100 measurements (21.00%)
+  8 (8.00%) low severe
+  4 (4.00%) low mild
+  3 (3.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Short Path with 1 byte comps", Std Components Next
+                        time:   [689.26 ns 692.22 ns 695.02 ns]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 1 byte comps", Std Components Next Back
+                        time:   [2.0578 µs 2.0604 µs 2.0633 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Short Path with 1 byte comps", Std As Path Iter
+                        time:   [1.2981 µs 1.2996 µs 1.3016 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  2 (2.00%) low mild
+  4 (4.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Short Path with 1 byte comps", Std Components Equality
+                        time:   [446.83 ns 447.73 ns 448.80 ns]
+Found 13 outliers among 100 measurements (13.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Short Path with 1 byte comps", Std Components Equality Fail from Start
+                        time:   [5.5794 µs 5.5853 µs 5.5917 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+
+"Rel Short Path with 1 byte comps", Std Components Equality Fail from Mid
+                        time:   [5.5695 µs 5.5761 µs 5.5834 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+
+"Rel Short Path with 1 byte comps", Std Components Equality Fail from End
+                        time:   [4.8345 µs 4.8380 µs 4.8419 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  7 (7.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 1 byte comps", Std Components Comparison Succeed
+                        time:   [1.0427 µs 1.0443 µs 1.0461 µs]
+
+"Rel Short Path with 1 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.0268 µs 2.0306 µs 2.0347 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 1 byte comps", Std Components Comparison Fail from Mid
+                        time:   [2.0385 µs 2.0413 µs 2.0448 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  4 (4.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Short Path with 1 byte comps", Std Components Comparison Fail from End
+                        time:   [2.1067 µs 2.1112 µs 2.1162 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 1 byte comps", Components Next Rewrite
+                        time:   [234.99 ns 235.10 ns 235.21 ns]
+Found 8 outliers among 100 measurements (8.00%)
+  6 (6.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 1 byte comps", Components Next Back Rewrite
+                        time:   [253.89 ns 254.25 ns 254.75 ns]
+Found 15 outliers among 100 measurements (15.00%)
+  4 (4.00%) high mild
+  11 (11.00%) high severe
+
+"Abs Short Path with 1 byte comps", As Path Iter Rewrite
+                        time:   [379.51 ns 379.65 ns 379.83 ns]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 1 byte comps", Components Equality Succeed
+                        time:   [212.25 ns 212.33 ns 212.45 ns]
+Found 8 outliers among 100 measurements (8.00%)
+  1 (1.00%) low mild
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 1 byte comps", Components Equality Fail from Start
+                        time:   [1.1671 µs 1.1683 µs 1.1696 µs]
+
+"Abs Short Path with 1 byte comps", Components Equality Fail from Mid
+                        time:   [1.1760 µs 1.1770 µs 1.1782 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  4 (4.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 1 byte comps", Components Equality Fail from End
+                        time:   [175.22 ns 175.62 ns 176.12 ns]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+
+"Abs Short Path with 1 byte comps", Components Comparison Succeed
+                        time:   [239.21 ns 239.82 ns 240.45 ns]
+Found 19 outliers among 100 measurements (19.00%)
+  6 (6.00%) high mild
+  13 (13.00%) high severe
+
+"Abs Short Path with 1 byte comps", Components Comparison Fail from Start
+                        time:   [175.52 ns 176.18 ns 176.88 ns]
+Found 12 outliers among 100 measurements (12.00%)
+  7 (7.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 1 byte comps", Components Comparison Fail from Mid
+                        time:   [175.58 ns 175.72 ns 175.91 ns]
+Found 10 outliers among 100 measurements (10.00%)
+  6 (6.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Short Path with 1 byte comps", Components Comparison Fail from End
+                        time:   [469.48 ns 470.13 ns 470.95 ns]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 1 byte comps", Std Components Next
+                        time:   [800.78 ns 803.25 ns 806.15 ns]
+Found 7 outliers among 100 measurements (7.00%)
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Short Path with 1 byte comps", Std Components Next Back
+                        time:   [2.0685 µs 2.0692 µs 2.0701 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  4 (4.00%) low mild
+  4 (4.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 1 byte comps", Std As Path Iter
+                        time:   [2.3685 µs 2.3733 µs 2.3774 µs]
+
+"Abs Short Path with 1 byte comps", Std Components Equality
+                        time:   [462.84 ns 469.48 ns 476.71 ns]
+
+"Abs Short Path with 1 byte comps", Std Components Equality Fail from Start
+                        time:   [5.7757 µs 5.7783 µs 5.7810 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) low mild
+  2 (2.00%) high mild
+
+"Abs Short Path with 1 byte comps", Std Components Equality Fail from Mid
+                        time:   [5.7743 µs 5.7898 µs 5.8094 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 1 byte comps", Std Components Equality Fail from End
+                        time:   [4.6557 µs 4.6587 µs 4.6622 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  2 (2.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Short Path with 1 byte comps", Std Components Comparison Succeed
+                        time:   [1.0520 µs 1.0530 µs 1.0542 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 1 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.2726 µs 2.2762 µs 2.2811 µs]
+Found 17 outliers among 100 measurements (17.00%)
+  9 (9.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Short Path with 1 byte comps", Std Components Comparison Fail from Mid
+                        time:   [2.2966 µs 2.3005 µs 2.3059 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 1 byte comps", Std Components Comparison Fail from End
+                        time:   [2.1301 µs 2.1342 µs 2.1391 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  9 (9.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 3 byte comps", Components Next Rewrite
+                        time:   [176.42 ns 178.15 ns 180.07 ns]
+
+"Rel Short Path with 3 byte comps", Components Next Back Rewrite
+                        time:   [255.29 ns 255.50 ns 255.73 ns]
+Found 8 outliers among 100 measurements (8.00%)
+  8 (8.00%) high mild
+
+"Rel Short Path with 3 byte comps", As Path Iter Rewrite
+                        time:   [226.80 ns 229.14 ns 231.11 ns]
+Found 10 outliers among 100 measurements (10.00%)
+  6 (6.00%) low severe
+  4 (4.00%) low mild
+
+"Rel Short Path with 3 byte comps", Components Equality Succeed
+                        time:   [213.15 ns 213.25 ns 213.36 ns]
+Found 10 outliers among 100 measurements (10.00%)
+  6 (6.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Short Path with 3 byte comps", Components Equality Fail from Start
+                        time:   [1.3689 µs 1.3781 µs 1.3881 µs]
+Found 16 outliers among 100 measurements (16.00%)
+  6 (6.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Short Path with 3 byte comps", Components Equality Fail from Mid
+                        time:   [1.3307 µs 1.3355 µs 1.3410 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  7 (7.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 3 byte comps", Components Equality Fail from End
+                        time:   [174.03 ns 174.27 ns 174.55 ns]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 3 byte comps", Components Comparison Succeed
+                        time:   [237.97 ns 238.11 ns 238.32 ns]
+Found 14 outliers among 100 measurements (14.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Short Path with 3 byte comps", Components Comparison Fail from Start
+                        time:   [175.46 ns 175.54 ns 175.64 ns]
+Found 13 outliers among 100 measurements (13.00%)
+  5 (5.00%) low mild
+  1 (1.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Short Path with 3 byte comps", Components Comparison Fail from Mid
+                        time:   [210.74 ns 211.06 ns 211.41 ns]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Short Path with 3 byte comps", Components Comparison Fail from End
+                        time:   [488.84 ns 489.04 ns 489.26 ns]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 3 byte comps", Std Components Next
+                        time:   [707.63 ns 708.02 ns 708.61 ns]
+Found 11 outliers among 100 measurements (11.00%)
+  5 (5.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Short Path with 3 byte comps", Std Components Next Back
+                        time:   [2.1013 µs 2.1033 µs 2.1060 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  7 (7.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Short Path with 3 byte comps", Std As Path Iter
+                        time:   [1.3044 µs 1.3100 µs 1.3170 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  2 (2.00%) high mild
+  12 (12.00%) high severe
+
+"Rel Short Path with 3 byte comps", Std Components Equality
+                        time:   [487.89 ns 497.48 ns 508.20 ns]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 3 byte comps", Std Components Equality Fail from Start
+                        time:   [4.8198 µs 4.8276 µs 4.8368 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  7 (7.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Short Path with 3 byte comps", Std Components Equality Fail from Mid
+                        time:   [4.8267 µs 4.8369 µs 4.8487 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Short Path with 3 byte comps", Std Components Equality Fail from End
+                        time:   [4.8285 µs 4.8407 µs 4.8555 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 3 byte comps", Std Components Comparison Succeed
+                        time:   [1.0778 µs 1.0794 µs 1.0811 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Short Path with 3 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.2194 µs 2.2236 µs 2.2281 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 3 byte comps", Std Components Comparison Fail from Mid
+                        time:   [2.2163 µs 2.2195 µs 2.2235 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  4 (4.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Short Path with 3 byte comps", Std Components Comparison Fail from End
+                        time:   [2.1458 µs 2.1472 µs 2.1486 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Abs Short Path with 3 byte comps", Components Next Rewrite
+                        time:   [283.36 ns 286.06 ns 288.66 ns]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) low mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 3 byte comps", Components Next Back Rewrite
+                        time:   [310.97 ns 312.47 ns 313.99 ns]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+
+"Abs Short Path with 3 byte comps", As Path Iter Rewrite
+                        time:   [457.05 ns 458.45 ns 459.70 ns]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) low mild
+
+"Abs Short Path with 3 byte comps", Components Equality Succeed
+                        time:   [213.99 ns 214.14 ns 214.32 ns]
+Found 10 outliers among 100 measurements (10.00%)
+  5 (5.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 3 byte comps", Components Equality Fail from Start
+                        time:   [1.2217 µs 1.2224 µs 1.2230 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Abs Short Path with 3 byte comps", Components Equality Fail from Mid
+                        time:   [1.4479 µs 1.4486 µs 1.4493 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  1 (1.00%) low mild
+  8 (8.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 3 byte comps", Components Equality Fail from End
+                        time:   [175.43 ns 175.57 ns 175.75 ns]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 3 byte comps", Components Comparison Succeed
+                        time:   [239.07 ns 239.61 ns 240.25 ns]
+Found 11 outliers among 100 measurements (11.00%)
+  6 (6.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 3 byte comps", Components Comparison Fail from Start
+                        time:   [175.69 ns 175.84 ns 176.07 ns]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 3 byte comps", Components Comparison Fail from Mid
+                        time:   [210.94 ns 211.28 ns 211.62 ns]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+
+"Abs Short Path with 3 byte comps", Components Comparison Fail from End
+                        time:   [512.64 ns 512.94 ns 513.24 ns]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 3 byte comps", Std Components Next
+                        time:   [840.57 ns 844.27 ns 848.71 ns]
+Found 11 outliers among 100 measurements (11.00%)
+  2 (2.00%) high mild
+  9 (9.00%) high severe
+
+"Abs Short Path with 3 byte comps", Std Components Next Back
+                        time:   [2.1169 µs 2.1178 µs 2.1189 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 3 byte comps", Std As Path Iter
+                        time:   [2.4869 µs 2.4933 µs 2.4993 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Abs Short Path with 3 byte comps", Std Components Equality
+                        time:   [448.71 ns 450.59 ns 452.85 ns]
+Found 17 outliers among 100 measurements (17.00%)
+  3 (3.00%) high mild
+  14 (14.00%) high severe
+
+"Abs Short Path with 3 byte comps", Std Components Equality Fail from Start
+                        time:   [6.0002 µs 6.0054 µs 6.0114 µs]
+
+"Abs Short Path with 3 byte comps", Std Components Equality Fail from Mid
+                        time:   [4.6469 µs 4.6498 µs 4.6530 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Abs Short Path with 3 byte comps", Std Components Equality Fail from End
+                        time:   [4.6465 µs 4.6513 µs 4.6566 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  7 (7.00%) high mild
+
+"Abs Short Path with 3 byte comps", Std Components Comparison Succeed
+                        time:   [1.0752 µs 1.0774 µs 1.0798 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  3 (3.00%) high mild
+  10 (10.00%) high severe
+
+"Abs Short Path with 3 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.3007 µs 2.3068 µs 2.3149 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  2 (2.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Short Path with 3 byte comps", Std Components Comparison Fail from Mid
+                        time:   [2.6241 µs 2.6324 µs 2.6413 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Abs Short Path with 3 byte comps", Std Components Comparison Fail from End
+                        time:   [2.1597 µs 2.1623 µs 2.1654 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 7 byte comps", Components Next Rewrite
+                        time:   [278.80 ns 287.24 ns 296.19 ns]
+
+"Rel Short Path with 7 byte comps", Components Next Back Rewrite
+                        time:   [350.97 ns 351.97 ns 353.30 ns]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) low mild
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 7 byte comps", As Path Iter Rewrite
+                        time:   [305.32 ns 311.34 ns 317.69 ns]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+
+"Rel Short Path with 7 byte comps", Components Equality Succeed
+                        time:   [218.95 ns 220.99 ns 223.16 ns]
+Found 11 outliers among 100 measurements (11.00%)
+  7 (7.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Short Path with 7 byte comps", Components Equality Fail from Start
+                        time:   [1.9148 µs 1.9210 µs 1.9275 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 7 byte comps", Components Equality Fail from Mid
+                        time:   [1.7045 µs 1.7167 µs 1.7319 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  3 (3.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Short Path with 7 byte comps", Components Equality Fail from End
+                        time:   [176.50 ns 176.68 ns 176.86 ns]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 7 byte comps", Components Comparison Succeed
+                        time:   [241.35 ns 241.72 ns 242.07 ns]
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) low mild
+  5 (5.00%) high mild
+
+"Rel Short Path with 7 byte comps", Components Comparison Fail from Start
+                        time:   [176.38 ns 176.98 ns 177.82 ns]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high severe
+
+"Rel Short Path with 7 byte comps", Components Comparison Fail from Mid
+                        time:   [255.84 ns 257.44 ns 259.03 ns]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 7 byte comps", Components Comparison Fail from End
+                        time:   [572.40 ns 573.48 ns 575.31 ns]
+Found 12 outliers among 100 measurements (12.00%)
+  7 (7.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Short Path with 7 byte comps", Std Components Next
+                        time:   [846.15 ns 847.16 ns 848.41 ns]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) low severe
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 7 byte comps", Std Components Next Back
+                        time:   [2.2519 µs 2.2549 µs 2.2580 µs]
+
+"Rel Short Path with 7 byte comps", Std As Path Iter
+                        time:   [1.3506 µs 1.3521 µs 1.3539 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 7 byte comps", Std Components Equality
+                        time:   [447.67 ns 448.33 ns 449.22 ns]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 7 byte comps", Std Components Equality Fail from Start
+                        time:   [4.9119 µs 4.9177 µs 4.9239 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 7 byte comps", Std Components Equality Fail from Mid
+                        time:   [4.8737 µs 4.8796 µs 4.8858 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 7 byte comps", Std Components Equality Fail from End
+                        time:   [4.8438 µs 4.8475 µs 4.8512 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 7 byte comps", Std Components Comparison Succeed
+                        time:   [1.1862 µs 1.1886 µs 1.1911 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Short Path with 7 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.4097 µs 2.4197 µs 2.4311 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 7 byte comps", Std Components Comparison Fail from Mid
+                        time:   [2.5935 µs 2.5978 µs 2.6026 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+
+"Rel Short Path with 7 byte comps", Std Components Comparison Fail from End
+                        time:   [2.2382 µs 2.2417 µs 2.2454 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Abs Short Path with 7 byte comps", Components Next Rewrite
+                        time:   [391.40 ns 405.79 ns 419.24 ns]
+
+"Abs Short Path with 7 byte comps", Components Next Back Rewrite
+                        time:   [411.99 ns 415.18 ns 418.41 ns]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Abs Short Path with 7 byte comps", As Path Iter Rewrite
+                        time:   [580.15 ns 593.99 ns 607.44 ns]
+Found 16 outliers among 100 measurements (16.00%)
+  9 (9.00%) low severe
+  6 (6.00%) low mild
+  1 (1.00%) high mild
+
+"Abs Short Path with 7 byte comps", Components Equality Succeed
+                        time:   [215.97 ns 217.08 ns 218.30 ns]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 7 byte comps", Components Equality Fail from Start
+                        time:   [1.2475 µs 1.2523 µs 1.2584 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 7 byte comps", Components Equality Fail from Mid
+                        time:   [1.8019 µs 1.8067 µs 1.8128 µs]
+Found 21 outliers among 100 measurements (21.00%)
+  4 (4.00%) low severe
+  3 (3.00%) low mild
+  7 (7.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Short Path with 7 byte comps", Components Equality Fail from End
+                        time:   [175.87 ns 176.22 ns 176.61 ns]
+Found 9 outliers among 100 measurements (9.00%)
+  6 (6.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 7 byte comps", Components Comparison Succeed
+                        time:   [255.60 ns 257.56 ns 259.12 ns]
+
+"Abs Short Path with 7 byte comps", Components Comparison Fail from Start
+                        time:   [174.35 ns 174.55 ns 174.81 ns]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 7 byte comps", Components Comparison Fail from Mid
+                        time:   [255.71 ns 257.29 ns 259.05 ns]
+Found 10 outliers among 100 measurements (10.00%)
+  2 (2.00%) low mild
+  6 (6.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 7 byte comps", Components Comparison Fail from End
+                        time:   [597.72 ns 598.41 ns 599.12 ns]
+Found 14 outliers among 100 measurements (14.00%)
+  1 (1.00%) low mild
+  7 (7.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Short Path with 7 byte comps", Std Components Next
+                        time:   [975.85 ns 978.68 ns 980.94 ns]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 7 byte comps", Std Components Next Back
+                        time:   [2.3913 µs 2.3949 µs 2.3987 µs]
+
+"Abs Short Path with 7 byte comps", Std As Path Iter
+                        time:   [2.6561 µs 2.6666 µs 2.6779 µs]
+
+"Abs Short Path with 7 byte comps", Std Components Equality
+                        time:   [461.61 ns 469.64 ns 477.28 ns]
+Found 18 outliers among 100 measurements (18.00%)
+  18 (18.00%) high severe
+
+"Abs Short Path with 7 byte comps", Std Components Equality Fail from Start
+                        time:   [6.0861 µs 6.0919 µs 6.0985 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  4 (4.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 7 byte comps", Std Components Equality Fail from Mid
+                        time:   [4.7550 µs 4.7657 µs 4.7813 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) low severe
+  3 (3.00%) low mild
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 7 byte comps", Std Components Equality Fail from End
+                        time:   [4.6885 µs 4.6929 µs 4.6977 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  3 (3.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 7 byte comps", Std Components Comparison Succeed
+                        time:   [1.2276 µs 1.2299 µs 1.2324 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 7 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.3080 µs 2.3113 µs 2.3146 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 7 byte comps", Std Components Comparison Fail from Mid
+                        time:   [2.6365 µs 2.6431 µs 2.6524 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Short Path with 7 byte comps", Std Components Comparison Fail from End
+                        time:   [2.1887 µs 2.1925 µs 2.1964 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  6 (6.00%) high mild
+
+"Rel Short Path with 15 byte comps", Components Next Rewrite
+                        time:   [523.32 ns 540.77 ns 559.24 ns]
+
+"Rel Short Path with 15 byte comps", Components Next Back Rewrite
+                        time:   [516.26 ns 516.73 ns 517.23 ns]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 15 byte comps", As Path Iter Rewrite
+                        time:   [500.59 ns 518.93 ns 538.49 ns]
+Found 12 outliers among 100 measurements (12.00%)
+  12 (12.00%) high mild
+
+"Rel Short Path with 15 byte comps", Components Equality Succeed
+                        time:   [212.38 ns 212.67 ns 212.98 ns]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 15 byte comps", Components Equality Fail from Start
+                        time:   [2.9992 µs 3.0064 µs 3.0143 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 15 byte comps", Components Equality Fail from Mid
+                        time:   [2.3185 µs 2.3225 µs 2.3266 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 15 byte comps", Components Equality Fail from End
+                        time:   [175.85 ns 176.07 ns 176.32 ns]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 15 byte comps", Components Comparison Succeed
+                        time:   [241.27 ns 241.62 ns 242.08 ns]
+Found 20 outliers among 100 measurements (20.00%)
+  5 (5.00%) high mild
+  15 (15.00%) high severe
+
+"Rel Short Path with 15 byte comps", Components Comparison Fail from Start
+                        time:   [174.52 ns 174.67 ns 174.84 ns]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 15 byte comps", Components Comparison Fail from Mid
+                        time:   [346.06 ns 347.89 ns 349.84 ns]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 15 byte comps", Components Comparison Fail from End
+                        time:   [745.52 ns 746.27 ns 747.21 ns]
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 15 byte comps", Std Components Next
+                        time:   [1.0980 µs 1.1015 µs 1.1051 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low severe
+
+"Rel Short Path with 15 byte comps", Std Components Next Back
+                        time:   [2.5589 µs 2.5646 µs 2.5711 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  6 (6.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 15 byte comps", Std As Path Iter
+                        time:   [1.6997 µs 1.7019 µs 1.7042 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) low severe
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+
+"Rel Short Path with 15 byte comps", Std Components Equality
+                        time:   [484.42 ns 491.68 ns 498.67 ns]
+
+"Rel Short Path with 15 byte comps", Std Components Equality Fail from Start
+                        time:   [5.1312 µs 5.1344 µs 5.1378 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 15 byte comps", Std Components Equality Fail from Mid
+                        time:   [5.0174 µs 5.0224 µs 5.0277 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Short Path with 15 byte comps", Std Components Equality Fail from End
+                        time:   [4.9627 µs 4.9686 µs 4.9752 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 15 byte comps", Std Components Comparison Succeed
+                        time:   [1.3360 µs 1.3409 µs 1.3465 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 15 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.5353 µs 2.5471 µs 2.5635 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  2 (2.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Short Path with 15 byte comps", Std Components Comparison Fail from Mid
+                        time:   [3.0937 µs 3.1003 µs 3.1071 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Short Path with 15 byte comps", Std Components Comparison Fail from End
+                        time:   [2.3802 µs 2.3902 µs 2.4003 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 15 byte comps", Components Next Rewrite
+                        time:   [606.08 ns 624.06 ns 644.25 ns]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Abs Short Path with 15 byte comps", Components Next Back Rewrite
+                        time:   [684.97 ns 694.50 ns 704.33 ns]
+
+"Abs Short Path with 15 byte comps", As Path Iter Rewrite
+                        time:   [777.98 ns 801.48 ns 825.19 ns]
+
+"Abs Short Path with 15 byte comps", Components Equality Succeed
+                        time:   [213.28 ns 213.43 ns 213.60 ns]
+Found 13 outliers among 100 measurements (13.00%)
+  6 (6.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Short Path with 15 byte comps", Components Equality Fail from Start
+                        time:   [1.4763 µs 1.4778 µs 1.4796 µs]
+Found 17 outliers among 100 measurements (17.00%)
+  12 (12.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 15 byte comps", Components Equality Fail from Mid
+                        time:   [2.5316 µs 2.5424 µs 2.5528 µs]
+
+"Abs Short Path with 15 byte comps", Components Equality Fail from End
+                        time:   [176.04 ns 176.46 ns 176.91 ns]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 15 byte comps", Components Comparison Succeed
+                        time:   [239.53 ns 240.92 ns 242.56 ns]
+Found 14 outliers among 100 measurements (14.00%)
+  1 (1.00%) high mild
+  13 (13.00%) high severe
+
+"Abs Short Path with 15 byte comps", Components Comparison Fail from Start
+                        time:   [176.14 ns 176.38 ns 176.66 ns]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 15 byte comps", Components Comparison Fail from Mid
+                        time:   [345.50 ns 347.10 ns 348.81 ns]
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 15 byte comps", Components Comparison Fail from End
+                        time:   [783.20 ns 787.79 ns 792.50 ns]
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high mild
+
+"Abs Short Path with 15 byte comps", Std Components Next
+                        time:   [1.2425 µs 1.2482 µs 1.2534 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) low severe
+  5 (5.00%) low mild
+
+"Abs Short Path with 15 byte comps", Std Components Next Back
+                        time:   [2.7659 µs 2.7686 µs 2.7713 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+
+"Abs Short Path with 15 byte comps", Std As Path Iter
+                        time:   [3.3515 µs 3.3591 µs 3.3696 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  8 (8.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 15 byte comps", Std Components Equality
+                        time:   [462.48 ns 468.78 ns 476.51 ns]
+
+"Abs Short Path with 15 byte comps", Std Components Equality Fail from Start
+                        time:   [6.3214 µs 6.3396 µs 6.3616 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  3 (3.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Short Path with 15 byte comps", Std Components Equality Fail from Mid
+                        time:   [4.9297 µs 4.9359 µs 4.9428 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Abs Short Path with 15 byte comps", Std Components Equality Fail from End
+                        time:   [4.8053 µs 4.8096 µs 4.8138 µs]
+
+"Abs Short Path with 15 byte comps", Std Components Comparison Succeed
+                        time:   [1.3963 µs 1.3983 µs 1.4003 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Abs Short Path with 15 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.7025 µs 2.7055 µs 2.7093 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  6 (6.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Short Path with 15 byte comps", Std Components Comparison Fail from Mid
+                        time:   [3.3346 µs 3.3399 µs 3.3454 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  1 (1.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Short Path with 15 byte comps", Std Components Comparison Fail from End
+                        time:   [2.3773 µs 2.3838 µs 2.3907 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+
+"Rel Short Path with 31 byte comps", Components Next Rewrite
+                        time:   [842.47 ns 888.34 ns 938.97 ns]
+Found 21 outliers among 100 measurements (21.00%)
+  1 (1.00%) high mild
+  20 (20.00%) high severe
+
+"Rel Short Path with 31 byte comps", Components Next Back Rewrite
+                        time:   [896.37 ns 897.36 ns 898.69 ns]
+Found 19 outliers among 100 measurements (19.00%)
+  4 (4.00%) high mild
+  15 (15.00%) high severe
+
+"Rel Short Path with 31 byte comps", As Path Iter Rewrite
+                        time:   [942.63 ns 965.31 ns 993.02 ns]
+Found 16 outliers among 100 measurements (16.00%)
+  7 (7.00%) high mild
+  9 (9.00%) high severe
+
+"Rel Short Path with 31 byte comps", Components Equality Succeed
+                        time:   [235.61 ns 235.71 ns 235.82 ns]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Short Path with 31 byte comps", Components Equality Fail from Start
+                        time:   [5.0647 µs 5.0810 µs 5.0984 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 31 byte comps", Components Equality Fail from Mid
+                        time:   [3.6112 µs 3.6229 µs 3.6368 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  4 (4.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 31 byte comps", Components Equality Fail from End
+                        time:   [174.30 ns 174.66 ns 175.07 ns]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 31 byte comps", Components Comparison Succeed
+                        time:   [260.03 ns 261.03 ns 262.06 ns]
+Found 12 outliers among 100 measurements (12.00%)
+  7 (7.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Short Path with 31 byte comps", Components Comparison Fail from Start
+                        time:   [176.19 ns 176.30 ns 176.41 ns]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 31 byte comps", Components Comparison Fail from Mid
+                        time:   [571.16 ns 576.35 ns 581.94 ns]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+
+"Rel Short Path with 31 byte comps", Components Comparison Fail from End
+                        time:   [1.1584 µs 1.1729 µs 1.1895 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  6 (6.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 31 byte comps", Std Components Next
+                        time:   [1.4587 µs 1.4707 µs 1.4829 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 31 byte comps", Std Components Next Back
+                        time:   [3.1619 µs 3.1704 µs 3.1827 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  2 (2.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Short Path with 31 byte comps", Std As Path Iter
+                        time:   [2.0457 µs 2.0496 µs 2.0532 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  1 (1.00%) low severe
+  9 (9.00%) low mild
+  3 (3.00%) high mild
+
+"Rel Short Path with 31 byte comps", Std Components Equality
+                        time:   [470.62 ns 471.76 ns 473.32 ns]
+Found 14 outliers among 100 measurements (14.00%)
+  1 (1.00%) high mild
+  13 (13.00%) high severe
+
+"Rel Short Path with 31 byte comps", Std Components Equality Fail from Start
+                        time:   [5.5369 µs 5.5470 µs 5.5595 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 31 byte comps", Std Components Equality Fail from Mid
+                        time:   [5.3292 µs 5.3528 µs 5.3828 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  1 (1.00%) high mild
+  9 (9.00%) high severe
+
+"Rel Short Path with 31 byte comps", Std Components Equality Fail from End
+                        time:   [5.1579 µs 5.1818 µs 5.2125 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  3 (3.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Short Path with 31 byte comps", Std Components Comparison Succeed
+                        time:   [1.6259 µs 1.6304 µs 1.6353 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  6 (6.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 31 byte comps", Std Components Comparison Fail from Start
+                        time:   [3.0698 µs 3.0795 µs 3.0919 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 31 byte comps", Std Components Comparison Fail from Mid
+                        time:   [4.0672 µs 4.0798 µs 4.0936 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) low mild
+  5 (5.00%) high mild
+
+"Rel Short Path with 31 byte comps", Std Components Comparison Fail from End
+                        time:   [2.6806 µs 2.6890 µs 2.6997 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  3 (3.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 31 byte comps", Components Next Rewrite
+                        time:   [945.80 ns 966.42 ns 988.17 ns]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 31 byte comps", Components Next Back Rewrite
+                        time:   [1.0292 µs 1.0409 µs 1.0535 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 31 byte comps", As Path Iter Rewrite
+                        time:   [1.0975 µs 1.1225 µs 1.1539 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  4 (4.00%) high mild
+  9 (9.00%) high severe
+
+"Abs Short Path with 31 byte comps", Components Equality Succeed
+                        time:   [232.93 ns 233.02 ns 233.13 ns]
+Found 15 outliers among 100 measurements (15.00%)
+  6 (6.00%) high mild
+  9 (9.00%) high severe
+
+"Abs Short Path with 31 byte comps", Components Equality Fail from Start
+                        time:   [2.2154 µs 2.2224 µs 2.2304 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  3 (3.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 31 byte comps", Components Equality Fail from Mid
+                        time:   [3.7903 µs 3.8091 µs 3.8284 µs]
+
+"Abs Short Path with 31 byte comps", Components Equality Fail from End
+                        time:   [177.08 ns 177.51 ns 178.07 ns]
+Found 13 outliers among 100 measurements (13.00%)
+  3 (3.00%) high mild
+  10 (10.00%) high severe
+
+"Abs Short Path with 31 byte comps", Components Comparison Succeed
+                        time:   [257.69 ns 257.86 ns 258.11 ns]
+Found 9 outliers among 100 measurements (9.00%)
+  3 (3.00%) low mild
+  3 (3.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 31 byte comps", Components Comparison Fail from Start
+                        time:   [173.99 ns 174.05 ns 174.11 ns]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 31 byte comps", Components Comparison Fail from Mid
+                        time:   [574.62 ns 579.27 ns 584.05 ns]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Abs Short Path with 31 byte comps", Components Comparison Fail from End
+                        time:   [1.1732 µs 1.1780 µs 1.1820 µs]
+
+"Abs Short Path with 31 byte comps", Std Components Next
+                        time:   [1.4873 µs 1.4926 µs 1.4979 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 31 byte comps", Std Components Next Back
+                        time:   [2.9846 µs 2.9864 µs 2.9884 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Abs Short Path with 31 byte comps", Std As Path Iter
+                        time:   [4.4062 µs 4.4127 µs 4.4199 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) low mild
+  1 (1.00%) high mild
+
+"Abs Short Path with 31 byte comps", Std Components Equality
+                        time:   [471.88 ns 472.09 ns 472.39 ns]
+Found 16 outliers among 100 measurements (16.00%)
+  13 (13.00%) low mild
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 31 byte comps", Std Components Equality Fail from Start
+                        time:   [6.7594 µs 6.7663 µs 6.7742 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  10 (10.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 31 byte comps", Std Components Equality Fail from Mid
+                        time:   [5.2005 µs 5.2059 µs 5.2116 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 31 byte comps", Std Components Equality Fail from End
+                        time:   [4.9932 µs 4.9979 µs 5.0030 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+
+"Abs Short Path with 31 byte comps", Std Components Comparison Succeed
+                        time:   [1.6433 µs 1.6468 µs 1.6508 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  6 (6.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 31 byte comps", Std Components Comparison Fail from Start
+                        time:   [3.0898 µs 3.1028 µs 3.1191 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Short Path with 31 byte comps", Std Components Comparison Fail from Mid
+                        time:   [4.3130 µs 4.3280 µs 4.3441 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 31 byte comps", Std Components Comparison Fail from End
+                        time:   [2.7543 µs 2.7591 µs 2.7641 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Short Path with 63 byte comps", Components Next Rewrite
+                        time:   [1.9015 µs 1.9252 µs 1.9527 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  6 (6.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 63 byte comps", Components Next Back Rewrite
+                        time:   [1.5575 µs 1.5578 µs 1.5581 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  4 (4.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Short Path with 63 byte comps", As Path Iter Rewrite
+                        time:   [1.6153 µs 1.6343 µs 1.6548 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 63 byte comps", Components Equality Succeed
+                        time:   [232.93 ns 233.15 ns 233.45 ns]
+Found 18 outliers among 100 measurements (18.00%)
+  6 (6.00%) high mild
+  12 (12.00%) high severe
+
+"Rel Short Path with 63 byte comps", Components Equality Fail from Start
+                        time:   [10.220 µs 10.275 µs 10.337 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Short Path with 63 byte comps", Components Equality Fail from Mid
+                        time:   [6.2329 µs 6.2605 µs 6.2905 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  1 (1.00%) low severe
+  2 (2.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Short Path with 63 byte comps", Components Equality Fail from End
+                        time:   [176.70 ns 178.45 ns 180.53 ns]
+Found 12 outliers among 100 measurements (12.00%)
+  3 (3.00%) high mild
+  9 (9.00%) high severe
+
+"Rel Short Path with 63 byte comps", Components Comparison Succeed
+                        time:   [261.31 ns 263.34 ns 265.83 ns]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+
+"Rel Short Path with 63 byte comps", Components Comparison Fail from Start
+                        time:   [178.23 ns 179.58 ns 181.15 ns]
+Found 10 outliers among 100 measurements (10.00%)
+  6 (6.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Short Path with 63 byte comps", Components Comparison Fail from Mid
+                        time:   [925.10 ns 931.15 ns 938.01 ns]
+Found 9 outliers among 100 measurements (9.00%)
+  3 (3.00%) low mild
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 63 byte comps", Components Comparison Fail from End
+                        time:   [1.8256 µs 1.8385 µs 1.8553 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  4 (4.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Short Path with 63 byte comps", Std Components Next
+                        time:   [2.6991 µs 2.7271 µs 2.7585 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 63 byte comps", Std Components Next Back
+                        time:   [3.9019 µs 3.9234 µs 3.9525 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  3 (3.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 63 byte comps", Std As Path Iter
+                        time:   [3.4525 µs 3.4623 µs 3.4724 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 63 byte comps", Std Components Equality
+                        time:   [524.33 ns 530.92 ns 536.57 ns]
+Found 20 outliers among 100 measurements (20.00%)
+  18 (18.00%) low severe
+  2 (2.00%) high severe
+
+"Rel Short Path with 63 byte comps", Std Components Equality Fail from Start
+                        time:   [7.9899 µs 8.0611 µs 8.1419 µs]
+Found 21 outliers among 100 measurements (21.00%)
+  9 (9.00%) low mild
+  1 (1.00%) high mild
+  11 (11.00%) high severe
+
+"Rel Short Path with 63 byte comps", Std Components Equality Fail from Mid
+                        time:   [6.6944 µs 6.7329 µs 6.7806 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  6 (6.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Short Path with 63 byte comps", Std Components Equality Fail from End
+                        time:   [6.3318 µs 6.3707 µs 6.4260 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  1 (1.00%) low severe
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Short Path with 63 byte comps", Std Components Comparison Succeed
+                        time:   [2.3154 µs 2.3225 µs 2.3314 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  2 (2.00%) high mild
+  13 (13.00%) high severe
+
+"Rel Short Path with 63 byte comps", Std Components Comparison Fail from Start
+                        time:   [4.4233 µs 4.4502 µs 4.4833 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Short Path with 63 byte comps", Std Components Comparison Fail from Mid
+                        time:   [6.8191 µs 6.8306 µs 6.8429 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 63 byte comps", Std Components Comparison Fail from End
+                        time:   [3.4425 µs 3.4748 µs 3.5153 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  5 (5.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Short Path with 63 byte comps", Components Next Rewrite
+                        time:   [2.1296 µs 2.1539 µs 2.1784 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 63 byte comps", Components Next Back Rewrite
+                        time:   [2.2656 µs 2.3157 µs 2.3689 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+
+"Abs Short Path with 63 byte comps", As Path Iter Rewrite
+                        time:   [1.8150 µs 1.8390 µs 1.8655 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 63 byte comps", Components Equality Succeed
+                        time:   [262.21 ns 263.50 ns 265.23 ns]
+Found 10 outliers among 100 measurements (10.00%)
+  6 (6.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Short Path with 63 byte comps", Components Equality Fail from Start
+                        time:   [3.6163 µs 3.6342 µs 3.6548 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  5 (5.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Short Path with 63 byte comps", Components Equality Fail from Mid
+                        time:   [6.4663 µs 6.5014 µs 6.5386 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 63 byte comps", Components Equality Fail from End
+                        time:   [177.70 ns 178.10 ns 178.58 ns]
+Found 9 outliers among 100 measurements (9.00%)
+  4 (4.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 63 byte comps", Components Comparison Succeed
+                        time:   [286.27 ns 287.19 ns 288.32 ns]
+Found 11 outliers among 100 measurements (11.00%)
+  3 (3.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Short Path with 63 byte comps", Components Comparison Fail from Start
+                        time:   [178.60 ns 179.62 ns 180.89 ns]
+Found 16 outliers among 100 measurements (16.00%)
+  2 (2.00%) high mild
+  14 (14.00%) high severe
+
+"Abs Short Path with 63 byte comps", Components Comparison Fail from Mid
+                        time:   [912.30 ns 919.18 ns 927.34 ns]
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 63 byte comps", Components Comparison Fail from End
+                        time:   [1.8552 µs 1.8608 µs 1.8671 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  6 (6.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Short Path with 63 byte comps", Std Components Next
+                        time:   [2.3189 µs 2.3425 µs 2.3674 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  8 (8.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 63 byte comps", Std Components Next Back
+                        time:   [3.8254 µs 3.8683 µs 3.9168 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 63 byte comps", Std As Path Iter
+                        time:   [7.4074 µs 7.4535 µs 7.5147 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 63 byte comps", Std Components Equality
+                        time:   [507.13 ns 508.68 ns 510.71 ns]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+
+"Abs Short Path with 63 byte comps", Std Components Equality Fail from Start
+                        time:   [8.8969 µs 8.9211 µs 8.9490 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  5 (5.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 63 byte comps", Std Components Equality Fail from Mid
+                        time:   [6.5593 µs 6.5915 µs 6.6324 µs]
+Found 16 outliers among 100 measurements (16.00%)
+  1 (1.00%) low mild
+  4 (4.00%) high mild
+  11 (11.00%) high severe
+
+"Abs Short Path with 63 byte comps", Std Components Equality Fail from End
+                        time:   [6.1926 µs 6.2179 µs 6.2494 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) low mild
+  4 (4.00%) high severe
+
+"Abs Short Path with 63 byte comps", Std Components Comparison Succeed
+                        time:   [2.3530 µs 2.3633 µs 2.3755 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  3 (3.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 63 byte comps", Std Components Comparison Fail from Start
+                        time:   [4.5369 µs 4.5510 µs 4.5678 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  5 (5.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Short Path with 63 byte comps", Std Components Comparison Fail from Mid
+                        time:   [6.2061 µs 6.2328 µs 6.2655 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 63 byte comps", Std Components Comparison Fail from End
+                        time:   [3.4492 µs 3.4720 µs 3.4983 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  6 (6.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Short Path with 127 byte comps", Components Next Rewrite
+                        time:   [3.2168 µs 3.2518 µs 3.2900 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  6 (6.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 127 byte comps", Components Next Back Rewrite
+                        time:   [3.3111 µs 3.3354 µs 3.3643 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  7 (7.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Short Path with 127 byte comps", As Path Iter Rewrite
+                        time:   [3.2993 µs 3.3276 µs 3.3623 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 127 byte comps", Components Equality Succeed
+                        time:   [261.82 ns 263.35 ns 265.19 ns]
+Found 9 outliers among 100 measurements (9.00%)
+  8 (8.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 127 byte comps", Components Equality Fail from Start
+                        time:   [19.359 µs 19.435 µs 19.516 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  1 (1.00%) low severe
+  3 (3.00%) low mild
+  5 (5.00%) high mild
+
+"Rel Short Path with 127 byte comps", Components Equality Fail from Mid
+                        time:   [13.420 µs 13.562 µs 13.732 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  2 (2.00%) low severe
+  2 (2.00%) low mild
+  3 (3.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Short Path with 127 byte comps", Components Equality Fail from End
+                        time:   [182.87 ns 184.46 ns 186.39 ns]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 127 byte comps", Components Comparison Succeed
+                        time:   [288.37 ns 290.89 ns 293.71 ns]
+Found 11 outliers among 100 measurements (11.00%)
+  7 (7.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Short Path with 127 byte comps", Components Comparison Fail from Start
+                        time:   [184.89 ns 187.82 ns 190.67 ns]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 127 byte comps", Components Comparison Fail from Mid
+                        time:   [2.1818 µs 2.1918 µs 2.2028 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 127 byte comps", Components Comparison Fail from End
+                        time:   [3.5924 µs 3.6074 µs 3.6242 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 127 byte comps", Std Components Next
+                        time:   [4.0534 µs 4.0898 µs 4.1323 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  6 (6.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Short Path with 127 byte comps", Std Components Next Back
+                        time:   [5.6022 µs 5.6201 µs 5.6405 µs]
+Found 19 outliers among 100 measurements (19.00%)
+  5 (5.00%) high mild
+  14 (14.00%) high severe
+
+"Rel Short Path with 127 byte comps", Std As Path Iter
+                        time:   [4.9266 µs 4.9772 µs 5.0436 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 127 byte comps", Std Components Equality
+                        time:   [524.06 ns 531.54 ns 539.78 ns]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 127 byte comps", Std Components Equality Fail from Start
+                        time:   [10.484 µs 10.566 µs 10.660 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 127 byte comps", Std Components Equality Fail from Mid
+                        time:   [9.0654 µs 9.1555 µs 9.2526 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  3 (3.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Short Path with 127 byte comps", Std Components Equality Fail from End
+                        time:   [8.3492 µs 8.4619 µs 8.5804 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Short Path with 127 byte comps", Std Components Comparison Succeed
+                        time:   [4.1781 µs 4.1859 µs 4.1941 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+
+"Rel Short Path with 127 byte comps", Std Components Comparison Fail from Start
+                        time:   [5.8007 µs 5.8494 µs 5.9095 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  7 (7.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 127 byte comps", Std Components Comparison Fail from Mid
+                        time:   [11.128 µs 11.176 µs 11.232 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  7 (7.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 127 byte comps", Std Components Comparison Fail from End
+                        time:   [5.1883 µs 5.2176 µs 5.2516 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  7 (7.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 127 byte comps", Components Next Rewrite
+                        time:   [3.3852 µs 3.4247 µs 3.4744 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  3 (3.00%) high mild
+  9 (9.00%) high severe
+
+"Abs Short Path with 127 byte comps", Components Next Back Rewrite
+                        time:   [3.4767 µs 3.5046 µs 3.5361 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  7 (7.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 127 byte comps", As Path Iter Rewrite
+                        time:   [3.5572 µs 3.5932 µs 3.6332 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 127 byte comps", Components Equality Succeed
+                        time:   [266.41 ns 267.36 ns 268.51 ns]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 127 byte comps", Components Equality Fail from Start
+                        time:   [6.6693 µs 6.7022 µs 6.7384 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  8 (8.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 127 byte comps", Components Equality Fail from Mid
+                        time:   [13.675 µs 13.816 µs 13.972 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  8 (8.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Short Path with 127 byte comps", Components Equality Fail from End
+                        time:   [178.95 ns 180.54 ns 182.36 ns]
+Found 9 outliers among 100 measurements (9.00%)
+  1 (1.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Short Path with 127 byte comps", Components Comparison Succeed
+                        time:   [351.50 ns 353.30 ns 355.52 ns]
+Found 12 outliers among 100 measurements (12.00%)
+  7 (7.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 127 byte comps", Components Comparison Fail from Start
+                        time:   [178.69 ns 180.08 ns 181.69 ns]
+Found 14 outliers among 100 measurements (14.00%)
+  6 (6.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Short Path with 127 byte comps", Components Comparison Fail from Mid
+                        time:   [2.1452 µs 2.1571 µs 2.1705 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  5 (5.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Short Path with 127 byte comps", Components Comparison Fail from End
+                        time:   [3.7038 µs 3.7429 µs 3.7857 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+
+"Abs Short Path with 127 byte comps", Std Components Next
+                        time:   [4.1953 µs 4.2226 µs 4.2546 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 127 byte comps", Std Components Next Back
+                        time:   [5.4915 µs 5.5146 µs 5.5408 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 127 byte comps", Std As Path Iter
+                        time:   [12.222 µs 12.244 µs 12.265 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  3 (3.00%) low mild
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 127 byte comps", Std Components Equality
+                        time:   [671.18 ns 673.21 ns 676.17 ns]
+Found 11 outliers among 100 measurements (11.00%)
+  3 (3.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Short Path with 127 byte comps", Std Components Equality Fail from Start
+                        time:   [11.664 µs 11.687 µs 11.711 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  2 (2.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Short Path with 127 byte comps", Std Components Equality Fail from Mid
+                        time:   [8.8746 µs 8.8958 µs 8.9211 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 127 byte comps", Std Components Equality Fail from End
+                        time:   [7.8135 µs 7.8622 µs 7.9191 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  7 (7.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 127 byte comps", Std Components Comparison Succeed
+                        time:   [4.2448 µs 4.2716 µs 4.3038 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  8 (8.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 127 byte comps", Std Components Comparison Fail from Start
+                        time:   [5.9981 µs 6.0576 µs 6.1273 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  3 (3.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Short Path with 127 byte comps", Std Components Comparison Fail from Mid
+                        time:   [11.476 µs 11.583 µs 11.705 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  6 (6.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Short Path with 127 byte comps", Std Components Comparison Fail from End
+                        time:   [5.1663 µs 5.1813 µs 5.1999 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Short Path with 255 byte comps", Components Next Rewrite
+                        time:   [6.0285 µs 6.0967 µs 6.1689 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 255 byte comps", Components Next Back Rewrite
+                        time:   [6.0417 µs 6.0934 µs 6.1508 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  5 (5.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Short Path with 255 byte comps", As Path Iter Rewrite
+                        time:   [6.0396 µs 6.0975 µs 6.1670 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 255 byte comps", Components Equality Succeed
+                        time:   [262.41 ns 263.27 ns 264.45 ns]
+Found 9 outliers among 100 measurements (9.00%)
+  4 (4.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Short Path with 255 byte comps", Components Equality Fail from Start
+                        time:   [35.892 µs 36.050 µs 36.244 µs]
+Found 16 outliers among 100 measurements (16.00%)
+  2 (2.00%) high mild
+  14 (14.00%) high severe
+
+"Rel Short Path with 255 byte comps", Components Equality Fail from Mid
+                        time:   [24.498 µs 24.838 µs 25.214 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  6 (6.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 255 byte comps", Components Equality Fail from End
+                        time:   [177.42 ns 177.95 ns 178.59 ns]
+Found 13 outliers among 100 measurements (13.00%)
+  6 (6.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Short Path with 255 byte comps", Components Comparison Succeed
+                        time:   [349.96 ns 351.78 ns 354.09 ns]
+Found 16 outliers among 100 measurements (16.00%)
+  4 (4.00%) high mild
+  12 (12.00%) high severe
+
+"Rel Short Path with 255 byte comps", Components Comparison Fail from Start
+                        time:   [179.34 ns 180.66 ns 182.24 ns]
+Found 12 outliers among 100 measurements (12.00%)
+  5 (5.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Short Path with 255 byte comps", Components Comparison Fail from Mid
+                        time:   [3.4359 µs 3.4492 µs 3.4636 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  3 (3.00%) high mild
+  11 (11.00%) high severe
+
+"Rel Short Path with 255 byte comps", Components Comparison Fail from End
+                        time:   [6.3419 µs 6.3924 µs 6.4484 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 255 byte comps", Std Components Next
+                        time:   [6.7916 µs 6.8203 µs 6.8519 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 255 byte comps", Std Components Next Back
+                        time:   [8.3052 µs 8.3736 µs 8.4570 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Short Path with 255 byte comps", Std As Path Iter
+                        time:   [7.5816 µs 7.6396 µs 7.7024 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 255 byte comps", Std Components Equality
+                        time:   [615.78 ns 616.45 ns 617.24 ns]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Short Path with 255 byte comps", Std Components Equality Fail from Start
+                        time:   [15.896 µs 16.049 µs 16.230 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  4 (4.00%) high mild
+  9 (9.00%) high severe
+
+"Rel Short Path with 255 byte comps", Std Components Equality Fail from Mid
+                        time:   [13.230 µs 13.375 µs 13.523 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  4 (4.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Short Path with 255 byte comps", Std Components Equality Fail from End
+                        time:   [11.181 µs 11.299 µs 11.449 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  7 (7.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 255 byte comps", Std Components Comparison Succeed
+                        time:   [6.8656 µs 6.8834 µs 6.9055 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  2 (2.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Short Path with 255 byte comps", Std Components Comparison Fail from Start
+                        time:   [8.4954 µs 8.5270 µs 8.5603 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Short Path with 255 byte comps", Std Components Comparison Fail from Mid
+                        time:   [18.533 µs 18.673 µs 18.835 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  9 (9.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Short Path with 255 byte comps", Std Components Comparison Fail from End
+                        time:   [7.9888 µs 8.0659 µs 8.1595 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  5 (5.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Short Path with 255 byte comps", Components Next Rewrite
+                        time:   [6.2441 µs 6.2915 µs 6.3451 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Short Path with 255 byte comps", Components Next Back Rewrite
+                        time:   [6.2106 µs 6.2694 µs 6.3390 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  3 (3.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 255 byte comps", As Path Iter Rewrite
+                        time:   [6.1965 µs 6.2488 µs 6.3162 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  6 (6.00%) high mild
+  9 (9.00%) high severe
+
+"Abs Short Path with 255 byte comps", Components Equality Succeed
+                        time:   [308.05 ns 308.97 ns 310.05 ns]
+Found 16 outliers among 100 measurements (16.00%)
+  6 (6.00%) high mild
+  10 (10.00%) high severe
+
+"Abs Short Path with 255 byte comps", Components Equality Fail from Start
+                        time:   [12.154 µs 12.238 µs 12.340 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  2 (2.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Short Path with 255 byte comps", Components Equality Fail from Mid
+                        time:   [23.832 µs 23.903 µs 23.981 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  7 (7.00%) high mild
+
+"Abs Short Path with 255 byte comps", Components Equality Fail from End
+                        time:   [181.03 ns 181.97 ns 182.98 ns]
+Found 14 outliers among 100 measurements (14.00%)
+  7 (7.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Short Path with 255 byte comps", Components Comparison Succeed
+                        time:   [392.94 ns 393.99 ns 395.25 ns]
+Found 11 outliers among 100 measurements (11.00%)
+  6 (6.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Short Path with 255 byte comps", Components Comparison Fail from Start
+                        time:   [177.36 ns 178.33 ns 179.66 ns]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 255 byte comps", Components Comparison Fail from Mid
+                        time:   [3.4434 µs 3.4632 µs 3.4847 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 255 byte comps", Components Comparison Fail from End
+                        time:   [6.2177 µs 6.2400 µs 6.2656 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  8 (8.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Short Path with 255 byte comps", Std Components Next
+                        time:   [6.8700 µs 6.9088 µs 6.9597 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 255 byte comps", Std Components Next Back
+                        time:   [8.1772 µs 8.2776 µs 8.3754 µs]
+Found 18 outliers among 100 measurements (18.00%)
+  3 (3.00%) high mild
+  15 (15.00%) high severe
+
+"Abs Short Path with 255 byte comps", Std As Path Iter
+                        time:   [20.970 µs 21.266 µs 21.607 µs]
+
+"Abs Short Path with 255 byte comps", Std Components Equality
+                        time:   [641.78 ns 643.59 ns 645.71 ns]
+Found 11 outliers among 100 measurements (11.00%)
+  3 (3.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Short Path with 255 byte comps", Std Components Equality Fail from Start
+                        time:   [17.040 µs 17.135 µs 17.250 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 255 byte comps", Std Components Equality Fail from Mid
+                        time:   [12.956 µs 12.996 µs 13.041 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 255 byte comps", Std Components Equality Fail from End
+                        time:   [10.766 µs 10.858 µs 10.965 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 255 byte comps", Std Components Comparison Succeed
+                        time:   [6.8559 µs 6.8820 µs 6.9132 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  7 (7.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Short Path with 255 byte comps", Std Components Comparison Fail from Start
+                        time:   [8.5432 µs 8.5702 µs 8.6009 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Short Path with 255 byte comps", Std Components Comparison Fail from Mid
+                        time:   [18.470 µs 18.592 µs 18.728 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  3 (3.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Short Path with 255 byte comps", Std Components Comparison Fail from End
+                        time:   [7.7731 µs 7.8012 µs 7.8384 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  8 (8.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Long Path with 1 byte comps", Components Next Rewrite
+                        time:   [343.43 µs 344.26 µs 345.32 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  2 (2.00%) low mild
+  5 (5.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 1 byte comps", Components Next Back Rewrite
+                        time:   [343.84 µs 346.09 µs 348.60 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  4 (4.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Long Path with 1 byte comps", As Path Iter Rewrite
+                        time:   [600.02 µs 601.46 µs 603.21 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 1 byte comps", Components Equality Succeed
+                        time:   [2.7986 µs 2.8038 µs 2.8097 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  1 (1.00%) low mild
+  4 (4.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Long Path with 1 byte comps", Components Equality Fail from Start
+                        time:   [173.56 µs 173.89 µs 174.31 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  3 (3.00%) low mild
+  1 (1.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 1 byte comps", Components Equality Fail from Mid
+                        time:   [86.619 µs 86.659 µs 86.713 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  7 (7.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 1 byte comps", Components Equality Fail from End
+                        time:   [176.46 ns 176.78 ns 177.16 ns]
+Found 13 outliers among 100 measurements (13.00%)
+  4 (4.00%) high mild
+  9 (9.00%) high severe
+
+"Rel Long Path with 1 byte comps", Components Comparison Succeed
+                        time:   [2.9906 µs 3.0033 µs 3.0181 µs]
+Found 18 outliers among 100 measurements (18.00%)
+  6 (6.00%) high mild
+  12 (12.00%) high severe
+
+"Rel Long Path with 1 byte comps", Components Comparison Fail from Start
+                        time:   [1.0910 µs 1.0939 µs 1.0972 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path with 1 byte comps", Components Comparison Fail from Mid
+                        time:   [43.614 µs 43.820 µs 44.082 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 1 byte comps", Components Comparison Fail from End
+                        time:   [87.463 µs 87.886 µs 88.385 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  8 (8.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 1 byte comps", Std Components Next
+                        time:   [653.07 µs 655.98 µs 659.51 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  7 (7.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path with 1 byte comps", Std Components Next Back
+                        time:   [1.8844 ms 1.8866 ms 1.8894 ms]
+Found 7 outliers among 100 measurements (7.00%)
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 1 byte comps", Std As Path Iter
+                        time:   [2.3917 ms 2.4040 ms 2.4172 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Long Path with 1 byte comps", Std Components Equality
+                        time:   [3.3655 µs 3.3767 µs 3.3908 µs]
+Found 21 outliers among 100 measurements (21.00%)
+  11 (11.00%) low mild
+  2 (2.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path with 1 byte comps", Std Components Equality Fail from Start
+                        time:   [4.2565 ms 4.2586 ms 4.2610 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 1 byte comps", Std Components Equality Fail from Mid
+                        time:   [2.1318 ms 2.1327 ms 2.1337 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 1 byte comps", Std Components Equality Fail from End
+                        time:   [4.9017 µs 4.9098 µs 4.9202 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path with 1 byte comps", Std Components Comparison Succeed
+                        time:   [87.124 µs 87.514 µs 88.003 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  5 (5.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 1 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.0739 µs 2.0857 µs 2.0992 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 1 byte comps", Std Components Comparison Fail from Mid
+                        time:   [45.748 µs 46.101 µs 46.619 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  4 (4.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Long Path with 1 byte comps", Std Components Comparison Fail from End
+                        time:   [88.394 µs 88.585 µs 88.799 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  4 (4.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path with 1 byte comps", Components Next Rewrite
+                        time:   [343.91 µs 344.45 µs 345.24 µs]
+Found 21 outliers among 100 measurements (21.00%)
+  7 (7.00%) high mild
+  14 (14.00%) high severe
+
+"Abs Long Path with 1 byte comps", Components Next Back Rewrite
+                        time:   [343.36 µs 344.81 µs 346.66 µs]
+Found 16 outliers among 100 measurements (16.00%)
+  4 (4.00%) high mild
+  12 (12.00%) high severe
+
+"Abs Long Path with 1 byte comps", As Path Iter Rewrite
+                        time:   [599.92 µs 601.26 µs 603.07 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  10 (10.00%) high severe
+
+"Abs Long Path with 1 byte comps", Components Equality Succeed
+                        time:   [2.9160 µs 2.9238 µs 2.9337 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  4 (4.00%) low mild
+  1 (1.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Long Path with 1 byte comps", Components Equality Fail from Start
+                        time:   [172.61 µs 172.65 µs 172.70 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  2 (2.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Long Path with 1 byte comps", Components Equality Fail from Mid
+                        time:   [87.624 µs 87.651 µs 87.683 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  4 (4.00%) low mild
+  6 (6.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 1 byte comps", Components Equality Fail from End
+                        time:   [176.69 ns 177.37 ns 178.21 ns]
+Found 11 outliers among 100 measurements (11.00%)
+  5 (5.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 1 byte comps", Components Comparison Succeed
+                        time:   [3.0299 µs 3.0395 µs 3.0518 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 1 byte comps", Components Comparison Fail from Start
+                        time:   [177.03 ns 178.06 ns 179.33 ns]
+Found 8 outliers among 100 measurements (8.00%)
+  4 (4.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Long Path with 1 byte comps", Components Comparison Fail from Mid
+                        time:   [44.924 µs 45.156 µs 45.432 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 1 byte comps", Components Comparison Fail from End
+                        time:   [86.688 µs 87.321 µs 88.387 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  2 (2.00%) high mild
+  9 (9.00%) high severe
+
+"Abs Long Path with 1 byte comps", Std Components Next
+                        time:   [609.04 µs 610.49 µs 612.44 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) low mild
+  1 (1.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Long Path with 1 byte comps", Std Components Next Back
+                        time:   [1.8426 ms 1.8471 ms 1.8525 ms]
+Found 12 outliers among 100 measurements (12.00%)
+  4 (4.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Long Path with 1 byte comps", Std As Path Iter
+                        time:   [2.6995 ms 2.7113 ms 2.7246 ms]
+Found 20 outliers among 100 measurements (20.00%)
+  2 (2.00%) low severe
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+  16 (16.00%) high severe
+
+"Abs Long Path with 1 byte comps", Std Components Equality
+                        time:   [3.4426 µs 3.4567 µs 3.4726 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  9 (9.00%) high severe
+
+"Abs Long Path with 1 byte comps", Std Components Equality Fail from Start
+                        time:   [4.1272 ms 4.1402 ms 4.1553 ms]
+Found 11 outliers among 100 measurements (11.00%)
+  5 (5.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 1 byte comps", Std Components Equality Fail from Mid
+                        time:   [2.0695 ms 2.0776 ms 2.0872 ms]
+Found 17 outliers among 100 measurements (17.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+  15 (15.00%) high severe
+
+"Abs Long Path with 1 byte comps", Std Components Equality Fail from End
+                        time:   [4.6976 µs 4.7197 µs 4.7486 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 1 byte comps", Std Components Comparison Succeed
+                        time:   [87.355 µs 87.978 µs 88.862 µs]
+Found 19 outliers among 100 measurements (19.00%)
+  2 (2.00%) high mild
+  17 (17.00%) high severe
+
+"Abs Long Path with 1 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.3093 µs 2.3181 µs 2.3273 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  5 (5.00%) high mild
+  9 (9.00%) high severe
+
+"Abs Long Path with 1 byte comps", Std Components Comparison Fail from Mid
+                        time:   [46.089 µs 46.276 µs 46.498 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  5 (5.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 1 byte comps", Std Components Comparison Fail from End
+                        time:   [88.462 µs 88.899 µs 89.394 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  4 (4.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Long Path with 3 byte comps", Components Next Rewrite
+                        time:   [219.03 µs 220.86 µs 222.81 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high severe
+
+"Rel Long Path with 3 byte comps", Components Next Back Rewrite
+                        time:   [246.04 µs 247.40 µs 248.88 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) low mild
+
+"Rel Long Path with 3 byte comps", As Path Iter Rewrite
+                        time:   [368.58 µs 372.47 µs 376.84 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Long Path with 3 byte comps", Components Equality Succeed
+                        time:   [2.8785 µs 2.8876 µs 2.8983 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  3 (3.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path with 3 byte comps", Components Equality Fail from Start
+                        time:   [173.38 µs 173.88 µs 174.76 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  1 (1.00%) low mild
+  9 (9.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 3 byte comps", Components Equality Fail from Mid
+                        time:   [87.131 µs 87.751 µs 88.503 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  4 (4.00%) high mild
+  9 (9.00%) high severe
+
+"Rel Long Path with 3 byte comps", Components Equality Fail from End
+                        time:   [176.36 ns 176.81 ns 177.42 ns]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 3 byte comps", Components Comparison Succeed
+                        time:   [3.0575 µs 3.0720 µs 3.0899 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  6 (6.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Long Path with 3 byte comps", Components Comparison Fail from Start
+                        time:   [176.88 ns 177.36 ns 177.96 ns]
+Found 11 outliers among 100 measurements (11.00%)
+  5 (5.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Long Path with 3 byte comps", Components Comparison Fail from Mid
+                        time:   [43.647 µs 43.699 µs 43.757 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  2 (2.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Long Path with 3 byte comps", Components Comparison Fail from End
+                        time:   [86.941 µs 87.383 µs 87.974 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  3 (3.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path with 3 byte comps", Std Components Next
+                        time:   [357.09 µs 357.83 µs 358.72 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  1 (1.00%) low mild
+  5 (5.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path with 3 byte comps", Std Components Next Back
+                        time:   [1.0468 ms 1.0485 ms 1.0508 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 3 byte comps", Std As Path Iter
+                        time:   [1.3218 ms 1.3242 ms 1.3272 ms]
+Found 13 outliers among 100 measurements (13.00%)
+  3 (3.00%) low severe
+  3 (3.00%) low mild
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 3 byte comps", Std Components Equality
+                        time:   [3.4778 µs 3.4828 µs 3.4885 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 3 byte comps", Std Components Equality Fail from Start
+                        time:   [2.3609 ms 2.3652 ms 2.3703 ms]
+Found 13 outliers among 100 measurements (13.00%)
+  7 (7.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Long Path with 3 byte comps", Std Components Equality Fail from Mid
+                        time:   [1.1890 ms 1.1918 ms 1.1954 ms]
+Found 10 outliers among 100 measurements (10.00%)
+  4 (4.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Long Path with 3 byte comps", Std Components Equality Fail from End
+                        time:   [4.8719 µs 4.8875 µs 4.9065 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  3 (3.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Long Path with 3 byte comps", Std Components Comparison Succeed
+                        time:   [87.343 µs 87.537 µs 87.791 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  6 (6.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 3 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.4075 µs 2.4226 µs 2.4389 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  5 (5.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path with 3 byte comps", Std Components Comparison Fail from Mid
+                        time:   [46.434 µs 46.658 µs 46.917 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 3 byte comps", Std Components Comparison Fail from End
+                        time:   [88.459 µs 88.890 µs 89.380 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  7 (7.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 3 byte comps", Components Next Rewrite
+                        time:   [212.20 µs 215.03 µs 217.86 µs]
+
+"Abs Long Path with 3 byte comps", Components Next Back Rewrite
+                        time:   [245.21 µs 246.04 µs 246.88 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low severe
+  1 (1.00%) low mild
+
+"Abs Long Path with 3 byte comps", As Path Iter Rewrite
+                        time:   [375.76 µs 378.89 µs 381.71 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  3 (3.00%) low mild
+  2 (2.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 3 byte comps", Components Equality Succeed
+                        time:   [2.8704 µs 2.8745 µs 2.8787 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) low mild
+
+"Abs Long Path with 3 byte comps", Components Equality Fail from Start
+                        time:   [172.85 µs 173.38 µs 174.41 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 3 byte comps", Components Equality Fail from Mid
+                        time:   [88.331 µs 88.727 µs 89.235 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  2 (2.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Long Path with 3 byte comps", Components Equality Fail from End
+                        time:   [178.78 ns 180.61 ns 183.04 ns]
+Found 5 outliers among 100 measurements (5.00%)
+  4 (4.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path with 3 byte comps", Components Comparison Succeed
+                        time:   [3.0375 µs 3.0542 µs 3.0749 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  2 (2.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path with 3 byte comps", Components Comparison Fail from Start
+                        time:   [176.14 ns 176.21 ns 176.30 ns]
+Found 6 outliers among 100 measurements (6.00%)
+  3 (3.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 3 byte comps", Components Comparison Fail from Mid
+                        time:   [46.286 µs 46.693 µs 47.091 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 3 byte comps", Components Comparison Fail from End
+                        time:   [88.214 µs 89.039 µs 90.006 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  8 (8.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path with 3 byte comps", Std Components Next
+                        time:   [364.07 µs 367.19 µs 370.89 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  6 (6.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 3 byte comps", Std Components Next Back
+                        time:   [940.92 µs 943.31 µs 946.08 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  2 (2.00%) high mild
+  9 (9.00%) high severe
+
+"Abs Long Path with 3 byte comps", Std As Path Iter
+                        time:   [1.7761 ms 1.7884 ms 1.8017 ms]
+Found 30 outliers among 100 measurements (30.00%)
+  13 (13.00%) low severe
+  2 (2.00%) low mild
+  8 (8.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path with 3 byte comps", Std Components Equality
+                        time:   [3.4769 µs 3.4879 µs 3.5006 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path with 3 byte comps", Std Components Equality Fail from Start
+                        time:   [2.2778 ms 2.2810 ms 2.2854 ms]
+Found 12 outliers among 100 measurements (12.00%)
+  5 (5.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path with 3 byte comps", Std Components Equality Fail from Mid
+                        time:   [1.1590 ms 1.1679 ms 1.1780 ms]
+Found 12 outliers among 100 measurements (12.00%)
+  2 (2.00%) high mild
+  10 (10.00%) high severe
+
+"Abs Long Path with 3 byte comps", Std Components Equality Fail from End
+                        time:   [4.6616 µs 4.6642 µs 4.6672 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high mild
+
+"Abs Long Path with 3 byte comps", Std Components Comparison Succeed
+                        time:   [88.351 µs 89.299 µs 90.343 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  7 (7.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Long Path with 3 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.2914 µs 2.2970 µs 2.3040 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 3 byte comps", Std Components Comparison Fail from Mid
+                        time:   [46.195 µs 46.438 µs 46.704 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 3 byte comps", Std Components Comparison Fail from End
+                        time:   [88.758 µs 89.350 µs 90.055 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Long Path with 7 byte comps", Components Next Rewrite
+                        time:   [178.59 µs 181.47 µs 184.37 µs]
+
+"Rel Long Path with 7 byte comps", Components Next Back Rewrite
+                        time:   [170.58 µs 172.56 µs 174.70 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 7 byte comps", As Path Iter Rewrite
+                        time:   [238.64 µs 242.42 µs 245.89 µs]
+
+"Rel Long Path with 7 byte comps", Components Equality Succeed
+                        time:   [2.9555 µs 2.9634 µs 2.9743 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 7 byte comps", Components Equality Fail from Start
+                        time:   [174.46 µs 175.41 µs 176.54 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  1 (1.00%) high mild
+  14 (14.00%) high severe
+
+"Rel Long Path with 7 byte comps", Components Equality Fail from Mid
+                        time:   [86.435 µs 86.586 µs 86.761 µs]
+Found 17 outliers among 100 measurements (17.00%)
+  1 (1.00%) high mild
+  16 (16.00%) high severe
+
+"Rel Long Path with 7 byte comps", Components Equality Fail from End
+                        time:   [175.05 ns 175.22 ns 175.39 ns]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+
+"Rel Long Path with 7 byte comps", Components Comparison Succeed
+                        time:   [3.0638 µs 3.0663 µs 3.0690 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 7 byte comps", Components Comparison Fail from Start
+                        time:   [177.71 ns 178.42 ns 179.30 ns]
+Found 12 outliers among 100 measurements (12.00%)
+  4 (4.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path with 7 byte comps", Components Comparison Fail from Mid
+                        time:   [43.678 µs 44.071 µs 44.522 µs]
+Found 16 outliers among 100 measurements (16.00%)
+  6 (6.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Long Path with 7 byte comps", Components Comparison Fail from End
+                        time:   [86.372 µs 86.480 µs 86.611 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  7 (7.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path with 7 byte comps", Std Components Next
+                        time:   [238.95 µs 240.18 µs 241.28 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Long Path with 7 byte comps", Std Components Next Back
+                        time:   [590.48 µs 592.26 µs 594.40 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path with 7 byte comps", Std As Path Iter
+                        time:   [890.24 µs 893.52 µs 896.70 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  9 (9.00%) low mild
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 7 byte comps", Std Components Equality
+                        time:   [3.4844 µs 3.4926 µs 3.5028 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  3 (3.00%) low mild
+  4 (4.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path with 7 byte comps", Std Components Equality Fail from Start
+                        time:   [1.2752 ms 1.2859 ms 1.2991 ms]
+Found 17 outliers among 100 measurements (17.00%)
+  8 (8.00%) high mild
+  9 (9.00%) high severe
+
+"Rel Long Path with 7 byte comps", Std Components Equality Fail from Mid
+                        time:   [646.67 µs 651.06 µs 656.12 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  7 (7.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path with 7 byte comps", Std Components Equality Fail from End
+                        time:   [4.9202 µs 4.9300 µs 4.9419 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 7 byte comps", Std Components Comparison Succeed
+                        time:   [86.799 µs 86.878 µs 86.972 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  6 (6.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path with 7 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.3765 µs 2.3806 µs 2.3848 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 7 byte comps", Std Components Comparison Fail from Mid
+                        time:   [45.839 µs 45.917 µs 46.000 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 7 byte comps", Std Components Comparison Fail from End
+                        time:   [88.123 µs 88.283 µs 88.456 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path with 7 byte comps", Components Next Rewrite
+                        time:   [149.74 µs 153.15 µs 157.00 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  7 (7.00%) high mild
+
+"Abs Long Path with 7 byte comps", Components Next Back Rewrite
+                        time:   [168.42 µs 169.93 µs 171.37 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Abs Long Path with 7 byte comps", As Path Iter Rewrite
+                        time:   [244.88 µs 248.11 µs 251.38 µs]
+
+"Abs Long Path with 7 byte comps", Components Equality Succeed
+                        time:   [2.8722 µs 2.8853 µs 2.9050 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) low mild
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 7 byte comps", Components Equality Fail from Start
+                        time:   [172.68 µs 173.16 µs 173.78 µs]
+Found 17 outliers among 100 measurements (17.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+  14 (14.00%) high severe
+
+"Abs Long Path with 7 byte comps", Components Equality Fail from Mid
+                        time:   [88.219 µs 88.496 µs 88.834 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  3 (3.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Long Path with 7 byte comps", Components Equality Fail from End
+                        time:   [175.59 ns 176.14 ns 176.88 ns]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path with 7 byte comps", Components Comparison Succeed
+                        time:   [2.9980 µs 3.0062 µs 3.0158 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 7 byte comps", Components Comparison Fail from Start
+                        time:   [177.99 ns 178.96 ns 180.00 ns]
+Found 12 outliers among 100 measurements (12.00%)
+  5 (5.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path with 7 byte comps", Components Comparison Fail from Mid
+                        time:   [45.631 µs 45.726 µs 45.837 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 7 byte comps", Components Comparison Fail from End
+                        time:   [86.363 µs 86.423 µs 86.500 µs]
+Found 18 outliers among 100 measurements (18.00%)
+  6 (6.00%) high mild
+  12 (12.00%) high severe
+
+"Abs Long Path with 7 byte comps", Std Components Next
+                        time:   [240.52 µs 242.30 µs 244.15 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  2 (2.00%) low mild
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 7 byte comps", Std Components Next Back
+                        time:   [506.89 µs 507.07 µs 507.27 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  5 (5.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path with 7 byte comps", Std As Path Iter
+                        time:   [1.0146 ms 1.0180 ms 1.0210 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path with 7 byte comps", Std Components Equality
+                        time:   [3.4194 µs 3.4343 µs 3.4529 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  4 (4.00%) high mild
+  11 (11.00%) high severe
+
+"Abs Long Path with 7 byte comps", Std Components Equality Fail from Start
+                        time:   [1.2251 ms 1.2260 ms 1.2272 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) low mild
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path with 7 byte comps", Std Components Equality Fail from Mid
+                        time:   [615.66 µs 617.91 µs 620.37 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  1 (1.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path with 7 byte comps", Std Components Equality Fail from End
+                        time:   [4.7199 µs 4.7296 µs 4.7429 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path with 7 byte comps", Std Components Comparison Succeed
+                        time:   [87.172 µs 87.801 µs 88.584 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  4 (4.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path with 7 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.3289 µs 2.3340 µs 2.3402 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  6 (6.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 7 byte comps", Std Components Comparison Fail from Mid
+                        time:   [46.187 µs 46.335 µs 46.522 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  4 (4.00%) high mild
+  9 (9.00%) high severe
+
+"Abs Long Path with 7 byte comps", Std Components Comparison Fail from End
+                        time:   [87.898 µs 88.526 µs 89.302 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  4 (4.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Long Path with 15 byte comps", Components Next Rewrite
+                        time:   [137.15 µs 139.42 µs 141.85 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 15 byte comps", Components Next Back Rewrite
+                        time:   [155.61 µs 157.14 µs 158.62 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 15 byte comps", As Path Iter Rewrite
+                        time:   [180.41 µs 182.69 µs 185.01 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  3 (3.00%) low mild
+  9 (9.00%) high mild
+
+"Rel Long Path with 15 byte comps", Components Equality Succeed
+                        time:   [2.8701 µs 2.8770 µs 2.8857 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 15 byte comps", Components Equality Fail from Start
+                        time:   [173.62 µs 174.31 µs 175.15 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  2 (2.00%) low mild
+  3 (3.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Long Path with 15 byte comps", Components Equality Fail from Mid
+                        time:   [86.141 µs 86.435 µs 86.845 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  3 (3.00%) high mild
+  11 (11.00%) high severe
+
+"Rel Long Path with 15 byte comps", Components Equality Fail from End
+                        time:   [176.59 ns 177.14 ns 177.84 ns]
+Found 12 outliers among 100 measurements (12.00%)
+  2 (2.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Long Path with 15 byte comps", Components Comparison Succeed
+                        time:   [3.0255 µs 3.0341 µs 3.0491 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 15 byte comps", Components Comparison Fail from Start
+                        time:   [176.32 ns 177.11 ns 178.08 ns]
+Found 7 outliers among 100 measurements (7.00%)
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 15 byte comps", Components Comparison Fail from Mid
+                        time:   [44.195 µs 44.441 µs 44.703 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  7 (7.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Long Path with 15 byte comps", Components Comparison Fail from End
+                        time:   [87.050 µs 87.598 µs 88.330 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  6 (6.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path with 15 byte comps", Std Components Next
+                        time:   [179.69 µs 180.73 µs 181.74 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 15 byte comps", Std Components Next Back
+                        time:   [357.35 µs 357.82 µs 358.36 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  7 (7.00%) high severe
+
+"Rel Long Path with 15 byte comps", Std As Path Iter
+                        time:   [642.13 µs 646.39 µs 650.29 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  8 (8.00%) low mild
+  3 (3.00%) high mild
+
+"Rel Long Path with 15 byte comps", Std Components Equality
+                        time:   [3.4416 µs 3.4547 µs 3.4740 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  2 (2.00%) low mild
+  2 (2.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Long Path with 15 byte comps", Std Components Equality Fail from Start
+                        time:   [687.13 µs 689.92 µs 693.90 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  2 (2.00%) high mild
+  6 (6.00%) high severe
+
+"Rel Long Path with 15 byte comps", Std Components Equality Fail from Mid
+                        time:   [348.80 µs 349.60 µs 350.54 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  5 (5.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Long Path with 15 byte comps", Std Components Equality Fail from End
+                        time:   [5.0361 µs 5.0505 µs 5.0667 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 15 byte comps", Std Components Comparison Succeed
+                        time:   [87.811 µs 88.701 µs 89.810 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  3 (3.00%) high mild
+  12 (12.00%) high severe
+
+"Rel Long Path with 15 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.5720 µs 2.5807 µs 2.5910 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 15 byte comps", Std Components Comparison Fail from Mid
+                        time:   [46.112 µs 46.382 µs 46.740 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  4 (4.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 15 byte comps", Std Components Comparison Fail from End
+                        time:   [87.925 µs 88.179 µs 88.513 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  6 (6.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Long Path with 15 byte comps", Components Next Rewrite
+                        time:   [137.36 µs 140.62 µs 144.14 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+
+"Abs Long Path with 15 byte comps", Components Next Back Rewrite
+                        time:   [155.39 µs 156.90 µs 158.42 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Abs Long Path with 15 byte comps", As Path Iter Rewrite
+                        time:   [175.76 µs 179.61 µs 183.43 µs]
+
+"Abs Long Path with 15 byte comps", Components Equality Succeed
+                        time:   [2.9182 µs 2.9319 µs 2.9475 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 15 byte comps", Components Equality Fail from Start
+                        time:   [173.72 µs 174.21 µs 174.80 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  5 (5.00%) high mild
+  10 (10.00%) high severe
+
+"Abs Long Path with 15 byte comps", Components Equality Fail from Mid
+                        time:   [91.179 µs 91.941 µs 92.764 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  7 (7.00%) high mild
+
+"Abs Long Path with 15 byte comps", Components Equality Fail from End
+                        time:   [176.92 ns 177.22 ns 177.59 ns]
+Found 10 outliers among 100 measurements (10.00%)
+  5 (5.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 15 byte comps", Components Comparison Succeed
+                        time:   [3.0107 µs 3.0137 µs 3.0172 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 15 byte comps", Components Comparison Fail from Start
+                        time:   [176.11 ns 176.59 ns 177.18 ns]
+Found 13 outliers among 100 measurements (13.00%)
+  2 (2.00%) high mild
+  11 (11.00%) high severe
+
+"Abs Long Path with 15 byte comps", Components Comparison Fail from Mid
+                        time:   [46.684 µs 46.952 µs 47.269 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  3 (3.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path with 15 byte comps", Components Comparison Fail from End
+                        time:   [86.522 µs 86.685 µs 86.878 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  9 (9.00%) high severe
+
+"Abs Long Path with 15 byte comps", Std Components Next
+                        time:   [173.20 µs 174.73 µs 176.31 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+
+"Abs Long Path with 15 byte comps", Std Components Next Back
+                        time:   [279.29 µs 281.05 µs 282.94 µs]
+Found 16 outliers among 100 measurements (16.00%)
+  2 (2.00%) high mild
+  14 (14.00%) high severe
+
+"Abs Long Path with 15 byte comps", Std As Path Iter
+                        time:   [714.20 µs 715.27 µs 716.55 µs]
+Found 16 outliers among 100 measurements (16.00%)
+  1 (1.00%) low severe
+  1 (1.00%) low mild
+  8 (8.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 15 byte comps", Std Components Equality
+                        time:   [3.4026 µs 3.4227 µs 3.4458 µs]
+Found 18 outliers among 100 measurements (18.00%)
+  6 (6.00%) high mild
+  12 (12.00%) high severe
+
+"Abs Long Path with 15 byte comps", Std Components Equality Fail from Start
+                        time:   [666.53 µs 668.36 µs 670.49 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 15 byte comps", Std Components Equality Fail from Mid
+                        time:   [351.92 µs 354.23 µs 356.97 µs]
+Found 16 outliers among 100 measurements (16.00%)
+  4 (4.00%) high mild
+  12 (12.00%) high severe
+
+"Abs Long Path with 15 byte comps", Std Components Equality Fail from End
+                        time:   [4.8362 µs 4.8537 µs 4.8751 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  15 (15.00%) high severe
+
+"Abs Long Path with 15 byte comps", Std Components Comparison Succeed
+                        time:   [87.562 µs 88.022 µs 88.499 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  11 (11.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path with 15 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.7050 µs 2.7197 µs 2.7343 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 15 byte comps", Std Components Comparison Fail from Mid
+                        time:   [46.987 µs 47.216 µs 47.507 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  5 (5.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 15 byte comps", Std Components Comparison Fail from End
+                        time:   [88.055 µs 88.320 µs 88.684 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  3 (3.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path with 31 byte comps", Components Next Rewrite
+                        time:   [118.35 µs 120.11 µs 122.05 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 31 byte comps", Components Next Back Rewrite
+                        time:   [120.58 µs 122.16 µs 123.75 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+
+"Rel Long Path with 31 byte comps", As Path Iter Rewrite
+                        time:   [130.73 µs 134.16 µs 139.01 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 31 byte comps", Components Equality Succeed
+                        time:   [2.9663 µs 2.9699 µs 2.9744 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 31 byte comps", Components Equality Fail from Start
+                        time:   [177.72 µs 178.94 µs 180.27 µs]
+Found 17 outliers among 100 measurements (17.00%)
+  4 (4.00%) high mild
+  13 (13.00%) high severe
+
+"Rel Long Path with 31 byte comps", Components Equality Fail from Mid
+                        time:   [87.218 µs 87.811 µs 88.432 µs]
+Found 16 outliers among 100 measurements (16.00%)
+  6 (6.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Long Path with 31 byte comps", Components Equality Fail from End
+                        time:   [175.72 ns 176.31 ns 177.06 ns]
+Found 9 outliers among 100 measurements (9.00%)
+  1 (1.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path with 31 byte comps", Components Comparison Succeed
+                        time:   [3.0724 µs 3.0768 µs 3.0815 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 31 byte comps", Components Comparison Fail from Start
+                        time:   [176.35 ns 176.99 ns 177.70 ns]
+Found 14 outliers among 100 measurements (14.00%)
+  6 (6.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path with 31 byte comps", Components Comparison Fail from Mid
+                        time:   [43.658 µs 43.787 µs 43.942 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  6 (6.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Long Path with 31 byte comps", Components Comparison Fail from End
+                        time:   [85.979 µs 86.023 µs 86.083 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  4 (4.00%) high mild
+  9 (9.00%) high severe
+
+"Rel Long Path with 31 byte comps", Std Components Next
+                        time:   [133.58 µs 134.38 µs 135.17 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 31 byte comps", Std Components Next Back
+                        time:   [222.31 µs 223.91 µs 226.66 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 31 byte comps", Std As Path Iter
+                        time:   [463.80 µs 465.20 µs 466.62 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 31 byte comps", Std Components Equality
+                        time:   [3.4680 µs 3.4803 µs 3.4947 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  4 (4.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Long Path with 31 byte comps", Std Components Equality Fail from Start
+                        time:   [404.28 µs 405.80 µs 407.67 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 31 byte comps", Std Components Equality Fail from Mid
+                        time:   [218.80 µs 220.56 µs 223.48 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 31 byte comps", Std Components Equality Fail from End
+                        time:   [5.2349 µs 5.2418 µs 5.2505 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  4 (4.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Long Path with 31 byte comps", Std Components Comparison Succeed
+                        time:   [86.649 µs 86.679 µs 86.713 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 31 byte comps", Std Components Comparison Fail from Start
+                        time:   [2.9539 µs 2.9584 µs 2.9626 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) low mild
+
+"Rel Long Path with 31 byte comps", Std Components Comparison Fail from Mid
+                        time:   [47.554 µs 47.826 µs 48.143 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+
+"Rel Long Path with 31 byte comps", Std Components Comparison Fail from End
+                        time:   [87.613 µs 87.720 µs 87.848 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  2 (2.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 31 byte comps", Components Next Rewrite
+                        time:   [120.54 µs 122.60 µs 124.96 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path with 31 byte comps", Components Next Back Rewrite
+                        time:   [120.88 µs 122.10 µs 123.35 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Abs Long Path with 31 byte comps", As Path Iter Rewrite
+                        time:   [130.30 µs 132.20 µs 134.09 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  7 (7.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 31 byte comps", Components Equality Succeed
+                        time:   [2.8903 µs 2.8980 µs 2.9089 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Long Path with 31 byte comps", Components Equality Fail from Start
+                        time:   [172.70 µs 172.85 µs 173.09 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 31 byte comps", Components Equality Fail from Mid
+                        time:   [90.382 µs 90.875 µs 91.400 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  8 (8.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 31 byte comps", Components Equality Fail from End
+                        time:   [176.53 ns 177.41 ns 178.46 ns]
+Found 11 outliers among 100 measurements (11.00%)
+  5 (5.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 31 byte comps", Components Comparison Succeed
+                        time:   [2.9899 µs 2.9918 µs 2.9939 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  9 (9.00%) high severe
+
+"Abs Long Path with 31 byte comps", Components Comparison Fail from Start
+                        time:   [175.13 ns 175.48 ns 176.03 ns]
+Found 9 outliers among 100 measurements (9.00%)
+  3 (3.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 31 byte comps", Components Comparison Fail from Mid
+                        time:   [47.382 µs 47.471 µs 47.564 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 31 byte comps", Components Comparison Fail from End
+                        time:   [86.443 µs 86.574 µs 86.700 µs]
+Found 20 outliers among 100 measurements (20.00%)
+  5 (5.00%) high mild
+  15 (15.00%) high severe
+
+"Abs Long Path with 31 byte comps", Std Components Next
+                        time:   [136.47 µs 137.67 µs 138.91 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Abs Long Path with 31 byte comps", Std Components Next Back
+                        time:   [166.59 µs 166.79 µs 167.06 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  2 (2.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path with 31 byte comps", Std As Path Iter
+                        time:   [506.36 µs 507.62 µs 508.85 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+
+"Abs Long Path with 31 byte comps", Std Components Equality
+                        time:   [3.4000 µs 3.4072 µs 3.4169 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  5 (5.00%) high mild
+  9 (9.00%) high severe
+
+"Abs Long Path with 31 byte comps", Std Components Equality Fail from Start
+                        time:   [408.88 µs 416.93 µs 425.11 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  1 (1.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Long Path with 31 byte comps", Std Components Equality Fail from Mid
+                        time:   [207.30 µs 208.84 µs 210.82 µs]
+
+"Abs Long Path with 31 byte comps", Std Components Equality Fail from End
+                        time:   [5.0462 µs 5.0552 µs 5.0674 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 31 byte comps", Std Components Comparison Succeed
+                        time:   [87.547 µs 87.994 µs 88.518 µs]
+Found 20 outliers among 100 measurements (20.00%)
+  4 (4.00%) high mild
+  16 (16.00%) high severe
+
+"Abs Long Path with 31 byte comps", Std Components Comparison Fail from Start
+                        time:   [3.1342 µs 3.1461 µs 3.1609 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  8 (8.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 31 byte comps", Std Components Comparison Fail from Mid
+                        time:   [47.679 µs 47.771 µs 47.874 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  7 (7.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 31 byte comps", Std Components Comparison Fail from End
+                        time:   [87.752 µs 88.218 µs 89.010 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  2 (2.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 63 byte comps", Components Next Rewrite
+                        time:   [123.44 µs 125.55 µs 128.27 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 63 byte comps", Components Next Back Rewrite
+                        time:   [123.63 µs 124.76 µs 126.08 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 63 byte comps", As Path Iter Rewrite
+                        time:   [108.52 µs 110.08 µs 111.82 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  6 (6.00%) high mild
+  9 (9.00%) high severe
+
+"Rel Long Path with 63 byte comps", Components Equality Succeed
+                        time:   [2.9009 µs 2.9128 µs 2.9273 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path with 63 byte comps", Components Equality Fail from Start
+                        time:   [181.06 µs 181.86 µs 182.72 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 63 byte comps", Components Equality Fail from Mid
+                        time:   [86.830 µs 87.408 µs 88.084 µs]
+Found 20 outliers among 100 measurements (20.00%)
+  6 (6.00%) low severe
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Long Path with 63 byte comps", Components Equality Fail from End
+                        time:   [175.36 ns 175.58 ns 175.81 ns]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 63 byte comps", Components Comparison Succeed
+                        time:   [3.0597 µs 3.0778 µs 3.0979 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 63 byte comps", Components Comparison Fail from Start
+                        time:   [178.21 ns 179.18 ns 180.25 ns]
+Found 12 outliers among 100 measurements (12.00%)
+  4 (4.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path with 63 byte comps", Components Comparison Fail from Mid
+                        time:   [43.990 µs 44.340 µs 44.755 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  6 (6.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 63 byte comps", Components Comparison Fail from End
+                        time:   [87.696 µs 88.281 µs 88.875 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 63 byte comps", Std Components Next
+                        time:   [138.33 µs 139.15 µs 140.01 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Long Path with 63 byte comps", Std Components Next Back
+                        time:   [183.31 µs 183.45 µs 183.61 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  2 (2.00%) high mild
+  12 (12.00%) high severe
+
+"Rel Long Path with 63 byte comps", Std As Path Iter
+                        time:   [429.55 µs 431.35 µs 433.59 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 63 byte comps", Std Components Equality
+                        time:   [3.4268 µs 3.4323 µs 3.4396 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 63 byte comps", Std Components Equality Fail from Start
+                        time:   [352.22 µs 354.26 µs 356.32 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 63 byte comps", Std Components Equality Fail from Mid
+                        time:   [180.43 µs 181.41 µs 182.49 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  4 (4.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 63 byte comps", Std Components Equality Fail from End
+                        time:   [6.3360 µs 6.3567 µs 6.3811 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  5 (5.00%) low mild
+  5 (5.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 63 byte comps", Std Components Comparison Succeed
+                        time:   [87.357 µs 87.566 µs 87.807 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  6 (6.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Long Path with 63 byte comps", Std Components Comparison Fail from Start
+                        time:   [4.4076 µs 4.4189 µs 4.4310 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 63 byte comps", Std Components Comparison Fail from Mid
+                        time:   [48.265 µs 48.597 µs 48.991 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  4 (4.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 63 byte comps", Std Components Comparison Fail from End
+                        time:   [88.057 µs 88.417 µs 88.836 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  6 (6.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 63 byte comps", Components Next Rewrite
+                        time:   [124.62 µs 126.30 µs 128.39 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+
+"Abs Long Path with 63 byte comps", Components Next Back Rewrite
+                        time:   [124.63 µs 125.90 µs 127.28 µs]
+
+"Abs Long Path with 63 byte comps", As Path Iter Rewrite
+                        time:   [106.61 µs 108.34 µs 110.62 µs]
+Found 20 outliers among 100 measurements (20.00%)
+  2 (2.00%) high mild
+  18 (18.00%) high severe
+
+"Abs Long Path with 63 byte comps", Components Equality Succeed
+                        time:   [2.8895 µs 2.8916 µs 2.8936 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+
+"Abs Long Path with 63 byte comps", Components Equality Fail from Start
+                        time:   [173.69 µs 174.15 µs 174.73 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 63 byte comps", Components Equality Fail from Mid
+                        time:   [92.629 µs 93.071 µs 93.658 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  3 (3.00%) high mild
+  11 (11.00%) high severe
+
+"Abs Long Path with 63 byte comps", Components Equality Fail from End
+                        time:   [175.64 ns 175.94 ns 176.32 ns]
+Found 8 outliers among 100 measurements (8.00%)
+  6 (6.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 63 byte comps", Components Comparison Succeed
+                        time:   [3.0096 µs 3.0230 µs 3.0389 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  6 (6.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 63 byte comps", Components Comparison Fail from Start
+                        time:   [178.03 ns 179.19 ns 180.44 ns]
+Found 11 outliers among 100 measurements (11.00%)
+  6 (6.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 63 byte comps", Components Comparison Fail from Mid
+                        time:   [50.672 µs 50.953 µs 51.295 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 63 byte comps", Components Comparison Fail from End
+                        time:   [87.541 µs 88.110 µs 88.791 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  7 (7.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Long Path with 63 byte comps", Std Components Next
+                        time:   [112.83 µs 114.33 µs 116.06 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 63 byte comps", Std Components Next Back
+                        time:   [158.07 µs 158.54 µs 159.13 µs]
+Found 16 outliers among 100 measurements (16.00%)
+  6 (6.00%) high mild
+  10 (10.00%) high severe
+
+"Abs Long Path with 63 byte comps", Std As Path Iter
+                        time:   [448.16 µs 452.03 µs 455.81 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 63 byte comps", Std Components Equality
+                        time:   [3.4157 µs 3.4374 µs 3.4612 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  6 (6.00%) high mild
+  9 (9.00%) high severe
+
+"Abs Long Path with 63 byte comps", Std Components Equality Fail from Start
+                        time:   [344.18 µs 346.08 µs 348.00 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+
+"Abs Long Path with 63 byte comps", Std Components Equality Fail from Mid
+                        time:   [179.56 µs 180.16 µs 180.80 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 63 byte comps", Std Components Equality Fail from End
+                        time:   [6.0884 µs 6.0989 µs 6.1116 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  1 (1.00%) low mild
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 63 byte comps", Std Components Comparison Succeed
+                        time:   [87.487 µs 88.009 µs 88.697 µs]
+Found 16 outliers among 100 measurements (16.00%)
+  8 (8.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Long Path with 63 byte comps", Std Components Comparison Fail from Start
+                        time:   [4.4719 µs 4.4784 µs 4.4845 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  1 (1.00%) low severe
+  7 (7.00%) low mild
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path with 63 byte comps", Std Components Comparison Fail from Mid
+                        time:   [50.549 µs 50.667 µs 50.804 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  5 (5.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Long Path with 63 byte comps", Std Components Comparison Fail from End
+                        time:   [87.773 µs 87.882 µs 88.056 µs]
+Found 18 outliers among 100 measurements (18.00%)
+  7 (7.00%) high mild
+  11 (11.00%) high severe
+
+"Rel Long Path with 127 byte comps", Components Next Rewrite
+                        time:   [103.16 µs 104.30 µs 105.71 µs]
+Found 17 outliers among 100 measurements (17.00%)
+  3 (3.00%) high mild
+  14 (14.00%) high severe
+
+"Rel Long Path with 127 byte comps", Components Next Back Rewrite
+                        time:   [103.47 µs 103.82 µs 104.20 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 127 byte comps", As Path Iter Rewrite
+                        time:   [110.37 µs 111.33 µs 112.41 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  6 (6.00%) high mild
+
+"Rel Long Path with 127 byte comps", Components Equality Succeed
+                        time:   [2.9396 µs 2.9474 µs 2.9577 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  1 (1.00%) low mild
+  5 (5.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path with 127 byte comps", Components Equality Fail from Start
+                        time:   [186.78 µs 188.21 µs 190.37 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 127 byte comps", Components Equality Fail from Mid
+                        time:   [87.393 µs 88.009 µs 88.689 µs]
+Found 17 outliers among 100 measurements (17.00%)
+  6 (6.00%) high mild
+  11 (11.00%) high severe
+
+"Rel Long Path with 127 byte comps", Components Equality Fail from End
+                        time:   [176.14 ns 176.33 ns 176.55 ns]
+Found 9 outliers among 100 measurements (9.00%)
+  2 (2.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Long Path with 127 byte comps", Components Comparison Succeed
+                        time:   [3.0524 µs 3.0578 µs 3.0647 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  11 (11.00%) high severe
+
+"Rel Long Path with 127 byte comps", Components Comparison Fail from Start
+                        time:   [178.06 ns 179.27 ns 180.62 ns]
+Found 8 outliers among 100 measurements (8.00%)
+  7 (7.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 127 byte comps", Components Comparison Fail from Mid
+                        time:   [43.517 µs 43.586 µs 43.672 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  4 (4.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path with 127 byte comps", Components Comparison Fail from End
+                        time:   [86.381 µs 86.525 µs 86.694 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  4 (4.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path with 127 byte comps", Std Components Next
+                        time:   [111.83 µs 112.26 µs 112.71 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Long Path with 127 byte comps", Std Components Next Back
+                        time:   [135.62 µs 135.80 µs 136.02 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  5 (5.00%) high mild
+  9 (9.00%) high severe
+
+"Rel Long Path with 127 byte comps", Std As Path Iter
+                        time:   [338.45 µs 339.20 µs 340.09 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  4 (4.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path with 127 byte comps", Std Components Equality
+                        time:   [3.4087 µs 3.4134 µs 3.4198 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 127 byte comps", Std Components Equality Fail from Start
+                        time:   [262.81 µs 263.70 µs 264.68 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Long Path with 127 byte comps", Std Components Equality Fail from Mid
+                        time:   [139.25 µs 139.88 µs 140.55 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Long Path with 127 byte comps", Std Components Equality Fail from End
+                        time:   [8.0100 µs 8.0539 µs 8.1051 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+
+"Rel Long Path with 127 byte comps", Std Components Comparison Succeed
+                        time:   [86.766 µs 86.784 µs 86.804 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 127 byte comps", Std Components Comparison Fail from Start
+                        time:   [5.7329 µs 5.7551 µs 5.7792 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 127 byte comps", Std Components Comparison Fail from Mid
+                        time:   [49.410 µs 50.014 µs 50.713 µs]
+Found 16 outliers among 100 measurements (16.00%)
+  6 (6.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Long Path with 127 byte comps", Std Components Comparison Fail from End
+                        time:   [88.414 µs 89.180 µs 90.023 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  2 (2.00%) high mild
+  13 (13.00%) high severe
+
+"Abs Long Path with 127 byte comps", Components Next Rewrite
+                        time:   [103.69 µs 104.16 µs 104.71 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  9 (9.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Long Path with 127 byte comps", Components Next Back Rewrite
+                        time:   [105.37 µs 106.16 µs 107.14 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  6 (6.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 127 byte comps", As Path Iter Rewrite
+                        time:   [111.65 µs 113.46 µs 115.30 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  7 (7.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 127 byte comps", Components Equality Succeed
+                        time:   [2.9390 µs 2.9607 µs 2.9849 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  7 (7.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 127 byte comps", Components Equality Fail from Start
+                        time:   [173.43 µs 174.18 µs 175.14 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  4 (4.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 127 byte comps", Components Equality Fail from Mid
+                        time:   [98.302 µs 98.786 µs 99.378 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 127 byte comps", Components Equality Fail from End
+                        time:   [179.50 ns 180.49 ns 181.70 ns]
+Found 10 outliers among 100 measurements (10.00%)
+  5 (5.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 127 byte comps", Components Comparison Succeed
+                        time:   [3.0424 µs 3.0601 µs 3.0827 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  5 (5.00%) high mild
+  10 (10.00%) high severe
+
+"Abs Long Path with 127 byte comps", Components Comparison Fail from Start
+                        time:   [178.72 ns 180.03 ns 181.70 ns]
+Found 16 outliers among 100 measurements (16.00%)
+  8 (8.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Long Path with 127 byte comps", Components Comparison Fail from Mid
+                        time:   [55.101 µs 55.320 µs 55.644 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  5 (5.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 127 byte comps", Components Comparison Fail from End
+                        time:   [86.807 µs 87.020 µs 87.254 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 127 byte comps", Std Components Next
+                        time:   [115.03 µs 115.93 µs 116.87 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Abs Long Path with 127 byte comps", Std Components Next Back
+                        time:   [123.52 µs 124.07 µs 124.67 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  5 (5.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Long Path with 127 byte comps", Std As Path Iter
+                        time:   [351.14 µs 352.13 µs 353.21 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 127 byte comps", Std Components Equality
+                        time:   [3.3994 µs 3.4145 µs 3.4329 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  3 (3.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path with 127 byte comps", Std Components Equality Fail from Start
+                        time:   [260.70 µs 261.70 µs 262.76 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Abs Long Path with 127 byte comps", Std Components Equality Fail from Mid
+                        time:   [142.07 µs 142.78 µs 143.56 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 127 byte comps", Std Components Equality Fail from End
+                        time:   [7.7099 µs 7.7682 µs 7.8361 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  3 (3.00%) low mild
+  7 (7.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 127 byte comps", Std Components Comparison Succeed
+                        time:   [87.774 µs 88.463 µs 89.308 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  6 (6.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 127 byte comps", Std Components Comparison Fail from Start
+                        time:   [5.8819 µs 5.9098 µs 5.9390 µs]
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 127 byte comps", Std Components Comparison Fail from Mid
+                        time:   [55.271 µs 55.349 µs 55.437 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  6 (6.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 127 byte comps", Std Components Comparison Fail from End
+                        time:   [88.549 µs 88.972 µs 89.470 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  7 (7.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path with 255 byte comps", Components Next Rewrite
+                        time:   [95.301 µs 96.676 µs 98.388 µs]
+Found 20 outliers among 100 measurements (20.00%)
+  4 (4.00%) high mild
+  16 (16.00%) high severe
+
+"Rel Long Path with 255 byte comps", Components Next Back Rewrite
+                        time:   [96.321 µs 97.075 µs 97.865 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  6 (6.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 255 byte comps", As Path Iter Rewrite
+                        time:   [98.782 µs 99.612 µs 100.53 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 255 byte comps", Components Equality Succeed
+                        time:   [2.9526 µs 2.9553 µs 2.9580 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) low mild
+
+"Rel Long Path with 255 byte comps", Components Equality Fail from Start
+                        time:   [196.93 µs 197.28 µs 197.74 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  9 (9.00%) high severe
+
+"Rel Long Path with 255 byte comps", Components Equality Fail from Mid
+                        time:   [87.272 µs 87.685 µs 88.181 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+
+"Rel Long Path with 255 byte comps", Components Equality Fail from End
+                        time:   [178.70 ns 179.66 ns 180.74 ns]
+Found 6 outliers among 100 measurements (6.00%)
+  6 (6.00%) high mild
+
+"Rel Long Path with 255 byte comps", Components Comparison Succeed
+                        time:   [3.0808 µs 3.0944 µs 3.1097 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  7 (7.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 255 byte comps", Components Comparison Fail from Start
+                        time:   [175.23 ns 175.43 ns 175.74 ns]
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high severe
+
+"Rel Long Path with 255 byte comps", Components Comparison Fail from Mid
+                        time:   [43.676 µs 43.911 µs 44.194 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  4 (4.00%) high mild
+  9 (9.00%) high severe
+
+"Rel Long Path with 255 byte comps", Components Comparison Fail from End
+                        time:   [87.334 µs 88.120 µs 89.042 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  5 (5.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Long Path with 255 byte comps", Std Components Next
+                        time:   [100.05 µs 100.55 µs 101.12 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  7 (7.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 255 byte comps", Std Components Next Back
+                        time:   [110.28 µs 110.36 µs 110.44 µs]
+Found 17 outliers among 100 measurements (17.00%)
+  9 (9.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path with 255 byte comps", Std As Path Iter
+                        time:   [293.29 µs 294.18 µs 295.23 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path with 255 byte comps", Std Components Equality
+                        time:   [3.4703 µs 3.5002 µs 3.5303 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  3 (3.00%) high mild
+  12 (12.00%) high severe
+
+"Rel Long Path with 255 byte comps", Std Components Equality Fail from Start
+                        time:   [221.42 µs 222.19 µs 222.97 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high severe
+
+"Rel Long Path with 255 byte comps", Std Components Equality Fail from Mid
+                        time:   [120.14 µs 120.75 µs 121.58 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 255 byte comps", Std Components Equality Fail from End
+                        time:   [10.806 µs 10.869 µs 10.932 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path with 255 byte comps", Std Components Comparison Succeed
+                        time:   [87.055 µs 87.327 µs 87.677 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path with 255 byte comps", Std Components Comparison Fail from Start
+                        time:   [8.4167 µs 8.4439 µs 8.4712 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Rel Long Path with 255 byte comps", Std Components Comparison Fail from Mid
+                        time:   [51.590 µs 51.678 µs 51.780 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  3 (3.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Long Path with 255 byte comps", Std Components Comparison Fail from End
+                        time:   [87.769 µs 87.874 µs 88.010 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  5 (5.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path with 255 byte comps", Components Next Rewrite
+                        time:   [94.415 µs 95.817 µs 97.822 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  4 (4.00%) high mild
+  10 (10.00%) high severe
+
+"Abs Long Path with 255 byte comps", Components Next Back Rewrite
+                        time:   [95.801 µs 96.392 µs 97.097 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  3 (3.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path with 255 byte comps", As Path Iter Rewrite
+                        time:   [97.465 µs 97.890 µs 98.421 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  4 (4.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path with 255 byte comps", Components Equality Succeed
+                        time:   [2.9055 µs 2.9196 µs 2.9379 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  3 (3.00%) high mild
+  11 (11.00%) high severe
+
+"Abs Long Path with 255 byte comps", Components Equality Fail from Start
+                        time:   [172.92 µs 173.44 µs 174.10 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  2 (2.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 255 byte comps", Components Equality Fail from Mid
+                        time:   [106.85 µs 107.46 µs 108.10 µs]
+Found 16 outliers among 100 measurements (16.00%)
+  10 (10.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 255 byte comps", Components Equality Fail from End
+                        time:   [176.47 ns 177.22 ns 178.19 ns]
+Found 9 outliers among 100 measurements (9.00%)
+  3 (3.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 255 byte comps", Components Comparison Succeed
+                        time:   [2.9932 µs 3.0009 µs 3.0108 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  7 (7.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 255 byte comps", Components Comparison Fail from Start
+                        time:   [176.49 ns 177.16 ns 177.98 ns]
+Found 15 outliers among 100 measurements (15.00%)
+  7 (7.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Long Path with 255 byte comps", Components Comparison Fail from Mid
+                        time:   [63.786 µs 63.895 µs 64.015 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 255 byte comps", Components Comparison Fail from End
+                        time:   [87.049 µs 87.435 µs 87.914 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 255 byte comps", Std Components Next
+                        time:   [101.09 µs 101.72 µs 102.42 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+"Abs Long Path with 255 byte comps", Std Components Next Back
+                        time:   [104.58 µs 105.24 µs 106.00 µs]
+Found 20 outliers among 100 measurements (20.00%)
+  2 (2.00%) low mild
+  7 (7.00%) high mild
+  11 (11.00%) high severe
+
+"Abs Long Path with 255 byte comps", Std As Path Iter
+                        time:   [305.77 µs 306.51 µs 307.58 µs]
+Found 12 outliers among 100 measurements (12.00%)
+  8 (8.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Long Path with 255 byte comps", Std Components Equality
+                        time:   [3.4004 µs 3.4062 µs 3.4130 µs]
+Found 14 outliers among 100 measurements (14.00%)
+  2 (2.00%) low mild
+  6 (6.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 255 byte comps", Std Components Equality Fail from Start
+                        time:   [223.96 µs 225.27 µs 226.75 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  8 (8.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 255 byte comps", Std Components Equality Fail from Mid
+                        time:   [124.42 µs 124.73 µs 125.06 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path with 255 byte comps", Std Components Equality Fail from End
+                        time:   [10.639 µs 10.694 µs 10.751 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+
+"Abs Long Path with 255 byte comps", Std Components Comparison Succeed
+                        time:   [86.895 µs 87.357 µs 88.109 µs]
+Found 17 outliers among 100 measurements (17.00%)
+  2 (2.00%) low mild
+  6 (6.00%) high mild
+  9 (9.00%) high severe
+
+"Abs Long Path with 255 byte comps", Std Components Comparison Fail from Start
+                        time:   [8.6912 µs 8.7318 µs 8.7760 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path with 255 byte comps", Std Components Comparison Fail from Mid
+                        time:   [63.722 µs 64.154 µs 64.754 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  2 (2.00%) high mild
+  6 (6.00%) high severe
+
+"Abs Long Path with 255 byte comps", Std Components Comparison Fail from End
+                        time:   [87.687 µs 87.834 µs 88.062 µs]
+Found 9 outliers among 100 measurements (9.00%)
+  4 (4.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Components Next Rewrite
+                        time:   [108.11 µs 109.89 µs 111.95 µs]
+                        change: [−0.7825% +2.1680% +5.5652%] (p = 0.19 > 0.05)
+                        No change in performance detected.
+Found 14 outliers among 100 measurements (14.00%)
+  4 (4.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Components Next Back Rewrite
+                        time:   [106.95 µs 107.40 µs 107.88 µs]
+                        change: [−42.881% −42.544% −42.197%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 5 outliers among 100 measurements (5.00%)
+  4 (4.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path Inconsistent Comp", As Path Iter Rewrite
+                        time:   [108.35 µs 109.13 µs 110.20 µs]
+                        change: [−4.7925% −3.6874% −2.3276%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 16 outliers among 100 measurements (16.00%)
+  3 (3.00%) high mild
+  13 (13.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Components Equality Succeed
+                        time:   [2.8143 µs 2.8162 µs 2.8181 µs]
+                        change: [−5.3002% −4.9777% −4.7167%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Rel Long Path Inconsistent Comp", Components Equality Fail from Start
+                        time:   [189.27 µs 190.15 µs 191.12 µs]
+                        change: [+82.731% +84.418% +86.566%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 39 outliers among 100 measurements (39.00%)
+  15 (15.00%) low severe
+  4 (4.00%) low mild
+  3 (3.00%) high mild
+  17 (17.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Components Equality Fail from Mid
+                        time:   [91.151 µs 91.681 µs 92.468 µs]
+                        change: [+80.368% +82.206% +84.019%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 11 outliers among 100 measurements (11.00%)
+  7 (7.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Components Equality Fail from End
+                        time:   [1.3599 µs 1.3628 µs 1.3670 µs]
+                        change: [−5.2837% −4.8792% −4.4747%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 17 outliers among 100 measurements (17.00%)
+  5 (5.00%) low mild
+  2 (2.00%) high mild
+  10 (10.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Components Comparison Succeed
+                        time:   [2.9536 µs 2.9610 µs 2.9702 µs]
+                        change: [−3.3391% −3.0630% −2.8049%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) high mild
+  5 (5.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Components Comparison Fail from Start
+                        time:   [176.10 ns 177.03 ns 178.07 ns]
+                        change: [−1.6622% −0.9160% −0.2942%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 11 outliers among 100 measurements (11.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+  8 (8.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Components Comparison Fail from Mid
+                        time:   [43.723 µs 43.861 µs 44.074 µs]
+                        change: [+0.0249% +0.3516% +0.6524%] (p = 0.03 < 0.05)
+                        Change within noise threshold.
+Found 11 outliers among 100 measurements (11.00%)
+  9 (9.00%) high mild
+  2 (2.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Components Comparison Fail from End
+                        time:   [87.405 µs 87.824 µs 88.474 µs]
+                        change: [+0.2110% +0.6773% +1.2412%] (p = 0.01 < 0.05)
+                        Change within noise threshold.
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Std Components Next
+                        time:   [113.98 µs 114.42 µs 114.87 µs]
+                        change: [+3.1801% +3.5753% +4.0380%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Long Path Inconsistent Comp", Std Components Next Back
+                        time:   [225.99 µs 226.79 µs 227.81 µs]
+                        change: [+68.579% +70.525% +72.277%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 16 outliers among 100 measurements (16.00%)
+  4 (4.00%) high mild
+  12 (12.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Std As Path Iter
+                        time:   [240.88 µs 241.86 µs 242.93 µs]
+                        change: [+0.1798% +0.7901% +1.3307%] (p = 0.01 < 0.05)
+                        Change within noise threshold.
+Found 5 outliers among 100 measurements (5.00%)
+  4 (4.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Std Components Equality
+                        time:   [3.3488 µs 3.3552 µs 3.3637 µs]
+                        change: [−2.1365% −1.7856% −1.4683%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 15 outliers among 100 measurements (15.00%)
+  4 (4.00%) low mild
+  4 (4.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Std Components Equality Fail from Start
+                        time:   [289.04 µs 290.77 µs 292.54 µs]
+                        change: [−3.7983% −1.5729% +0.5206%] (p = 0.17 > 0.05)
+                        No change in performance detected.
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Std Components Equality Fail from Mid
+                        time:   [154.69 µs 155.42 µs 156.17 µs]
+                        change: [−0.3649% +0.6605% +1.6436%] (p = 0.20 > 0.05)
+                        No change in performance detected.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Rel Long Path Inconsistent Comp", Std Components Equality Fail from End
+                        time:   [4.0905 µs 4.1059 µs 4.1260 µs]
+                        change: [−0.8816% −0.5568% −0.2250%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 8 outliers among 100 measurements (8.00%)
+  4 (4.00%) high mild
+  4 (4.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Std Components Comparison Succeed
+                        time:   [87.115 µs 87.403 µs 87.745 µs]
+                        change: [−0.8873% −0.2277% +0.3848%] (p = 0.49 > 0.05)
+                        No change in performance detected.
+Found 14 outliers among 100 measurements (14.00%)
+  3 (3.00%) high mild
+  11 (11.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Std Components Comparison Fail from Start
+                        time:   [6.4432 µs 6.4923 µs 6.5472 µs]
+                        change: [−0.7166% +0.2502% +1.1992%] (p = 0.60 > 0.05)
+                        No change in performance detected.
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Std Components Comparison Fail from Mid
+                        time:   [48.616 µs 48.986 µs 49.441 µs]
+                        change: [+0.9565% +1.9786% +2.9203%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 13 outliers among 100 measurements (13.00%)
+  6 (6.00%) high mild
+  7 (7.00%) high severe
+
+"Rel Long Path Inconsistent Comp", Std Components Comparison Fail from End
+                        time:   [89.176 µs 89.611 µs 90.146 µs]
+                        change: [+1.6231% +2.4692% +3.5771%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 14 outliers among 100 measurements (14.00%)
+  4 (4.00%) high mild
+  10 (10.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Components Next Rewrite
+                        time:   [106.92 µs 107.93 µs 109.02 µs]
+                        change: [−9.9078% −6.5550% −3.3604%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 20 outliers among 100 measurements (20.00%)
+  7 (7.00%) high mild
+  13 (13.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Components Next Back Rewrite
+                        time:   [107.70 µs 108.59 µs 109.47 µs]
+                        change: [−43.584% −43.240% −42.876%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 6 outliers among 100 measurements (6.00%)
+  6 (6.00%) high mild
+
+"Abs Long Path Inconsistent Comp", As Path Iter Rewrite
+                        time:   [111.58 µs 112.49 µs 113.61 µs]
+                        change: [−0.4920% +1.2337% +3.7211%] (p = 0.25 > 0.05)
+                        No change in performance detected.
+Found 10 outliers among 100 measurements (10.00%)
+  6 (6.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Components Equality Succeed
+                        time:   [2.9444 µs 2.9486 µs 2.9541 µs]
+                        change: [+2.6533% +3.0951% +3.5589%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) high mild
+  5 (5.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Components Equality Fail from Start
+                        time:   [173.18 µs 174.14 µs 175.40 µs]
+                        change: [+94.894% +96.039% +97.381%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 13 outliers among 100 measurements (13.00%)
+  3 (3.00%) high mild
+  10 (10.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Components Equality Fail from Mid
+                        time:   [94.519 µs 95.492 µs 96.538 µs]
+                        change: [+88.588% +90.064% +91.580%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 10 outliers among 100 measurements (10.00%)
+  7 (7.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Components Equality Fail from End
+                        time:   [1.3711 µs 1.3818 µs 1.3929 µs]
+                        change: [−6.7974% −6.4232% −6.0165%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 10 outliers among 100 measurements (10.00%)
+  2 (2.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Components Comparison Succeed
+                        time:   [3.0501 µs 3.0581 µs 3.0678 µs]
+                        change: [+1.8415% +2.1553% +2.4941%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Components Comparison Fail from Start
+                        time:   [177.30 ns 178.02 ns 178.86 ns]
+                        change: [−0.8217% −0.0254% +0.7096%] (p = 0.95 > 0.05)
+                        No change in performance detected.
+Found 17 outliers among 100 measurements (17.00%)
+  10 (10.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Components Comparison Fail from Mid
+                        time:   [44.145 µs 44.448 µs 44.793 µs]
+                        change: [+1.4614% +2.0765% +2.6673%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 14 outliers among 100 measurements (14.00%)
+  5 (5.00%) high mild
+  9 (9.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Components Comparison Fail from End
+                        time:   [87.184 µs 87.346 µs 87.537 µs]
+                        change: [−1.3753% −0.4153% +0.4487%] (p = 0.42 > 0.05)
+                        No change in performance detected.
+Found 14 outliers among 100 measurements (14.00%)
+  6 (6.00%) high mild
+  8 (8.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Std Components Next
+                        time:   [114.87 µs 115.69 µs 116.63 µs]
+                        change: [+2.9566% +4.3902% +5.8032%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Std Components Next Back
+                        time:   [199.70 µs 199.99 µs 200.26 µs]
+                        change: [+53.674% +55.281% +56.729%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 17 outliers among 100 measurements (17.00%)
+  6 (6.00%) low severe
+  9 (9.00%) low mild
+  2 (2.00%) high mild
+
+"Abs Long Path Inconsistent Comp", Std As Path Iter
+                        time:   [249.79 µs 252.22 µs 255.32 µs]
+                        change: [−1.3001% +0.2698% +1.6702%] (p = 0.72 > 0.05)
+                        No change in performance detected.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+"Abs Long Path Inconsistent Comp", Std Components Equality
+                        time:   [3.4275 µs 3.4288 µs 3.4303 µs]
+                        change: [+3.0925% +3.1560% +3.2273%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Std Components Equality Fail from Start
+                        time:   [284.54 µs 286.10 µs 287.67 µs]
+                        change: [−1.8927% +1.2472% +4.1800%] (p = 0.43 > 0.05)
+                        No change in performance detected.
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) high mild
+  3 (3.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Std Components Equality Fail from Mid
+                        time:   [150.41 µs 151.34 µs 152.35 µs]
+                        change: [−0.8688% +0.5353% +1.9011%] (p = 0.45 > 0.05)
+                        No change in performance detected.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+
+"Abs Long Path Inconsistent Comp", Std Components Equality Fail from End
+                        time:   [4.0296 µs 4.0351 µs 4.0414 µs]
+                        change: [+5.5266% +5.6706% +5.8362%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Std Components Comparison Succeed
+                        time:   [86.762 µs 86.798 µs 86.842 µs]
+                        change: [−0.0050% +0.1875% +0.3568%] (p = 0.04 < 0.05)
+                        Change within noise threshold.
+Found 16 outliers among 100 measurements (16.00%)
+  6 (6.00%) high mild
+  10 (10.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Std Components Comparison Fail from Start
+                        time:   [6.5394 µs 6.5550 µs 6.5716 µs]
+                        change: [−2.7233% −1.7882% −1.0146%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 7 outliers among 100 measurements (7.00%)
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Std Components Comparison Fail from Mid
+                        time:   [48.752 µs 48.976 µs 49.257 µs]
+                        change: [+3.0701% +4.1603% +5.3165%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 12 outliers among 100 measurements (12.00%)
+  5 (5.00%) high mild
+  7 (7.00%) high severe
+
+"Abs Long Path Inconsistent Comp", Std Components Comparison Fail from End
+                        time:   [89.046 µs 89.529 µs 90.056 µs]
+                        change: [+0.4938% +0.8766% +1.2960%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 13 outliers among 100 measurements (13.00%)
+  4 (4.00%) high mild
+  9 (9.00%) high severe
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
